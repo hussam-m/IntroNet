@@ -6,6 +6,7 @@
 package BSU.CS690.IntroNet;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +25,13 @@ public class Server {
     ServerSocket listener; // Server listener
     int numberOfClient;
     String loginPage = ""; // the path of the login page
-    static final int PORT = 8080;
+    static final int PORT = 8081;
 
     public Server(int port) throws IOException {
         listener = new ServerSocket(port);
         System.out.println("Server is running on port:" + port);
+        InetAddress IP=InetAddress.getLocalHost();
+        System.out.println("IP of my system is := "+IP.getHostAddress());
         this.run();
     }
 
