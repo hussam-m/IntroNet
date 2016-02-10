@@ -11,43 +11,29 @@ abstract class Page {
     protected $keywords = [];
     protected $description = "";
     private $center_width = 6;
-
-    //page layout
-    const TOP = 0;
-    const LEFT = 1;
-    const RIGHT = 2;
-    const CENTER = 3;
-    const BOTTOM = 4;
-    const TOPMENU = 5;
-
-    private $components = [[/* top */], [/* left */], [/* right */], [/* center */], [/* bottom */], /* topmenu */ null];
-
-    //private  $pageName;
+    private $body;
+    private $mainMenu;
+    private $pageName;
+    
     public function __construct($pageName, $menu) {
         $this->pageName = $pageName;
         if (is_a($menu, "Menu"))
-            $this->components[Page::TOPMENU] = $menu;
+            $this->mainMenu = $menu;
+        $this->body = new PageBody();
+
+        $this->build($this->body);
     }
 
-    public function addComponent($location, Component $componet) {
-        //if(is_a($componet,"Componet"))
-        //if($location>=0 && $location<=5)
 
-        $this->components[$location][] = $componet;
-        //var_dump( $this->components);
-    }
-
-    // Force Extending class to define this method
-    abstract protected function printBody();
-
+    abstract protected function build(PageBody &$body);
     abstract public function callBack($data, $action);
 
     function printPage($title) {
-        $this->center_width+=6;
-        if (empty($this->componets[Page::LEFT]))
-            $this->center_width+=3;
-        if (empty($this->componets[Page::RIGHT]))
-            $this->center_width+=3;
+        $this->center_width = 12;
+        if ($this->body->hasLeft())
+            $this->center_width-=3;
+        if ($this->body->hasRight())
+            $this->center_width-=3;
         ?>
         <!DOCTYPE html>
         <html>
@@ -61,7 +47,7 @@ abstract class Page {
                 <!-- CSS -->
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
                 <link rel="stylesheet" href="css/style.css" >
-                
+
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -83,9 +69,9 @@ abstract class Page {
                             <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>
                         <?php else: ?>
                             <a href="?page=login" role="button" class="btn btn-default navbar-btn navbar-right">Sign in</a>
-                        <?php endif; ?>
+                            <?php endif; ?>
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                            <?php $this->components[Page::TOPMENU]->build() ?>
+        <?php $this->mainMenu->build() ?>
                         </div>
                     </div>
                 </nav>
@@ -94,29 +80,47 @@ abstract class Page {
                 <div class="row">
                     <div id="top" class="col-md-12">
                         <?php
-                        foreach ($this->components[Page::TOP] as $component) {
+                        foreach ($this->body->getTop() as $component) {
                             echo $component;
                         }
                         ?>
                     </div>
                 </div>
                 <div class="row">
-                    <?php if (!empty($this->componets[Page::LEFT])) : ?>
-                        <div id="left" class="col-md-3"></div>
-                    <?php endif; ?>
+                        <?php if ($this->body->hasLeft()) : ?>
+                        <div id="left" class="col-md-3">
+                            <?php
+                            foreach ($this->body->getLeft() as $component) {
+                                echo $component;
+                            }
+                            ?>
+                        </div>
+                        <?php endif; ?>
                     <div id="center" class="col-md-<?= $this->center_width ?>">
                         <?php
-                        foreach ($this->components[Page::CENTER] as $component) {
+                        foreach ($this->body->getCenter() as $component) {
                             echo $component;
                         }
                         ?>
                     </div>
-                    <?php if (!empty($this->componets[Page::RIGHT])) : ?>
-                        <div id="right" class="col-md-3"></div>
-                    <?php endif; ?>
+                        <?php if ($this->body->hasRight()) : ?>
+                        <div id="right" class="col-md-3">
+                            <?php
+                            foreach ($this->body->getRight() as $component) {
+                                echo $component;
+                            }
+                            ?>
+                        </div>
+        <?php endif; ?>
                 </div>
                 <div class="row">
-                    <div id="bottom" class="col-md-12"></div>
+                    <div id="bottom" class="col-md-12">
+                        <?php
+                        foreach ($this->body->getBottom() as $component) {
+                            echo $component;
+                        }
+                        ?>
+                    </div>
                 </div>
 
                 <?php
@@ -135,4 +139,69 @@ abstract class Page {
     }
 
 }
+
+// Body Class
+//namespace Page{
+class PageBody {
+
+//page layout
+    const TOP = 0;
+    const LEFT = 1;
+    const RIGHT = 2;
+    const CENTER = 3;
+    const BOTTOM = 4;
+
+    private $components = [[/* top */], [/* left */], [/* right */], [/* center */], [/* bottom */]];
+
+    function addToTop(Component $componet) {
+        $this->components[PageBody::TOP][] = $componet;
+    }
+
+    function addToCenter(Component $componet) {
+        $this->components[PageBody::CENTER][] = $componet;
+    }
+
+    function addToLeft(Component $componet) {
+        $this->components[PageBody::LEFT][] = $componet;
+    }
+
+    function addToRight(Component $componet) {
+        $this->components[PageBody::RIGHT][] = $componet;
+    }
+
+    function addToBottom(Component $componet) {
+        $this->components[PageBody::BOTTOM][] = $componet;
+    }
+
+    function getTop() {
+        return $this->components[PageBody::TOP];
+    }
+
+    function getCenter() {
+        return $this->components[PageBody::CENTER];
+    }
+
+    function getLeft() {
+        return $this->components[PageBody::LEFT];
+    }
+
+    function getRight() {
+        return $this->components[PageBody::RIGHT];
+    }
+
+    function getBottom() {
+        return $this->components[PageBody::BOTTOM];
+    }
+
+    function hasLeft() {
+        return (!empty($this->componets[PageBody::LEFT]));
+    }
+
+    function hasRight() {
+        return (!empty($this->componets[PageBody::RIGHT]));
+    }
+
+}
+
+//}
 ?>
