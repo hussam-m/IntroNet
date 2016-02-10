@@ -29,7 +29,7 @@ abstract class Page {
             $this->components[Page::TOPMENU] = $menu;
     }
 
-    public function addComponent($location, $componet) {
+    public function addComponent($location, Component $componet) {
         //if(is_a($componet,"Componet"))
         //if($location>=0 && $location<=5)
 
@@ -61,6 +61,9 @@ abstract class Page {
                 <!-- CSS -->
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
                 <link rel="stylesheet" href="css/style.css" >
+                
+                <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
+                <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
             </head>
             <body>
@@ -89,7 +92,13 @@ abstract class Page {
             </div>
             <div class="container">
                 <div class="row">
-                    <div id="top" class="col-md-12"></div>
+                    <div id="top" class="col-md-12">
+                        <?php
+                        foreach ($this->components[Page::TOP] as $component) {
+                            echo $component;
+                        }
+                        ?>
+                    </div>
                 </div>
                 <div class="row">
                     <?php if (!empty($this->componets[Page::LEFT])) : ?>

@@ -1,12 +1,19 @@
 <?php
 
 $debug_mode = false;
+if ($debug_mode)
+{
+    $start = microtime(true); //For testing the page speed
+    echo 'Current PHP version: ' . phpversion();
+    if (version_compare(phpversion(), '5.0.0', '<')) {
+        die('Current PHP version is old. Please instal PHP5 or higher');
+    }
+}
 
 require_once './classes/components/Menu.php';
 require_once './classes/PageDirectory.php';
 
-if ($debug_mode)
-    $start = microtime(true); //For testing the page speed
+
 
 $page = null;
 //$main_menu = null;
