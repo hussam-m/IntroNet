@@ -5,6 +5,7 @@ class PageDirectory {
     private static $directory = [
         "home" => ["class" => "HomePage", "file" => "homePage.php"],
         "login" => ["class" => "LoginPage", "file" => "LoginPage.php"],
+        "Test" => ["class" => "TestPage", "file" => "TestPage.php"],
     ];
 
     public static function getPage($name,$menu) {

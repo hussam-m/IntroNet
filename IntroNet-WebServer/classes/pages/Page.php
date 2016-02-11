@@ -194,11 +194,11 @@ class PageBody {
     }
 
     function hasLeft() {
-        return (!empty($this->componets[PageBody::LEFT]));
+        return (!empty($this->components[PageBody::LEFT]));
     }
 
     function hasRight() {
-        return (!empty($this->componets[PageBody::RIGHT]));
+        return (!empty($this->components[PageBody::RIGHT]));
     }
 
 }
