@@ -1,5 +1,6 @@
 <?php
 
+// Turning on the debug mode displys system info and error messages
 $debug_mode = false;
 if ($debug_mode)
 {
@@ -28,20 +29,15 @@ $menus["admin"]->addLink("Home", "home");
 // make the page accessible only for the index.php
 //defined('IN_INDEX') or die("Error: You cannot access this page");
 
-if($_POST['callback']!='') {
+if(isset($_POST['callback'])) {
     
 }
-else if ($_GET['page'] == '') {
+else if (!isset($_GET['page'])) {
     require_once 'classes/pages/homePage.php';
     $page = new HomePage($menus["admin"]);
 } else {
         $page = PageDirectory::getPage($_GET['page'], $menus["admin"] /*TODO: menu need to be changed*/);
 }
-
-//if ($_GET['page'] == 'login') {
-//    require_once 'classes/pages/LoginPage.php';
-//    $page = new LoginPage($menus["admin"]);
-//}
 
 
 
