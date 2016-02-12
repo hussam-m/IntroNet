@@ -11,7 +11,7 @@ class LoginPage extends Page {
     }
     
 
-    public function callBack($data, $action) {
+    public function callBack($data, $action,PageBody &$body) {
         
     }
 

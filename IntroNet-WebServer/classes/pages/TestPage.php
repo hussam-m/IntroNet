@@ -11,9 +11,9 @@ class TestPage extends Page {
     }
 
     protected function build(PageBody &$body) {
-        $form = new Form();
-        $form->addInput("list1", "list", "Esample List:", ["1", "2", "3"]);
-
+        $form = new Form("Test");
+        //$form->addInput("list1", "list", "Exsample List:", ["1", "2", "3"]);
+        $form->addInput(Input::selectInput("list1", "list", "Example List:", ["A", "B", "C"]));
         $left = new CustomHTML('
 <div class="list-group">
   <a href="#" class="list-group-item active">Home</a>
@@ -42,10 +42,13 @@ class TestPage extends Page {
         $body->addToRight($right);
         $body->addToCenter($form);
         $body->addToTop(new Message("This is a test page", Message::INFO));
+        
+        if(isset($_POST['list1']))
+            $body->addToTop(new Message("the value of list1=".$_POST['list1'], Message::SUCCESS));
 
     }
 
-    public function callBack($data, $action) {
+    public function callBack($data, $action,PageBody &$body) {
         
     }
 

@@ -12,7 +12,7 @@ class HomePage extends Page {
         $this->keywords = ["Test", "Home", "IntroNet"];
     }
 
-    public function callBack($data, $action) {
+    public function callBack($data, $action,PageBody &$body) {
         
     }
 

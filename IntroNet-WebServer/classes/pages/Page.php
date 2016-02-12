@@ -26,7 +26,7 @@ abstract class Page {
 
 
     abstract protected function build(PageBody &$body);
-    abstract public function callBack($data, $action);
+    abstract public function callBack($data, $action,PageBody &$body);
 
     function printPage($title) {
         $this->center_width = 12;
