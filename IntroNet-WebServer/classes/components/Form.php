@@ -33,7 +33,7 @@ class Form extends Component {
             echo '<div class="form-group">
     <label for="'.$input->name.'">'.$input->label.'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
-        '<input type="'.$input["type"].'" class="form-control" id="'.$input["name"].'" name="'.$input["name"].'" placeholder="'.$input["label"].'" >'
+        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" >'
     ):($input->type=='list'?( 
                 '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'">'.
                     call_user_func(function($o) {
@@ -64,6 +64,7 @@ class Input{
         $input = new self();
         $input->name = $conf->name;
         $input->label = $conf->label;
+        $input->type = $conf->type;
         $input->required = $conf->required;
         $input->disabled = $conf->disabled;
         $input->regex = $conf->regex;
@@ -73,12 +74,12 @@ class Input{
         
         return $input;
     }
-    static function textInput($name,$lable,$required=false,$disabled=false,$regex="")
+    static function textInput($name,$label,$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"text","name"=>$name,"lable"=>$lable,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"text","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
-    static function selectInput($name,$lable,$options=[],$required=false,$disabled=false,$regex="")
+    static function selectInput($name,$label,$options=[],$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"list","name"=>$name,"lable"=>$lable,"options"=>$options,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"list","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
 }
