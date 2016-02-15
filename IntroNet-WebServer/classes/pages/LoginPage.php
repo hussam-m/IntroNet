@@ -15,7 +15,7 @@ class LoginPage extends Page {
         
     }
 
-    protected function build(PageBody &$body) {
+    protected function build(PageBody &$body,SubMenu &$submenu) {
         $loginForm = new Form();
         $loginForm->addInput("email", "email", "Enter your Email:");
         $loginForm->addInput("password", "password", "Enter your Password:");

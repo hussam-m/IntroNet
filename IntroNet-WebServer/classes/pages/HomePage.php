@@ -16,7 +16,7 @@ class HomePage extends Page {
         
     }
 
-    protected function build(PageBody &$body) {
+    protected function build(PageBody &$body,SubMenu &$submenu) {
         $c = new CustomHTML('
 <div class="jumbotron">
   <h1>This is the home page!</h1>

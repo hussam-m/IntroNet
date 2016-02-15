@@ -13,6 +13,7 @@ abstract class Page {
     private $center_width = 6;
     private $body;
     private $mainMenu;
+    private $subMenu;
     private $pageName;
     
     public function __construct($pageName, $menu) {
@@ -20,15 +21,20 @@ abstract class Page {
         if (is_a($menu, "Menu"))
             $this->mainMenu = $menu;
         $this->body = new PageBody();
+        $this->subMenu = new SubMenu();
 
-        $this->build($this->body);
+        $this->build($this->body,$this->subMenu);
     }
 
 
-    abstract protected function build(PageBody &$body);
+    abstract protected function build(PageBody &$body, SubMenu &$submenu);
     abstract public function callBack($data, $action,PageBody &$body);
 
     function printPage($title) {
+        //if the page have a submenu add it to the left side
+        if(!$this->subMenu->isEmpty())
+            $this->body->addToLeft ($this->subMenu);
+        
         $this->center_width = 12;
         if ($this->body->hasLeft())
             $this->center_width-=3;
@@ -203,5 +209,26 @@ class PageBody {
 
 }
 
+
+class SubMenu extends Component{
+    private $links = [];
+    public function addLink($label,$link,$active=false){
+        $this->links[]= ["label"=>$label,"link"=>$link,"active"=>$active];
+    }
+    public function build(){
+        if($this->isEmpty())
+            return '';
+        
+        $html='<div class="list-group">';
+        foreach ($this->links as $link){
+            $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['active']?'active':'').' ">'.$link['label'].'</a>';
+        }
+        $html.='</div>';
+        echo $html;
+    }
+    public function isEmpty(){
+        return empty($this->links);
+    }
+}
 //}
 ?>
