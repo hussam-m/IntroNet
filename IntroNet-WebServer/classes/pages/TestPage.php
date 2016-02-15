@@ -15,12 +15,12 @@ class TestPage extends Page {
         //$form->addInput("list1", "list", "Exsample List:", ["1", "2", "3"]);
         $form->addInput(Input::textInput("input1", "Enter your name: "));
         $form->addInput(Input::selectInput("list1", "Example List:", ["A", "B", "C"]));
-//        $left = new CustomHTML('
-//<div class="list-group">
-//  <a href="#" class="list-group-item active">Home</a>
-//  <a href="#" class="list-group-item">Profile</a>
-//  <a href="#" class="list-group-item">Messages</a>
-//</div>');
+        $left = new CustomHTML('
+<div class="list-group">
+  <a href="#" class="list-group-item active">Home</a>
+  <a href="#" class="list-group-item">Profile</a>
+  <a href="#" class="list-group-item">Messages</a>
+</div>');
         
         $submenu->addLink("Home", "?page=home");
         $submenu->addLink("Login", "?page=login");
@@ -43,7 +43,7 @@ class TestPage extends Page {
   </div>
 </div>');
 
-        //$body->addToLeft($left);
+        $body->addToLeft($left);
         $body->addToRight($right);
         $body->addToCenter($form);
         $body->addToTop(new Message("This is a test page", Message::INFO));

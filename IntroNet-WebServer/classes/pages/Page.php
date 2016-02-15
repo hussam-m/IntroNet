@@ -28,12 +28,12 @@ abstract class Page {
 
 
     abstract protected function build(PageBody &$body, SubMenu &$submenu);
-    abstract public function callBack($data, $action,PageBody &$body);
+    public function callBack($data, $action,PageBody &$body){}
 
     function printPage($title) {
         //if the page have a submenu add it to the left side
         if(!$this->subMenu->isEmpty())
-            $this->body->addToLeft ($this->subMenu);
+            $this->body->addSubMenu ($this->subMenu);
         
         $this->center_width = 12;
         if ($this->body->hasLeft())
@@ -177,6 +177,10 @@ class PageBody {
 
     function addToBottom(Component $componet) {
         $this->components[PageBody::BOTTOM][] = $componet;
+    }
+    
+    function addSubMenu(SubMenu $submenu){
+        array_unshift($this->components[PageBody::LEFT],$submenu);
     }
 
     function getTop() {

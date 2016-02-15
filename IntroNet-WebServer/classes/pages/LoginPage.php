@@ -1,7 +1,5 @@
 <?php
 require_once 'Page.php';
-//require_once './classes/forms/LoginForm.php';
-
 
 class LoginPage extends Page {   
     
@@ -16,9 +14,9 @@ class LoginPage extends Page {
     }
 
     protected function build(PageBody &$body,SubMenu &$submenu) {
-        $loginForm = new Form();
-        $loginForm->addInput("email", "email", "Enter your Email:");
-        $loginForm->addInput("password", "password", "Enter your Password:");
+        $loginForm = new Form("login");
+        $loginForm->addInput(Input::textInput("email", "Enter your Email:"));
+        $loginForm->addInput(Input::textInput("password", "Enter your Password:"));
         
         $body->addToCenter($loginForm);
     }

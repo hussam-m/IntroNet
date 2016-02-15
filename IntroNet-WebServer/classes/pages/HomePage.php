@@ -12,9 +12,6 @@ class HomePage extends Page {
         $this->keywords = ["Test", "Home", "IntroNet"];
     }
 
-    public function callBack($data, $action,PageBody &$body) {
-        
-    }
 
     protected function build(PageBody &$body,SubMenu &$submenu) {
         $c = new CustomHTML('
