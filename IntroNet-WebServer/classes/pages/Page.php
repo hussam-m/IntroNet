@@ -22,6 +22,9 @@ abstract class Page {
             $this->mainMenu = $menu;
         $this->body = new PageBody();
         $this->subMenu = new SubMenu();
+        
+        if($_POST)
+            $this->callBack ($_POST, "post", $this->body);
 
         $this->build($this->body,$this->subMenu);
     }
@@ -71,8 +74,22 @@ abstract class Page {
                             </button>
                             <a class="navbar-brand" href="#"><?= $title ?></a>
                         </div>
-                        <?php if ($user != null) : ?>
-                            <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>
+                        <?php if ($_SESSION["user"] != null) : ?>
+<!--                            <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>-->
+                            <div class="dropdown navbar-text navbar-right">
+                                Signed in as
+                                <a href="#" class="dropdown-toggle navbar-link" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                  Hussam Almoharb
+                                  <span class="caret"></span>
+                                </a>
+                            
+<!--                                <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Hussam Almoharb <span class="caret"></span></a></p>-->
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                  <li><a href="#">Profile</a></li>
+                                  <li role="separator" class="divider"></li>
+                                  <li><a href="?logout">Logout</a></li>
+                                </ul>
+                            </div>
                         <?php else: ?>
                             <a href="?page=login" role="button" class="btn btn-default navbar-btn navbar-right">Sign in</a>
                             <?php endif; ?>

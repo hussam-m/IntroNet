@@ -1,5 +1,6 @@
 <?php
 require_once 'Page.php';
+require_once './classes/components/Message.php';
 
 class LoginPage extends Page {   
     
@@ -10,7 +11,19 @@ class LoginPage extends Page {
     
 
     public function callBack($data, $action,PageBody &$body) {
-        
+        // this code only for testing
+        if($data["email"]=="hussam@email.com" && 
+           $data["password"]=="1234")
+        {
+                $_SESSION['user']='hussam';
+                $host  = $_SERVER['HTTP_HOST'];
+                $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+                $extra = 'index.php?page=home';
+                header("Location: http://$host$uri/$extra");
+                exit;
+        }
+        else
+            $body->addToTop(new Message("Wrong password or email", Message::DANGER));
     }
 
     protected function build(PageBody &$body,SubMenu &$submenu) {

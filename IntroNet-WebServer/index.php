@@ -11,6 +11,21 @@ if ($debug_mode)
     }
 }
 
+
+    
+session_start();
+
+// User Logout
+if(isset($_GET["logout"])){
+    session_destroy();
+    $host  = $_SERVER['HTTP_HOST'];
+    $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+    $extra = 'index.php?page=home';
+    header("Location: http://$host$uri/$extra");
+    exit;
+    //echo 'Loged out';
+}
+
 require_once './classes/components/Menu.php';
 require_once './classes/PageDirectory.php';
 
@@ -18,9 +33,10 @@ require_once './classes/PageDirectory.php';
 
 $page = null;
 //$main_menu = null;
-$user = null;
+$user = $_SESSION["user"];
 $menus = [];
 
+// Main Menus
 $menus["admin"] = new Menu();
 $menus["admin"]->addLink("Home", "home");
 //$menus["admin"]->addLink("Login", "login");
@@ -29,10 +45,7 @@ $menus["admin"]->addLink("Home", "home");
 // make the page accessible only for the index.php
 //defined('IN_INDEX') or die("Error: You cannot access this page");
 
-if(isset($_POST['callback'])) {
-    
-}
-else if (!isset($_GET['page'])) {
+if (!isset($_GET['page'])) {
     require_once 'classes/pages/homePage.php';
     $page = new HomePage($menus["admin"]);
 } else {
