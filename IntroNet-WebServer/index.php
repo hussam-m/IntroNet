@@ -33,7 +33,8 @@ require_once './classes/PageDirectory.php';
 
 $page = null;
 //$main_menu = null;
-$user = $_SESSION["user"];
+if(isset($_SESSION["user"]))
+    $user = $_SESSION["user"];
 $menus = [];
 
 // Main Menus
