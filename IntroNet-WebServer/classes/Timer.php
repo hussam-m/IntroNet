@@ -2,6 +2,8 @@
 
 class Timer {
 
+    private $length;
+
     public function __construct($length) {
         $this->length=$length;
     }
