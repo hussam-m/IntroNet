@@ -16,10 +16,17 @@ class NewEventPage extends Page {
         $form = new Form("NewEvent");
         $form->addInput(Input::textInput("eventName","Event Name"));
         $form->addInput(Input::textareaInput("eventAddress","Address"));
-        $form->addInput(Input::dateInput("eventDay","Day"));
-        $form->addInput(Input::timeInput("eventTime","time"));
-        $form->addInput(Input::dateInput("eventDeadline","Registration Deadline"));
-        $form->addInput(Input::timeInput("eventDeadlineTime","Registration Deadline Time"));
+        
+        $form->addInput(Input::createGroupInput([
+            Input::dateInput("eventDay","Day"),
+            Input::timeInput("eventTime","time")
+            ]));
+        
+        $form->addInput(Input::createGroupInput([
+            Input::dateInput("eventDeadline","Registration Deadline"),
+            Input::timeInput("eventDeadlineTime","Registration Deadline Time")
+            ])); 
+        
         $form->addInput(Input::textInput("eventFee","Registration Fee"));
         $form->addInput(Input::textInput("eventStuFee","Student Fee"));
         $form->addInput(Input::textInput("organizations","Organizations"));
