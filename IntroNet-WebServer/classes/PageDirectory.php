@@ -2,10 +2,18 @@
 
 class PageDirectory {
 
+    // this list have all the pages that can be accessed
     private static $directory = [
+        // 
         "home" => ["class" => "HomePage", "file" => "homePage.php"],
         "login" => ["class" => "LoginPage", "file" => "LoginPage.php"],
         "Test" => ["class" => "TestPage", "file" => "TestPage.php"],
+        
+        // user pages
+        
+        
+        //admin pages
+        "NewEvent" => ["class" => "NewEventPage", "file" => "NewEventPage.php"],
     ];
 
     public static function getPage($name,$menu) {
