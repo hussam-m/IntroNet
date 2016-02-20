@@ -43,6 +43,12 @@ class Form extends Component {
         // active all timepickers
         // http://weareoutman.github.io/clockpicker/
         echo '<script>$(".timepicker").clockpicker();</script>';
+        
+        echo "
+            <script>$('.tokenfield').tokenfield();</script>
+              
+";
+        
     }
 }
 
@@ -96,6 +102,10 @@ class Input{
     {
         return self::createInput((object)array("type"=>"list","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
+    static function tokenInput($name,$label,$required=false,$disabled=false,$regex="")
+    {
+        return self::createInput((object)array("type"=>"token","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+    }
     
     
     static function buildInput(Input $input){
@@ -145,6 +155,9 @@ class Input{
                         <span class="glyphicon glyphicon-time"></span>
                     </span></div>';
                 
+            }
+            else if($input->type=='token'){
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
             }
     }
 }

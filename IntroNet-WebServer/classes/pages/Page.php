@@ -58,12 +58,15 @@ abstract class Page {
                 <link rel="stylesheet" href="css/style.css" >
                 <link rel="stylesheet" href="css/bootstrap-datepicker.css" >
                 <link rel="stylesheet" href="css/bootstrap-clockpicker.css" >
+                <link rel="stylesheet" href="css/bootstrap-tokenfield.css" >
+                <link rel="stylesheet" href="css/tokenfield-typeahead.css" >
                 
                 <!-- JS -->
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
                 <script src="js/bootstrap-datepicker.min.js"></script>
                 <script src="js/bootstrap-clockpicker.min.js"></script>
+                <script src="js/bootstrap-tokenfield.min.js"></script>
             
             </head>
             <body>

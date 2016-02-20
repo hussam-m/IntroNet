@@ -29,7 +29,7 @@ class NewEventPage extends Page {
         
         $form->addInput(Input::textInput("eventFee","Registration Fee"));
         $form->addInput(Input::textInput("eventStuFee","Student Fee"));
-        $form->addInput(Input::textInput("organizations","Organizations"));
+        $form->addInput(Input::tokenInput("organizations","Organizations"));
         
         $body->addToCenter($form);
     }
