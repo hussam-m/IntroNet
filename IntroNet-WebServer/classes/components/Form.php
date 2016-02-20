@@ -49,13 +49,32 @@ class Form extends Component {
             if($input->type=='textarea')
                 echo '<textarea class="form-control" id="'.$input->name.'" name="'.$input->name.'" rows="3"></textarea>';
             else if($input->type=='date'){
-                echo '<input id="'.$input->name.'" name="'.$input->name.'" class="form-control">';
-                echo '<script>$("#'.$input->name.'").datepicker();</script>';
+                echo ' <div class="input-group date datepicker">';
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control"/>';
+                echo '<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span></div>';
+                
+            }
+            else if($input->type=='time'){
+                echo ' <div class="input-group date timepicker" data-autoclose="true">';
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control"/>';
+                echo '<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-time"></span>
+                    </span></div>';
+                
             }
             echo '</div>';
         }
         echo '<input type="submit" class="btn btn-default">';
         echo '</form>';
+        
+        // active all datepickers
+        // 
+        echo '<script>$(".datepicker").datepicker();</script>';
+        // active all timepickers
+        // http://weareoutman.github.io/clockpicker/
+        echo '<script>$(".timepicker").clockpicker();</script>';
     }
 }
 
@@ -93,6 +112,10 @@ class Input{
     static function dateInput($name,$label,$required=false,$disabled=false,$regex="")
     {
         return self::createInput((object)array("type"=>"date","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+    }
+    static function timeInput($name,$label,$required=false,$disabled=false,$regex="")
+    {
+        return self::createInput((object)array("type"=>"time","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
     static function selectInput($name,$label,$options=[],$required=false,$disabled=false,$regex="")
     {
