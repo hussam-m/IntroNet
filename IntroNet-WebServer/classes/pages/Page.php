@@ -29,11 +29,11 @@ abstract class Page {
         $this->build($this->body,$this->subMenu);
     }
 
-
+    //abstract  public function pageConstruct($menu);
     abstract protected function build(PageBody &$body, SubMenu &$submenu);
     public function callBack($data, $action,PageBody &$body){}
 
-    function printPage($title) {
+    function printPage($title,$user) {
         //if the page have a submenu add it to the left side
         if(!$this->subMenu->isEmpty())
             $this->body->addSubMenu ($this->subMenu);
@@ -56,10 +56,13 @@ abstract class Page {
                 <!-- CSS -->
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
                 <link rel="stylesheet" href="css/style.css" >
+                <link rel="stylesheet" href="css/bootstrap-datepicker.css" >
 
+                <!-- JS -->
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script>
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+                <script src="js/bootstrap-datepicker.min.js"></script>
+                
             </head>
             <body>
                 <nav class="navbar navbar-default">
@@ -74,12 +77,12 @@ abstract class Page {
                             </button>
                             <a class="navbar-brand" href="#"><?= $title ?></a>
                         </div>
-                        <?php if ($_SESSION["user"] != null) : ?>
+                        <?php if ($user != null) : ?>
 <!--                            <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>-->
                             <div class="dropdown navbar-text navbar-right">
                                 Signed in as
                                 <a href="#" class="dropdown-toggle navbar-link" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  Hussam Almoharb
+                                  <?=$user->name?>
                                   <span class="caret"></span>
                                 </a>
                             
@@ -153,7 +156,7 @@ abstract class Page {
             </div>
             <footer class="footer">
                 <div class="container">
-                    <p class="text-muted">Place sticky footer content here.</p>
+                    <p class="text-muted">footer content here.</p>
                 </div>
             </footer>
         </body>

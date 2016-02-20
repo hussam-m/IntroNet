@@ -9,7 +9,7 @@ require_once 'Component.php';
  */
 class Message extends Component {
 
-    private $message;
+    private $content;
     private $messageType;
 
     const SUCCESS = 'success';
@@ -17,15 +17,15 @@ class Message extends Component {
     const WARNING = 'warning';
     const DANGER = 'danger';
 
-    public function __construct($message, $messageType) {
-        $this->message = $message;
+    public function __construct($content, $messageType) {
+        $this->content = $content;
         $this->messageType = $messageType;
     }
 
     public function build() {
         echo '<div class="alert alert-' . $this->messageType . ' alert-dismissible" role="alert">'
         . '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'
-        . '<strong> ' . $this->messageType . ' </strong> ' . $this->message . ' </div>';
+        . $this->content . ' </div>';
     }
 
 }

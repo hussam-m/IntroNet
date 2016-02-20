@@ -4,10 +4,10 @@ require_once 'Component.php';
 class Form extends Component {
     
     private $inputs=[];
-    private $horizontal=false;
-    private $page;
-    public function __construct($page) {
-        $this->page=$page;
+    //private $horizontal=false;
+    private $page_url; // page to callback
+    public function __construct($page_url) {
+        $this->page_url=$page_url;
     }
     
     public function addInput(Input $input)
@@ -28,7 +28,7 @@ class Form extends Component {
     
 
     public function build() {
-        echo '<form class="form" action="index.php?page='.$this->page.'" method="post">';
+        echo '<form class="form" action="index.php?page='.$this->page_url.'" method="post">';
         foreach ($this->inputs as $input) {
             echo '<div class="form-group">
     <label for="'.$input->name.'">'.$input->label.'</label>'.
@@ -43,8 +43,16 @@ class Form extends Component {
                         }
                         return $html;},$input->options )
                 .'</select>'
-                    ):''))    
-            .'</div>';
+                    ):''));    
+            
+            
+            if($input->type=='textarea')
+                echo '<textarea class="form-control" id="'.$input->name.'" name="'.$input->name.'" rows="3"></textarea>';
+            else if($input->type=='date'){
+                echo '<input id="'.$input->name.'" name="'.$input->name.'" class="form-control">';
+                echo '<script>$("#'.$input->name.'").datepicker();</script>';
+            }
+            echo '</div>';
         }
         echo '<input type="submit" class="btn btn-default">';
         echo '</form>';
@@ -77,6 +85,14 @@ class Input{
     static function textInput($name,$label,$required=false,$disabled=false,$regex="")
     {
         return self::createInput((object)array("type"=>"text","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+    }
+    static function textareaInput($name,$label,$required=false,$disabled=false,$regex="")
+    {
+        return self::createInput((object)array("type"=>"textarea","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+    }
+    static function dateInput($name,$label,$required=false,$disabled=false,$regex="")
+    {
+        return self::createInput((object)array("type"=>"date","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
     static function selectInput($name,$label,$options=[],$required=false,$disabled=false,$regex="")
     {

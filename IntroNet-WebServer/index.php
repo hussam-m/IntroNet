@@ -26,20 +26,24 @@ if(isset($_GET["logout"])){
     //echo 'Loged out';
 }
 
-require_once './classes/components/Menu.php';
+require_once './classes/MainMenu.php';
 require_once './classes/PageDirectory.php';
 
 
 
 $page = null;
-//$main_menu = null;
-if(isset($_SESSION["user"]))
-    $user = $_SESSION["user"];
-$menus = [];
+$main_menu = null;
+if(isset($_SESSION["user"])){
+    $user = json_decode($_SESSION["user"]);
+    $main_menu = new MainMenu($user->type);
+}else{
+    $main_menu = new MainMenu();
+}
+//$menus = [];
 
 // Main Menus
-$menus["admin"] = new Menu();
-$menus["admin"]->addLink("Home", "home");
+//$menus["admin"] = new Menu();
+//$menus["admin"]->addLink("Home", "home");
 //$menus["admin"]->addLink("Login", "login");
 
 //define('IN_INDEX', true);
@@ -48,15 +52,15 @@ $menus["admin"]->addLink("Home", "home");
 
 if (!isset($_GET['page'])) {
     require_once 'classes/pages/homePage.php';
-    $page = new HomePage($menus["admin"]);
+    $page = new HomePage($main_menu);
 } else {
-        $page = PageDirectory::getPage($_GET['page'], $menus["admin"] /*TODO: menu need to be changed*/);
+        $page = PageDirectory::getPage($_GET['page'], $main_menu);
 }
 
 
 
 if ($page != null) {
-    $page->printPage("IntroNet");
+    $page->printPage("IntroNet",$user);
 } else {
     echo "Error: no page to display!";
 }

@@ -15,6 +15,7 @@ class TestPage extends Page {
         //$form->addInput("list1", "list", "Exsample List:", ["1", "2", "3"]);
         $form->addInput(Input::textInput("input1", "Enter your name: "));
         $form->addInput(Input::selectInput("list1", "Example List:", ["A", "B", "C"]));
+        //$form->addInput(Input::dateInput("date", "choose a date: "));
         $left = new CustomHTML('
 <div class="list-group">
   <a href="#" class="list-group-item active">Home</a>
