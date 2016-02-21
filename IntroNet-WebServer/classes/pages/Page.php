@@ -245,13 +245,19 @@ class SubMenu extends Component{
     public function addLink($label,$link,$active=false){
         $this->links[]= ["label"=>$label,"link"=>$link,"active"=>$active];
     }
+    public function addSplitter(){
+        $this->links[] = 'Splitter';
+    }
     public function build(){
         if($this->isEmpty())
             return '';
         
         $html='<div class="list-group">';
         foreach ($this->links as $link){
-            $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['active']?'active':'').' ">'.$link['label'].'</a>';
+            if($link=='Splitter')
+                $html.= '</div><div class="list-group">';
+            else
+                $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['active']?'active':'').' ">'.$link['label'].'</a>';
         }
         $html.='</div>';
         echo $html;
