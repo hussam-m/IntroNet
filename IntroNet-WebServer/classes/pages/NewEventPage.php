@@ -10,7 +10,7 @@ require_once './classes/components/Message.php';
  */
 class NewEventPage extends Page {
     public function __construct($menu) {
-        parent::__construct("New Event",$menu);
+        parent::__construct($menu,"New Event");
     }
     
     public function callBack($data, $action, \PageBody &$body) {

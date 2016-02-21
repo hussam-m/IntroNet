@@ -11,7 +11,7 @@ require_once './classes/components/HtmlTable.php';
  */
 class EventListPage extends Page {
     public function __construct($menu) {
-        parent::__construct("Event List",$menu);
+        parent::__construct($menu,"Event List");
     }
     
     protected function build(PageBody &$body, SubMenu &$submenu) {

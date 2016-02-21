@@ -6,7 +6,7 @@ require_once './classes/User.php';
 class LoginPage extends Page {   
     
     public function __construct($menu) {
-        parent::__construct("Login",$menu);
+        parent::__construct($menu,"Login");
         
     }
     

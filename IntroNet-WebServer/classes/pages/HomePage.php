@@ -7,7 +7,7 @@ require_once './classes/components/Message.php';
 class HomePage extends Page {
 
     public function __construct($menu) {
-        parent::__construct("Home", $menu);
+        parent::__construct($menu,"Home");
         $this->description = "Testing Home Page";
         $this->keywords = ["Test", "Home", "IntroNet"];
     }

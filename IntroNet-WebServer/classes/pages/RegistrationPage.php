@@ -9,7 +9,7 @@ require_once './classes/components/Message.php';
 class RegistrationPage extends Page {
     
     public function __construct($menu) {
-        parent::__construct("Registration",$menu);
+        parent::__construct($menu,"Registration");
     }
     protected function build(PageBody &$body, SubMenu &$submenu) {
         

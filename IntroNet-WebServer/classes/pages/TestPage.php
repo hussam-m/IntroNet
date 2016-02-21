@@ -7,7 +7,7 @@ require_once './classes/components/Message.php';
 class TestPage extends Page {
 
     public function __construct($menu) {
-        parent::__construct("Test", $menu);
+        parent::__construct( $menu,"Test");
     }
 
     protected function build(PageBody &$body,SubMenu &$submenu) {

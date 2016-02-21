@@ -16,8 +16,9 @@ abstract class Page {
     private $subMenu;
     private $pageName;
     
-    public function __construct($pageName, $menu) {
-        $this->pageName = $pageName;
+    public function __construct($menu,$pageName='') {
+        if($pageName!='')
+            $this->pageName = ' - '.$pageName;
         if (is_a($menu, "Menu"))
             $this->mainMenu = $menu;
         $this->body = new PageBody();
@@ -51,7 +52,7 @@ abstract class Page {
                 <meta name="description" content="<?= $this->description ?>">
                 <meta name="keywords" content="<?= implode(",", $this->keywords) ?>">
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-                <title><?= $title . " - " . $this->pageName ?></title>
+                <title><?= $title . $this->pageName ?></title>
 
                 <!-- CSS -->
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
