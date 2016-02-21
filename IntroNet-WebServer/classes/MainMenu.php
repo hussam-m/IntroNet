@@ -22,7 +22,7 @@ class MainMenu extends Menu {
     
     private function createAdminMenu(){
         $this->addLink("Control Panal", "ControlPanal");
-        $this->addLink("View All Events", "ViewEvent");
+        $this->addLink("View All Events", "EventList");
         $this->addLink("Create New Event", "NewEvent");
     }
     private function createUserMenu(){

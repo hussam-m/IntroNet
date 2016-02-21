@@ -14,6 +14,8 @@ class PageDirectory {
         
         //admin pages
         "NewEvent" => ["class" => "NewEventPage", "file" => "NewEventPage.php"],
+        "EventList" => ["class" => "EventListPage", "file" => "EventListPage.php"],
+        
     ];
 
     public static function getPage($name,$menu) {

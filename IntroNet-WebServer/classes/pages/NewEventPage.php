@@ -12,6 +12,12 @@ class NewEventPage extends Page {
     public function __construct($menu) {
         parent::__construct("New Event",$menu);
     }
+    
+    public function callBack($data, $action, \PageBody &$body) {
+        $body->addToTop(new Message($data["organizations"], Message::SUCCESS));
+    }
+
+    
     protected function build(PageBody &$body, SubMenu &$submenu) {
         $form = new Form("NewEvent");
         $form->addInput(Input::textInput("eventName","Event Name"));
