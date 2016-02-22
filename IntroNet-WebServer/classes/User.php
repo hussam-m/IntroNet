@@ -13,8 +13,8 @@
  */
 class User {
     //put your code here
-    private $id;
-    private $email;
+    public $id;
+    public $email;
    function login($id, $email)
    {
        

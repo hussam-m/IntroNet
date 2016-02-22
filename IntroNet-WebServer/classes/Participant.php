@@ -13,9 +13,9 @@
  */
 class Participant extends User {
     //put your code here
-    private $fname;
-    private $lname;
-    private $phone;
+    public $fname;
+    public $lname;
+    public $phone;
     function register($eventid)
     {
         
