@@ -13,23 +13,26 @@
  */
 class Participant extends User {
     //put your code here
-    function register()
+    private $fname;
+    private $lname;
+    private $phone;
+    function register($eventid)
     {
         
     }
-    function attend()
+    function attend($eventid)
     {
         
     }
-    function leave()
+    function leave($eventid)
     {
         
     }
-    function joinTable()
+    function joinTable($tableid)
     {
         
     }
-    function visitPoster()
+    function visitPoster($posterid)
     {
         
     }

@@ -13,5 +13,22 @@
  */
 class User {
     //put your code here
-    
+    private $id;
+    private $email;
+   function login($id, $email)
+   {
+       
+   }
+   
+   function logout()
+   {
+       echo 'Successfully Logged Out';
+   }
+   
+   function resetPassword($email)
+   {
+       
+   }
+      
 }
+
