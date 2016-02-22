@@ -13,43 +13,50 @@
  */
 class Event {
     //put your code here
-    function getName()
+    private $id;
+    private $name;
+    private $datetime;
+    public function __construct($name, $datetime) {
+        $this->name=$name;
+        $this->datetime=$datetime;
+    }
+    public function getName()
     {
         
     }
-    function setName()
+    public function setName()
     {
         
     }
-    function getDateTime()
+    public function getDateTime()
     {
         
     }
-    function setDateTime($Datetime)
+    public function setDateTime($Datetime)
     {
         
     }
-    function isRegister($Participant)
+    public function isRegister($Participant)
     {
         
     }
-    function isAttended($Participant)
+    public function isAttended($Participant)
     {
         
     }
-    function addPoster($Poster)
+    public function addPoster($Poster)
     {
         
     }
-    function isLeft($Participant)
+    public function isLeft($Participant)
     {
         
     }
-    function missingParticipants()
+    public function missingParticipants()
     {
         
     }
-    function allParticipants()
+    public function allParticipants()
     {
         
     }
