@@ -76,19 +76,20 @@ class Input{
         $input->required = $conf->required;
         $input->disabled = $conf->disabled;
         $input->regex = $conf->regex;
+        $input->defaultValue = $conf->defaultValue;
         
         if(isset($conf->options))
            $input->options = $conf->options;
         
         return $input;
     }
-    static function textInput($name,$label,$required=false,$disabled=false,$regex="")
+    static function textInput($name,$label,$defaultValue='',$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"text","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"text","name"=>$name,"label"=>$label,"defaultValue"=>$defaultValue,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
-    static function textareaInput($name,$label,$required=false,$disabled=false,$regex="")
+    static function textareaInput($name,$label,$defaultValue='',$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"textarea","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"textarea","name"=>$name,"label"=>$label,"defaultValue"=>$defaultValue,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
     static function dateInput($name,$label,$required=false,$disabled=false,$regex="")
     {
@@ -125,7 +126,7 @@ class Input{
         
        echo '<label for="'.$input->name.'">'.$input->label.'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
-        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" >'
+        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" >'
     ):($input->type=='list'?( 
                 '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'">'.
                     call_user_func(function($o) {
@@ -139,7 +140,7 @@ class Input{
             
             
             if($input->type=='textarea')
-                echo '<textarea class="form-control" id="'.$input->name.'" name="'.$input->name.'" rows="3"></textarea>';
+                echo '<textarea class="form-control" id="'.$input->name.'" name="'.$input->name.'" rows="3">'.$input->defaultValue.'</textarea>';
             else if($input->type=='date'){
                 echo ' <div class="input-group date datepicker">';
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control"/>';
