@@ -3,6 +3,7 @@ require_once 'Page.php';
 require_once './classes/components/CustomHTML.php';
 require_once './classes/components/Message.php';
 require_once './classes/components/HtmlTable.php';
+require_once './classes/Database.php';
 
 /**
  * Description of newPHPClass
@@ -24,9 +25,12 @@ class EventListPage extends Page {
         
         $table = new HtmlTable();
         $table->setHead(["#","Name","Info"]);
-        $table->addRow(["1","Test","Test Data"]);
-        $table->addRow(["2","Test2","Test Data"]);
-        $table->addRow(["3","Test3","Test Data"]);
+        
+        $events = Database::get("Event");
+        foreach ($events as $id => $event)
+            $table->addRow([$id,'<a href="?page=Event&event='.$id.'">'.$event->name.'</a>',$event->address]);
+        //$table->addRow(["2","Test2","Test Data"]);
+        //$table->addRow(["3","Test3","Test Data"]);
         
         $body->addToCenter($table);
     }

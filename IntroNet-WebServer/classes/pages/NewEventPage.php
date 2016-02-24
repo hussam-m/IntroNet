@@ -14,12 +14,12 @@ class NewEventPage extends Page {
     }
     
     public function callBack($data, $action, \PageBody &$body) {
-        $body->addToTop(new Message($data["organizations"], Message::SUCCESS));
+        $body->addToTop(new Message("Please fill all the information", Message::DANGER));
     }
 
     
     protected function build(PageBody &$body, SubMenu &$submenu) {
-        $form = new Form("NewEvent");
+        $form = new Form("Event");
         $form->addInput(Input::textInput("eventName","Event Name"));
         $form->addInput(Input::textareaInput("eventAddress","Address"));
         
