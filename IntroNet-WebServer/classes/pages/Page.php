@@ -242,8 +242,11 @@ class PageBody {
 
 class SubMenu extends Component{
     private $links = [];
-    public function addLink($label,$link,$active=false){
-        $this->links[]= ["label"=>$label,"link"=>$link,"active"=>$active];
+    public function addLink($label,$link,$active=false,$icon=false,$badge=false){
+        $this->links[]= ["label"=>$label,"link"=>$link,"active"=>$active,"icon"=>$icon,"badge"=>$badge];
+    }
+    public function addDangerLink($label,$link){
+        $this->links[]= ["label"=>$label,"link"=>$link,"danger"=>true];
     }
     public function addSplitter(){
         $this->links[] = 'Splitter';
@@ -257,7 +260,9 @@ class SubMenu extends Component{
             if($link=='Splitter')
                 $html.= '</div><div class="list-group">';
             else
-                $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['active']?'active':'').' ">'.$link['label'].'</a>';
+                $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['danger']?'list-group-item-danger':'').($link['active']?' active':'').' ">'.
+                    $link['label'].($link['badge']?'<span class="badge">'.$link['badge'].'</span>':'')
+                    .'</a>';
         }
         $html.='</div>';
         echo $html;
