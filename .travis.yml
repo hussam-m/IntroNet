@@ -2,5 +2,5 @@ language: php
 php:
   - '5.4'
 before_script:
-  # navigate out of module directory to prevent blown stack by recursive module lookup
+  # navigate to IntroNet-WebServer
   - cd IntroNet-WebServer
