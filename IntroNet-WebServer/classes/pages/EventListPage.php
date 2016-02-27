@@ -6,8 +6,8 @@ require_once './classes/components/HtmlTable.php';
 require_once './classes/Database.php';
 
 /**
- * Description of newPHPClass
- *
+ * EventListPage shows a list of events that was added by the Planner
+ * @category Page
  * @author hussam
  */
 class EventListPage extends Page {
@@ -23,15 +23,18 @@ class EventListPage extends Page {
         $submenu->addLink("Delete", "#");
 
         
-        $table = new HtmlTable();
-        $table->setHead(["#","Name","Info"]);
         
+        // show a list of events on a table
         $events = Database::get("Event");
-        foreach ($events as $id => $event)
-            $table->addRow([$id,'<a href="?page=Event&event='.$id.'">'.$event->name.'</a>',$event->address]);
-        //$table->addRow(["2","Test2","Test Data"]);
-        //$table->addRow(["3","Test3","Test Data"]);
+        if(isset($events)){
+            $table = new HtmlTable();
+            $table->setHead(["#","Name","Info"]);
+            foreach ($events as $id => $event)
+                $table->addRow([$id,'<a href="?page=Event&event='.$id.'">'.$event->name.'</a>',$event->address]);
+            $body->addToCenter($table);
+        }else
+            $body->addToCenter (new Message("There is no event to show",  Message::INFO));
         
-        $body->addToCenter($table);
+        
     }
 }
