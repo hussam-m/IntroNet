@@ -11,11 +11,9 @@ require_once './classes/Database.php';
  * @author hussam
  */
 class EventListPage extends Page {
-    public function __construct($menu) {
-        parent::__construct($menu,"Event List");
-    }
     
     protected function build(PageBody &$body, SubMenu &$submenu) {
+        $this->pageName = "Event List";
         
         $submenu->addLink("Add new Event", "#");
         $submenu->addLink("Show Event", "#");

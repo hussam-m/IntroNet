@@ -28,6 +28,7 @@ class EventPage extends Page {
         if(isset($_GET['event'])){
             $this->event = Database::getRow('Event', $_GET['event']);
             $this->event->id=$_GET['event']; // for testing
+            $this->pageName = $this->event->name;
             //var_dump($this->event);
         }
         

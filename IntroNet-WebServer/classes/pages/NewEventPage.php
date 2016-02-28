@@ -9,9 +9,6 @@ require_once './classes/components/Message.php';
  * @author hussam
  */
 class NewEventPage extends Page {
-    public function __construct($menu) {
-        parent::__construct($menu,"New Event");
-    }
     
     public function callBack($data, $action, \PageBody &$body) {
         $body->addToTop(new Message("Please fill all the information", Message::DANGER));
@@ -19,6 +16,8 @@ class NewEventPage extends Page {
 
     
     protected function build(PageBody &$body, SubMenu &$submenu) {
+        $this->pageName = "New Event";
+        
         $form = new Form("Event");
         $form->addInput(Input::textInput("eventName","Event Name"));
         $form->addInput(Input::textareaInput("eventAddress","Address"));

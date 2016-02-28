@@ -19,7 +19,7 @@ class PageDirectory {
         
     ];
 
-    public static function getPage($name,$menu) {
+    public static function getPage($name,$menu,$user) {
         $page = self::$directory[$name];
         $pageObject = null;
         try {
@@ -33,7 +33,7 @@ class PageDirectory {
             
             $class = $page["class"];
             if(class_exists($class))
-                $pageObject = new $class($menu);
+                $pageObject = new $class($user,$menu);
             else
                 throw new Exception("Class ".$class." does not exist");
             

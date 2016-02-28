@@ -30,28 +30,37 @@ function main($debug_mode) {
 
     require_once './classes/MainMenu.php';
     require_once './classes/PageDirectory.php';
+    require_once './classes/User.php';
+    require_once './classes/Planner.php';
+    require_once './classes/pages/Page.php';
 
-
-
+    
     $page = null;
     $main_menu = null;
+    $user=null;
+    Page::setTitle("IntroNet"); // the name of the website
+    
     if (isset($_SESSION["user"])) {
-        $user = json_decode($_SESSION["user"]);
+        $user = unserialize($_SESSION["user"]);
         $main_menu = new MainMenu($user->type);
     } else {
+        $user = new User(); // guest user
         $main_menu = new MainMenu();
     }
-
+    
+    /** @todo replace $_Get['page'] with $_SERVER['PATH_INFO']  */
+    //print_r( explode('/',$_SERVER['PATH_INFO']) );
+    // get the page from the PageDirectory
     if (!isset($_GET['page'])) {
-        require_once 'classes/pages/homePage.php';
-        $page = new HomePage($main_menu);
+        $page = PageDirectory::getPage("home", $main_menu,$user);
     } else {
-        $page = PageDirectory::getPage($_GET['page'], $main_menu);
+        $page = PageDirectory::getPage($_GET['page'], $main_menu,$user);
     }
 
 
     if ($page != null) {
-        $page->printPage("IntroNet", $user);
+        $user->openPage($page);
+        //$page->printPage("IntroNet", $user);
     } else {
         echo "Error: no page to display!";
     }

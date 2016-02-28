@@ -2,11 +2,14 @@
 require_once 'Page.php';
 require_once './classes/components/Message.php';
 require_once './classes/User.php';
+require_once './classes/Planner.php';
+require_once './classes/Participant.php';
+
 
 class LoginPage extends Page {   
     
-    public function __construct($menu) {
-        parent::__construct($menu,"Login");
+    public function __construct($user,$menu) {
+        parent::__construct($user,$menu,"Login");
         
     }
     
@@ -17,12 +20,12 @@ class LoginPage extends Page {
            $data["password"]=="1234")
         {
             // get user data
-            $user = new User(); // 
+            $user = new Planner(); // 
             $user->name = 'hussam'; // only for testing
             $user->type = 'admin'; // only for testing
             
             // save user data
-            $_SESSION['user']=json_encode($user);
+            $_SESSION['user']=serialize($user);
             
             // redirct the user to the home page
             $host  = $_SERVER['HTTP_HOST'];

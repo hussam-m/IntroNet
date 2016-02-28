@@ -4,21 +4,24 @@ require_once './classes/components/Form.php';
 
 abstract class Page {
 
-    private $visible = true;
-    private $must_login = false;
-    private $visible_to = [];
-    private $theme = "default";
-    protected $keywords = [];
-    protected $description = "";
-    private $center_width = 6;
-    private $body;
-    private $mainMenu;
-    private $subMenu;
-    private $pageName;
-    
-    public function __construct($menu,$pageName='') {
-        if($pageName!='')
-            $this->pageName = ' - '.$pageName;
+//    private $visible = true;
+//    private $must_login = false;
+//    private $visible_to = []; // list of users who can access the page
+//    private $theme = "default";
+    protected $keywords = [];   // page keywords
+    protected $description = "";// the description of the page
+    private $center_width = 6;  
+    private $body;              // the body of the page
+    private $mainMenu;          // the main menu the shows on the top of the page
+    private $subMenu;           // the sub menu that shows on the left side of the page
+    protected $pageName;          // the page name appears next to the page title
+    private static $pageTitle;         // page title that appears on the page tab
+    private $user;              // the human user of the page
+
+
+    public function __construct($user,$menu,$pageName='') {
+        $this->user=$user;
+        $this->pageName = $pageName;
         if (is_a($menu, "Menu"))
             $this->mainMenu = $menu;
         $this->body = new PageBody();
@@ -29,12 +32,20 @@ abstract class Page {
 
         $this->build($this->body,$this->subMenu);
     }
+    
+    /**
+     * Change the title of the page
+     * @param String $title the title of the page
+     */
+    public static function setTitle($title){
+        self::$pageTitle=$title;
+    }
 
     //abstract  public function pageConstruct($menu);
     abstract protected function build(PageBody &$body, SubMenu &$submenu);
     public function callBack($data, $action,PageBody &$body){}
 
-    function printPage($title,$user) {
+    function printPage() {
         //if the page have a submenu add it to the left side
         if(!$this->subMenu->isEmpty())
             $this->body->addSubMenu ($this->subMenu);
@@ -52,7 +63,7 @@ abstract class Page {
                 <meta name="description" content="<?= $this->description ?>">
                 <meta name="keywords" content="<?= implode(",", $this->keywords) ?>">
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-                <title><?= $title . $this->pageName ?></title>
+                <title><?= self::$pageTitle . ($this->pageName!=''?' - '. $this->pageName:'') ?></title>
 
                 <!-- CSS -->
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -81,14 +92,14 @@ abstract class Page {
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#"><?= $title ?></a>
+                            <a class="navbar-brand" href="#"><?= self::$pageTitle ?></a>
                         </div>
-                        <?php if ($user != null) : ?>
+                        <?php if (($this->user != null) && get_class($this->user)!="User") : ?>
 <!--                            <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>-->
                             <div class="dropdown navbar-text navbar-right">
                                 Signed in as
                                 <a href="#" class="dropdown-toggle navbar-link" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                  <?=$user->name?>
+                                  <?=$this->user->name?>
                                   <span class="caret"></span>
                                 </a>
                             
