@@ -87,9 +87,12 @@ class OneToManyAlgorithm {
         $sortedPosters = self::sortPosterDESC($posters, $rounds);
         //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
         //var_dump($sortedPosters);
+        while(!$allPosterSelected){
+            $allPosterSelected = TRUE;
         foreach ($posters as $key => $poster) {
             for ($round = 0; $round < $rounds; $round++) {
                 if ($poster->isRoundEmpty($round)) {
+                    $allPosterSelected=FALSE;
                     $posterH = current($sortedPosters[$round]);
 
                     //get the Participant assigned with posterH with lowest weight but not assigned to the current poster
@@ -108,6 +111,7 @@ class OneToManyAlgorithm {
                     $participant->setWeight($participant->getWeight()-2);
                 }
             }
+        }
         }
         return $posters;
     }

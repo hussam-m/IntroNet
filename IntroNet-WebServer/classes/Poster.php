@@ -17,12 +17,14 @@ class Poster {
     private $name;
     private $participants=[];
     private $max;
+    private $min;
     private $rounds = [];
 
 
-    public function __construct($poster_id,$rounds,$max) {
+    public function __construct($poster_id,$rounds,$max,$min=1) {
         $this->id=$poster_id;
         $this->max = $max;
+        $this->min = $min;
         for($i=0;$i<$rounds;$i++)
             $this->rounds[$i] =[];
     }
@@ -49,7 +51,7 @@ class Poster {
     }
     
     public function isRoundEmpty($round) {
-        return count($this->rounds[$round])<1;
+        return count($this->rounds[$round])<$this->min;
     }
     public function isRoundFull($round) {
         return count($this->rounds[$round])>=$this->max;
