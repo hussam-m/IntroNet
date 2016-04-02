@@ -45,6 +45,9 @@ class Participant extends User {
     function getWeight() {
         return $this->weight;
     }
+    function setWeight($weight) {
+        $this->weight=$weight;
+    }
     
     public function __toString() {
         return $this->id."";

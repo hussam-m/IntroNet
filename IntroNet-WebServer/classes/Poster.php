@@ -49,7 +49,7 @@ class Poster {
     }
     
     public function isRoundEmpty($round) {
-        return count($this->rounds[$round])==0;
+        return count($this->rounds[$round])<1;
     }
     public function isRoundFull($round) {
         return count($this->rounds[$round])>=$this->max;

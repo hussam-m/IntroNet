@@ -73,6 +73,8 @@ class OneToManyAlgorithm {
                             // if no poster
                             
                         }
+                        // improve the weight of this participant since they didn't get their first choise
+                        $participant->setWeight($participant->getWeight()-2);
                     }
                     if($step>20)
                         throw new Exception("No solution");
@@ -81,6 +83,7 @@ class OneToManyAlgorithm {
         }
         self::buildSchedules($posters, $rounds);
         // balancing
+        $allPosterSelected=FALSE;
         $sortedPosters = self::sortPosterDESC($posters, $rounds);
         //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
         //var_dump($sortedPosters);
@@ -100,6 +103,9 @@ class OneToManyAlgorithm {
                     // resort the sorted posters
                     $sortedPosters = self::sortPosterDESC($posters, $rounds);
                     //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
+                    
+                    // improve the weight of this participant since they didn't get their first choise
+                    $participant->setWeight($participant->getWeight()-2);
                 }
             }
         }
@@ -227,7 +233,9 @@ class OneToManyAlgorithm {
         $posters = [
             '1' => new Poster(1, $rounds, $max),
             '2' => new Poster(2, $rounds, $max),
-            '3' => new Poster(3, $rounds, $max)];
+            '3' => new Poster(3, $rounds, $max),
+            '4' => new Poster(4, $rounds, $max),
+            ];
 
         $participants = [];
         $participants[] = new Participant(1, [2, 1]);
