@@ -13,15 +13,91 @@
  */
 class Poster {
     //put your code here
-    private $poster_id;
+    private $id;
     private $name;
-    
-    public function __construct($poster_id) {
-        $this->poster_id=$poster_id;
+    private $participants=[];
+    private $max;
+    private $rounds = [];
+
+
+    public function __construct($poster_id,$rounds,$max) {
+        $this->id=$poster_id;
+        $this->max = $max;
+        for($i=0;$i<$rounds;$i++)
+            $this->rounds[$i] =[];
     }
     
     public function __poster($name) {
         $this->name=$name;
+    }
+    
+    public function isFull(){
+        return count($this->participants)>=$this->max;
+    }
+    
+    public function add($participant,$round){
+        if(!$this->isRoundFull($round)){
+            $this->rounds[$round][]=$participant;
+            $this->participants[]=$participant;
+            return true;
+        }
+        return false;
+    }
+    
+    public function hasParticipant($participant){
+        return array_search($participant, $this->participants)!== FALSE;
+    }
+    
+    public function isRoundEmpty($round) {
+        return count($this->rounds[$round])==0;
+    }
+    public function isRoundFull($round) {
+        return count($this->rounds[$round])>=$this->max;
+    }
+    
+    public function NumberOfParticipants() {
+        return count($this->participants);
+    }
+    public function NumberOfParticipantsInRound($round) {
+        return count($this->rounds[$round]);
+    }
+    public function getParticipantsAtRound($round){
+        return $this->rounds[$round];
+    }
+
+
+    public function getParticipantsLW($round,$poster) {
+        echo "<p> get participant with lowest weight in round $round for poster $this";
+        $participant= $this->rounds[$round][0];
+        echo "<br/>".$participant;
+        foreach ($this->rounds[$round] as $key => $p) {
+            if($p->getWeight() > $participant->getWeight()){
+                $participant = $p;
+            }
+        }
+        echo "<br/> participant with lowest weight is ".$participant."</p>";
+        return $participant;
+    }
+    
+    public function remove($participant,$round){
+        // remove participant
+        unset($this->participants[array_search($participant, $this->participants)]);
+        unset($this->rounds[$round][array_search($participant, $this->rounds[$round])]);
+        // reorder array
+        $this->participants = array_values($this->participants);
+        $this->rounds[$round] = array_values($this->rounds[$round]);
+    }
+    
+    // for testing
+    public function __toString() {
+        $str="posterid=".$this->id." rounds{";
+        foreach ($this->rounds as $key => $round) {
+            $str.="r $key [";
+            $str.=implode($round,',');
+            $str.="],";
+        }
+                $str.="}";
+        return $str; 
     }
  
      

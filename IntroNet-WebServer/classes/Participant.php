@@ -9,13 +9,17 @@ require_once 'User.php';
  * @author Sandeep
  */
 class Participant extends User {
-    public $fname;
-    public $lname;
-    public $phone;
+    private $fname;
+    private $lname;
+    private $phone;
     public $preferences;
-    
-    public function __construct($preferences) {
+    public $id;
+    private $weight;
+
+    public function __construct($id, $preferences) {
+        $this->id = $id;
         $this->preferences=$preferences;
+        $this->weight=$id;
     }
     function register($eventid)
     {
@@ -36,5 +40,13 @@ class Participant extends User {
     function visitPoster($posterid)
     {
         
+    }
+    
+    function getWeight() {
+        return $this->weight;
+    }
+    
+    public function __toString() {
+        return $this->id."";
     }
 }
