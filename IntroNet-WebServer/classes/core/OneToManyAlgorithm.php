@@ -15,18 +15,24 @@ class OneToManyAlgorithm {
     public static function build($posters, $participants, $rounds) {
         if ($rounds > count($posters))
             throw new Exception("Can not have rounds more than the number of posters");
-        // sort posters based on number of selections
-        $sortedPosters = self::sortPosters($posters, $participants);
-        echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
 
+        
+        // Note: maybe it's better to swap inner loop with the outer loop
         foreach ($participants as $participant) {
             for ($round = 0; $round < $rounds; $round++) {
+                // TODO: resort $participants for each round
+                
+                // sort posters based on number of selections
+                $sortedPosters = self::sortPosters($posters, $participants,$round,$participant);
+                //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
+                
                 $posterSelected = FALSE;
                 //get poster that participant wants to visit
                 $poster = $posters[$participant->preferences[$round]];
                 $step = 0;
                 while (!$posterSelected) {
                     echo '</br>current preference=' . $participant->preferences[$round];
+                    echo ' - current round=' . $round;
                     echo ' - current participant=' . $participant;
                     echo ' - current poster=' . $poster;
                     // if poster is not full
@@ -48,19 +54,36 @@ class OneToManyAlgorithm {
                     } else {
                         echo " Yes";
                         // does the participant have more preferences?
-                        $step++;
-                        if (count($participant->preferences) > $round + $step) {
+                        
+                        if (count($participant->preferences) > $round + $step+1) {
+                            $step++;
                             //echo "test";
                             //echo "<br/> #preferences=".count($participant->preferences)." r+s=". ($round + $step);
-                            echo "<p>participant have another preferences";
+                            echo "<p style='color:red'>participant have another preferences";
                             // choose the next preference
                             $poster = $posters[$participant->preferences[$round + $step]];
                             echo "<br/> $poster is the selected</p>";
                         } else {
+                            // if there is no poster can this participant join
+                            if(!isset($sortedPosters)){
+                                self::buildSchedules($posters, $rounds);
+//                                $sortedPosters = self::sortPosterDESC($posters, $rounds);
+//                                foreach ($sortedPosters as $key => $p) {
+//                                    $lowP = $p->getParticipantsLW($round);
+//                                    if(!$p->hasParticipant($participant)){
+//                                        
+//                                        break;
+//                                    }
+//                                }
+//                                continue;
+                                throw new Exception("no solution!");
+                            }
+                            $step=0;
                             echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
                             // find the poster that is less selected and not selected by this participant
                             foreach ($sortedPosters as $key => $p) {
                                 // if poster is not full and the current participant is not assigned to it
+                                echo "<br/> key= $key p =$p";
                                 if (!$p->isRoundFull($round) && !$p->hasParticipant($participant)) {
                                     echo "<br/>p=".$p;
                                     // assign the current participant to this poster
@@ -84,7 +107,7 @@ class OneToManyAlgorithm {
         self::buildSchedules($posters, $rounds);
         // balancing
         $allPosterSelected=FALSE;
-        $sortedPosters = self::sortPosterDESC($posters, $rounds);
+        
         //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
         //var_dump($sortedPosters);
         while(!$allPosterSelected){
@@ -93,6 +116,7 @@ class OneToManyAlgorithm {
             for ($round = 0; $round < $rounds; $round++) {
                 if ($poster->isRoundEmpty($round)) {
                     $allPosterSelected=FALSE;
+                    $sortedPosters = self::sortPosterDESC($posters, $rounds);
                     $posterH = current($sortedPosters[$round]);
 
                     //get the Participant assigned with posterH with lowest weight but not assigned to the current poster
@@ -104,7 +128,7 @@ class OneToManyAlgorithm {
                     $posterH->remove($participant, $round);
 
                     // resort the sorted posters
-                    $sortedPosters = self::sortPosterDESC($posters, $rounds);
+                    //$sortedPosters = self::sortPosterDESC($posters, $rounds);
                     //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
                     
                     // improve the weight of this participant since they didn't get their first choise
@@ -112,6 +136,7 @@ class OneToManyAlgorithm {
                 }
             }
         }
+        self::buildSchedules($posters, $rounds);
         }
         return $posters;
     }
@@ -123,15 +148,24 @@ class OneToManyAlgorithm {
      * @param Participant[] $participants
      * @return Poster[] $sortedPosters
      */
-    private static function sortPosters($posters, $participants) {
-        $p = array_fill(1, count($posters) - 1, 0);
+    private static function sortPosters($posters, $participants,$round,$participant) {
+        $p = [];// array_fill(1, count($posters) - 1, 0);
         foreach ($participants as $participant) {
             foreach ($participant->preferences as $preference) {
-                $p[$preference] ++;
-                echo '</br>p=' . $preference . ' v=' . $p[$preference];
+                if(!$posters[$preference]->isRoundFull($round)){
+                    $p[$preference] ++;
+                    echo '</br>p=' . $preference . ' v=' . $p[$preference];
+                }
             }
         }
+        
+        foreach ($posters as $key=> $poster) {
+            //echo ' e='.$poster->getParticipantsAtRound($round);
+            if(!$poster->hasParticipant($participant) && !$poster->isRoundFull($round))
+                $p[$key]+= $poster->NumberOfParticipantsInRound($round);
+        }
 
+        echo '<h4>Sort Posters</h4>';
         var_dump($p);
         asort($p);
         var_dump($p);
@@ -155,8 +189,8 @@ class OneToManyAlgorithm {
         $p = [];
         for ($round = 0; $round < $rounds; $round++) {
             $p[$round] = [];
-            foreach ($posters as $key => $poster) {
-                $p[$round][] = $poster->NumberOfParticipantsInRound($round);
+            foreach ($posters as $key => $poster) {    
+                $p[$round][$key-1] = $poster->getTotalWeight($round);
             }
             echo "</br>p=[" . implode($p[$round], ',') . "] r= $round";
             arsort($p[$round]);
@@ -233,12 +267,14 @@ class OneToManyAlgorithm {
 
     public static function testBuild2() {
         $rounds = 2;
-        $max = 4;
+        $max = 3;
+        $min = 1;
         $posters = [
-            '1' => new Poster(1, $rounds, $max),
-            '2' => new Poster(2, $rounds, $max),
-            '3' => new Poster(3, $rounds, $max),
-            '4' => new Poster(4, $rounds, $max),
+            '1' => new Poster(1, $rounds, $max,$min),
+            '2' => new Poster(2, $rounds, $max,$min),
+            '3' => new Poster(3, $rounds, $max,$min),
+            '4' => new Poster(4, $rounds, $max,$min),
+            '5' => new Poster(5, $rounds, $max,$min),
             ];
 
         $participants = [];
@@ -264,9 +300,36 @@ class OneToManyAlgorithm {
 
         self::buildSchedules($schedules, $rounds);
     }
+    
+        public static function testBuild3() {
+        $rounds = 3;
+        $max = 10;
+        $min = 1;
+        $posters = [];
+        for($i=1;$i<=10;$i++)
+            $posters[$i] = new Poster($i, $rounds, $max,$min);
+        
+        $participants = [];
+        for($i=1;$i<=100;$i++)
+            $participants[$i] = new Participant($i, [2, 1,3]);
+
+
+        echo 'Posters:';
+//            var_dump($posters);
+        echo implode($posters, ',');
+
+        $schedules = self::build($posters, $participants, $rounds);
+
+//            echo '</br>Schedules:';
+//            var_dump($schedules);
+        echo '</br>Schedules:';
+        echo implode($schedules, ',');
+
+        self::buildSchedules($schedules, $rounds);
+    }
 
 }
 
 //OneToManyAlgrithm::testSortPosters();
 echo '</br>-----------------------</br>';
-OneToManyAlgorithm::testBuild2();
+OneToManyAlgorithm::testBuild3();

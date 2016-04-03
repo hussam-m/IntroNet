@@ -29,13 +29,6 @@ class Poster {
             $this->rounds[$i] =[];
     }
     
-    public function __poster($name) {
-        $this->name=$name;
-    }
-    
-    public function isFull(){
-        return count($this->participants)>=$this->max;
-    }
     
     public function add($participant,$round){
         if(!$this->isRoundFull($round)){
@@ -55,6 +48,7 @@ class Poster {
     }
     public function isRoundFull($round) {
         return count($this->rounds[$round])>=$this->max;
+        //return count($this->rounds[$round])>$round;
     }
     
     public function NumberOfParticipants() {
@@ -66,9 +60,23 @@ class Poster {
     public function getParticipantsAtRound($round){
         return $this->rounds[$round];
     }
+    public function getTotalWeight($round){
+        $weight=0;
+        foreach ($this->rounds[$round] as $participant) {
+            $weight+=$participant->getWeight();
+        }
+        return $weight;
+    }
+    public function getLowestWeight($round){
+        $weight=0;
+        foreach ($this->rounds[$round] as $participant) {
+            $weight= max($weight, $participant->getWeight());
+        }
+        return $weight;
+    }
 
 
-    public function getParticipantsLW($round,$poster) {
+    public function getParticipantsLW($round,$poster=NULL) {
         echo "<p> get participant with lowest weight in round $round for poster $this";
         $participant= $this->rounds[$round][0];
         echo "<br/>".$participant;
