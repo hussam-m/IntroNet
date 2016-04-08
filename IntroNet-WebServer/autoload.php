@@ -14,6 +14,7 @@ spl_autoload_register(
                 //core
                 'OneToManyAlgorithm' => __ROOT__.'/classes/core/OneToManyAlgorithm.php',
                 'Validation'    => __ROOT__.'/classes/Validation.php',
+                'Database'    => __ROOT__.'/classes/Database.php',
                 
                 // database objects
                 'Event'     => __ROOT__.'/classes/Event.php',

@@ -63,6 +63,12 @@ class Event {
     public function getEndTime(){
         return date("H:i", strtotime($this->endTime));
     }
+    public function getCountDown(){
+        return date("H:i", strtotime($this->endDate." ".$this->endTime)-strtotime($this->startDate." ".$this->startTime));
+    }
+    public function getStartDay(){
+        return date("F, jS", strtotime($this->startDate));
+    }
     public function getType(){
         return $this->type==1?"One to One":"One to Many";
     }
