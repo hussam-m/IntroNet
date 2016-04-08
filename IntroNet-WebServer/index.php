@@ -1,5 +1,5 @@
 <?php
-require('./vendor/autoload.php' );
+//require('./vendor/autoload.php' );
 require('autoload.php' );
 
 /**
@@ -60,6 +60,7 @@ function main($debug_mode) {
     // get the page from the PageDirectory
     if (!isset($_GET['page'])) {
         $page = PageDirectory::getPage("home", $main_menu,$user);
+        $user->openPage($page);
     } else {
         try {
             $page = PageDirectory::getPage($_GET['page'], $main_menu,$user);
