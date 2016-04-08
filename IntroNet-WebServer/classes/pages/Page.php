@@ -82,6 +82,7 @@ abstract class Page {
             
             </head>
             <body>
+                <div class="page-wrap">
                 <nav class="navbar navbar-default">
                     <div class="container">
                         <!-- Brand and toggle get grouped for better mobile display -->
@@ -118,7 +119,6 @@ abstract class Page {
                         </div>
                     </div>
                 </nav>
-            </div>
             <div class="container">
                 <div class="row">
                     <div id="top" class="col-md-12">
@@ -171,9 +171,11 @@ abstract class Page {
                 //var_dump($this->components);
                 ?>
             </div>
+            </div>
+            
             <footer class="footer">
                 <div class="container">
-                    <p class="text-muted">footer content here.</p>
+                    <p class="text-muted">IntroNet &copy; 2016</p>
                 </div>
             </footer>
         </body>
@@ -271,8 +273,8 @@ class SubMenu extends Component{
             if($link=='Splitter')
                 $html.= '</div><div class="list-group">';
             else
-                $html.='<a href="'.$link['link'].'" class="list-group-item '.($link['danger']?'list-group-item-danger':'').($link['active']?' active':'').' ">'.
-                    $link['label'].($link['badge']?'<span class="badge">'.$link['badge'].'</span>':'')
+                $html.='<a href="'.$link['link'].'" class="list-group-item '.(array_key_exists('danger',$link) && $link['danger']?'list-group-item-danger':'').(array_key_exists('active',$link) && $link['active']?' active':'').' ">'.
+                    $link['label'].(array_key_exists('badge',$link) && $link['badge']?'<span class="badge">'.$link['badge'].'</span>':'')
                     .'</a>';
         }
         $html.='</div>';

@@ -98,6 +98,10 @@ class Poster {
         $this->rounds[$round] = array_values($this->rounds[$round]);
     }
     
+    public function getId() {
+        return $this->id;
+    }
+    
     // for testing
     public function __toString() {
         $str="posterid=".$this->id." rounds{";

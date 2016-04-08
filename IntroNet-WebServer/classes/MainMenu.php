@@ -24,6 +24,7 @@ class MainMenu extends Menu {
         $this->addLink("Control Panal", "ControlPanal");
         $this->addLink("View All Events", "EventList");
         $this->addLink("Create New Event", "NewEvent");
+        $this->addLink("Setting", "Setting");
     }
     private function createUserMenu(){
         $this->addLink("Home", "home");

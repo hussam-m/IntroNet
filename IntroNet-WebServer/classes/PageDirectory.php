@@ -6,8 +6,10 @@ class PageDirectory {
     private static $directory = [
         // 
         "home" => ["class" => "HomePage", "file" => "homePage.php"],
+        "404" => ["class" => "Page404", "file" => "Page404.php"],
         "login" => ["class" => "LoginPage", "file" => "LoginPage.php"],
         "Test" => ["class" => "TestPage", "file" => "TestPage.php"],
+        "Setting" => ["class" => "SettingPage", "file" => "SettingPage.php"],
         
         // user pages
         
@@ -17,12 +19,17 @@ class PageDirectory {
         "EventList" => ["class" => "EventListPage", "file" => "EventListPage.php"],
         "Event" => ["class" => "EventPage", "file" => "EventPage.php"],
         
+        "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
+        
     ];
 
     public static function getPage($name,$menu,$user) {
-        $page = self::$directory[$name];
+        if(array_key_exists($name,self::$directory))
+            $page = self::$directory[$name];
+        else
+            $page = null;
         $pageObject = null;
-        try {
+
             if($page==null)
                 throw new Exception("Page ".$name." does not exist");
             
@@ -37,11 +44,7 @@ class PageDirectory {
             else
                 throw new Exception("Class ".$class." does not exist");
             
-        } catch (Exception $e) {
-            if ($debug_mode)
-                echo "Load Class Page error: " . $e;
-            $pageObject = null;
-        }
+
         return $pageObject;
     }
        

@@ -19,7 +19,7 @@ class NewEventPage extends Page {
         $this->pageName = "New Event";
         
         $form = new Form("Event");
-        $form->addInput(Input::textInput("eventName","Event Name"));
+        $form->addInput(Input::textInput("eventName","Event Name"),$defaultValue='',$required=TRUE);
         $form->addInput(Input::textareaInput("eventAddress","Address"));
         
         $form->addInput(Input::createGroupInput([

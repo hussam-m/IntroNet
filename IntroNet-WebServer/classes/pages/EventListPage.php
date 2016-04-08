@@ -23,12 +23,13 @@ class EventListPage extends Page {
         
         
         // show a list of events on a table
-        $events = Database::get("Event");
-        if(isset($events)){
+        //$events = Database::get("Event");
+        $events = Event::getEvents();
+        if(isset($events) && count($events)>0){
             $table = new HtmlTable();
-            $table->setHead(["#","Name","Info"]);
+            $table->setHead(["#","Name","Start Date","End Date","Type"]);
             foreach ($events as $id => $event)
-                $table->addRow([$id,'<a href="?page=Event&event='.$id.'">'.$event->name.'</a>',$event->address]);
+                $table->addRow([$id,'<a href="?page=Event&event='.$event->Event_id.'">'.$event->name.'</a>',$event->getStartDate(),$event->getEndDate(),$event->getType()]);
             $body->addToCenter($table);
         }else
             $body->addToCenter (new Message("There is no event to show",  Message::INFO));

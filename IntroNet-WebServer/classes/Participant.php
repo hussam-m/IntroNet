@@ -49,6 +49,10 @@ class Participant extends User {
         $this->weight=$weight;
     }
     
+    public function hasPreference($preference){
+        return array_search($preference, $this->preferences)!== FALSE;
+    }
+    
     public function __toString() {
         return $this->id."";
     }

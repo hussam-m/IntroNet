@@ -23,22 +23,28 @@ class EventPage extends Page {
     }
 
     protected function build(PageBody &$body, SubMenu &$submenu) {
-        //var_dump($_SESSION['db']);
+        
         $subPage = isset($_GET['subpage'])?$_GET['subpage']:'';
+        
+        // get event
         if(isset($_GET['event'])){
-            $this->event = Database::getRow('Event', $_GET['event']);
-            $this->event->id=$_GET['event']; // for testing
-            $this->pageName = $this->event->name;
-            //var_dump($this->event);
+            $this->event = Event::getEvent($_GET['event']);
+        } 
+        
+        // if event does not exist, show error message
+        if($this->event==null){
+            $body->addToTop(new Message("No Event",  Message::DANGER));
+            return;
         }
         
-        if($this->event==null)
-            $body->addToTop(new Message("No Event",  Message::DANGER));
+        // set the name of the page
+        $this->pageName = $this->event->name;
         
-        $submenu->addLink("Event Details", "?page=Event&event=".$this->event->id,$subPage=='');
-        $submenu->addLink("Update Event", "?page=Event&event=".$this->event->id."&subpage=update",$subPage=='update');
+  
+        $submenu->addLink("Event Details", "?page=Event&event=".$this->event->Event_id,$subPage=='');
+        $submenu->addLink("Update Event", "?page=Event&event=".$this->event->Event_id."&subpage=update",$subPage=='update');
         $submenu->addSplitter();
-        $submenu->addLink("Send Email Invitation", "?page=Event&event=".$this->event->id."&subpage=send",$subPage=='send');
+        $submenu->addLink("Send Email Invitation", "?page=Event&event=".$this->event->Event_id."&subpage=send",$subPage=='send');
         $submenu->addLink("Add VIP Participant", "#");
         $submenu->addSplitter();
         $submenu->addLink("Show All Participants", "#",false,false,100);
@@ -53,7 +59,7 @@ class EventPage extends Page {
         
         $body->addToTop(new CustomHTML("
             <div class='page-header'>
-                <h1> ".$this->event->name ." <small>".$this->event->address."</small></h1>
+                <h1> ".$this->event->name ."</h1>
             </div>
         "));
         
@@ -62,8 +68,16 @@ class EventPage extends Page {
                 <dl class='dl-horizontal' style='font-size:18px'>
                     <dt>Name</dt>
                     <dd>".$this->event->name."</dd>
-                    <dt>Address</dt>
-                    <dd>".$this->event->address."</dd>
+                    <dt>Start Date</dt>
+                    <dd>".$this->event->getStartDate()."</dd>
+                    <dt>Start Time</dt>
+                    <dd>".$this->event->getStartTime()."</dd>
+                    <dt>End Date</dt>
+                    <dd>".$this->event->getEndDate()."</dd>
+                    <dt>End Time</dt>
+                    <dd>".$this->event->getEndTime()."</dd>
+                    <dt>Event Type</dt>
+                    <dd>".$this->event->getType()."</dd>
                 </dl>
             "));
         else if($subPage=='update'){

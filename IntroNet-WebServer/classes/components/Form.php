@@ -76,7 +76,8 @@ class Input{
         $input->required = $conf->required;
         $input->disabled = $conf->disabled;
         $input->regex = $conf->regex;
-        $input->defaultValue = $conf->defaultValue;
+        if(property_exists($conf,'defaultValue'))
+            $input->defaultValue = $conf->defaultValue;
         
         if(isset($conf->options))
            $input->options = $conf->options;
@@ -126,7 +127,7 @@ class Input{
         
        echo '<label for="'.$input->name.'">'.$input->label.'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
-        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" >'
+        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" required="'.$input->required.'" >'
     ):($input->type=='list'?( 
                 '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'">'.
                     call_user_func(function($o) {

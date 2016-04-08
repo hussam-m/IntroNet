@@ -1,4 +1,6 @@
 <?php
+require('./vendor/autoload.php' );
+require('autoload.php' );
 
 /**
  *  function main is the start point of IntroNet
@@ -6,6 +8,10 @@
  */
 function main($debug_mode) {
     if ($debug_mode) {
+        error_reporting(E_ALL);
+        ini_set('display_errors', '1');
+        
+        php_error\reportErrors();
         $start = microtime(true); //For testing the page speed
         echo 'Current PHP version: ' . phpversion();
         if (version_compare(phpversion(), '5.0.0', '<')) {
@@ -38,6 +44,7 @@ function main($debug_mode) {
     $page = null;
     $main_menu = null;
     $user=null;
+    date_default_timezone_set('UTC');
     Page::setTitle("IntroNet"); // the name of the website
     
     if (isset($_SESSION["user"])) {
@@ -54,15 +61,18 @@ function main($debug_mode) {
     if (!isset($_GET['page'])) {
         $page = PageDirectory::getPage("home", $main_menu,$user);
     } else {
-        $page = PageDirectory::getPage($_GET['page'], $main_menu,$user);
-    }
-
-
-    if ($page != null) {
-        $user->openPage($page);
-        //$page->printPage("IntroNet", $user);
-    } else {
-        echo "Error: no page to display!";
+        try {
+            $page = PageDirectory::getPage($_GET['page'], $main_menu,$user);
+            $user->openPage($page);
+        } catch (Exception $exc) {
+            //echo $exc->getTraceAsString();
+            try{
+                $page = PageDirectory::getPage('404', $main_menu,$user);
+                $user->openPage($page);
+            } catch (Exception $ex) {
+                echo " Error: Page '".$_GET['page']."' not found!";
+            }
+        }
     }
 
 
@@ -74,6 +84,6 @@ function main($debug_mode) {
 }
 
 // start IntroNet
-main(false);
+main(FALSE);
 
 ?>

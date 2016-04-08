@@ -1,8 +1,8 @@
 <?php
 
-require_once 'Page.php';
-require_once './classes/components/CustomHTML.php';
-require_once './classes/components/Message.php';
+//require_once 'Page.php';
+//require_once './classes/components/CustomHTML.php';
+//require_once './classes/components/Message.php';
 
 class HomePage extends Page {
 
@@ -16,15 +16,15 @@ class HomePage extends Page {
     protected function build(PageBody &$body,SubMenu &$submenu) {
         $c = new CustomHTML('
 <div class="jumbotron">
-  <h1>This is the home page!</h1>
-  <p>Join S2ERC and register now</p>
-  <p><a href="?page=login" class="btn btn-primary btn-lg" role="button">Register</a></p>
+  <h1>IntroNet</h1>
+  <p>Welcome to IntroNet. Please sign in to control your events</p>
+  <p><a href="?page=login" class="btn btn-primary btn-lg" role="button">Sign in</a></p>
 </div>
 ');
         $body->addToCenter($c);
 
-        $body->addToTop(new Message("This is the home page", Message::WARNING));
-        $body->addToTop(new Message("You have to login", Message::DANGER));
+        //$body->addToTop(new Message("This is the home page", Message::WARNING));
+        //$body->addToTop(new Message("You have to login", Message::DANGER));
     }
 
 }
