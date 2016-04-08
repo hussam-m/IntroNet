@@ -22,9 +22,26 @@ class MainMenu extends Menu {
     
     private function createAdminMenu(){
         $this->addLink("Control Panal", "ControlPanal");
-        $this->addLink("View All Events", "EventList");
-        $this->addLink("Create New Event", "NewEvent");
+        
+        $conferenceMenu = new Menu();
+        $conferenceMenu->addLink("New Conference", "NewConference");
+        $conferenceMenu->addLink("View All Conferences", "ConferenceList");
+        $conferenceMenu->addLink("Send Invitation", "send");
+        $this->addsubMenu("Conference", $conferenceMenu);
+        
+        $eventMenu = new Menu();
+        $eventMenu->addLink("New Event", "NewEvent");
+        $eventMenu->addLink("View All Events", "EventList");
+        $this->addsubMenu("Events", $eventMenu);
+        
+        $participantMenu = new Menu();
+        $participantMenu->addLink("New Participant", "NewParticipant");
+        $participantMenu->addLink("View All Participant", "ParticipantList");
+        $this->addsubMenu("Participants", $participantMenu);
+        
         $this->addLink("Setting", "Setting");
+        
+        
     }
     private function createUserMenu(){
         $this->addLink("Home", "home");
