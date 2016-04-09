@@ -64,7 +64,7 @@ class Event {
         return date("H:i", strtotime($this->endTime));
     }
     public function getCountDown(){
-        return date("H:i", strtotime($this->endDate." ".$this->endTime)-strtotime($this->startDate." ".$this->startTime));
+        return date("m/d/Y H:i", strtotime($this->endDate." ".$this->endTime)-strtotime($this->startDate." ".$this->startTime));
     }
     public function getStartDay(){
         return date("F, jS", strtotime($this->startDate));
@@ -72,9 +72,16 @@ class Event {
     public function getType(){
         return $this->type==1?"One to One":"One to Many";
     }
+    public function getNumberOfParticipant(){
+        return rand(10,200); // this code for testing
+    }
+    public function getNumberOfParticipantion(){
+        return rand(1,100); // this code for testing
+    }
 
     
-    
+
+
     public function isRegister($Participant)
     {
         
@@ -100,10 +107,10 @@ class Event {
         
     }
     
-    public static function getEvents() {
+    public static function getEvents($options="") {
         //$events =[];
         //Database::get("Select Event_name, start_date, start_time, end_date, end_time FROM EVENT");
-        $events = Database::getObjects("Event");
+        $events = Database::getObjects("Event",$options);
         return $events;
     }
     public static function getEvent($id) {

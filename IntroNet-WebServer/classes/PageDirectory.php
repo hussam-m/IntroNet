@@ -18,6 +18,7 @@ class PageDirectory {
         "NewEvent" => ["class" => "NewEventPage", "file" => "NewEventPage.php"],
         "EventList" => ["class" => "EventListPage", "file" => "EventListPage.php"],
         "Event" => ["class" => "EventPage", "file" => "EventPage.php"],
+        "ControlPanal" => ["class" => "ControlPanalPage", "file" => "ControlPanalPage.php"],
         
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
         

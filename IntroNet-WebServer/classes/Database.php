@@ -29,12 +29,12 @@ class Database {
             return null;
     }
     
-    public static function getObjects($name) {
+    public static function getObjects($name,$options="") {
         //session_start();
         $data = [];
         $connection = new PDO('mysql:host='.$_SESSION['db_host'].
                 ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
-        $STH = $connection->query("Select * FROM ".$name);
+        $STH = $connection->query("Select * FROM ".$name." ".$options);
         if($STH){
             $STH->setFetchMode(PDO::FETCH_CLASS, 'Event');
 
