@@ -6,8 +6,11 @@ require_once './classes/components/Message.php';
 
 class TestPage extends Page {
 
-    public function __construct($menu) {
-        parent::__construct( $menu,"Test");
+//    public function __construct($menu) {
+//        parent::__construct( $menu,"Test");
+//    }
+    public function init(&$css, &$js, &$angularjs) {
+        $angularjs=TRUE;
     }
 
     protected function build(PageBody &$body,SubMenu &$submenu) {
@@ -15,6 +18,18 @@ class TestPage extends Page {
         //$form->addInput("list1", "list", "Exsample List:", ["1", "2", "3"]);
         $form->addInput(Input::textInput("input1", "Enter your name: "));
         $form->addInput(Input::selectInput("list1", "Example List:", ["A", "B", "C"]));
+        
+        $inputA = Input::textInput("showA", "show when A");
+        $inputA->showOn='list1=="A"';
+        
+        $inputB = Input::textInput("hideA", "show when B");
+        $inputB->showOn='list1=="B"';
+        
+        $form->addInput(Input::textInput("input1", "{{ list1 }}"));
+        
+        $form->addInput($inputA);
+        $form->addInput($inputB);
+        
         //$form->addInput(Input::dateInput("date", "choose a date: "));
         $left = new CustomHTML('
 <div class="list-group">
@@ -31,7 +46,7 @@ class TestPage extends Page {
 <div class="panel panel-default">
   <div class="panel-heading">Panel heading without title</div>
   <div class="panel-body">
-    Panel content
+    Panel content {{ list1 }}
   </div>
 </div>
 

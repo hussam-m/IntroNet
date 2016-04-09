@@ -30,7 +30,9 @@ class Form extends Component {
     public function build() {
         echo '<form class="form" action="index.php?page='.$this->page_url.'" method="post">';
         foreach ($this->inputs as $input) {
-            echo '<div class="form-group">';
+            $hideOn = isset($input->hideOn)?" ng-hide='$input->hideOn' ":"";
+            $showOn = isset($input->showOn)?" ng-show='$input->showOn' ":"";
+            echo '<div class="form-group" '.$hideOn.$showOn.'>';
             Input::buildInput($input);
             echo '</div>';
         }
@@ -59,6 +61,8 @@ class Input{
 //    public $required = false;
 //    public $disabled = false;
 //    public $regex = "";
+    public $hideOn;
+    public $showOn;
     
     public static function createGroupInput($inputs){
         $group = new self();
@@ -78,6 +82,10 @@ class Input{
         $input->regex = $conf->regex;
         if(property_exists($conf,'defaultValue'))
             $input->defaultValue = $conf->defaultValue;
+        if(property_exists($conf,'showOn'))
+            $input->showOn = $conf->showOn;
+        if(property_exists($conf,'hideOn'))
+            $input->hideOn = $conf->hideOn;
         
         if(isset($conf->options))
            $input->options = $conf->options;
@@ -129,7 +137,7 @@ class Input{
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
         '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" required="'.$input->required.'" >'
     ):($input->type=='list'?( 
-                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'">'.
+                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" ng-init="'.$input->name.' = \''.$input->options[0].'\'">'.
                     call_user_func(function($o) {
                         $html='';
                         foreach ($o as $option) {

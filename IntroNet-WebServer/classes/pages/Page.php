@@ -17,8 +17,10 @@ abstract class Page {
     protected $pageName;          // the page name appears next to the page title
     private static $pageTitle;         // page title that appears on the page tab
     private $user;              // the human user of the page
-
-
+    private $angularjs;         // shoud include $angularjs? (TRUE/FALSE)
+    private $css;               // list of css files
+    private $js;                // list of js files
+    
     public function __construct($user,$menu,$pageName='') {
         $this->user=$user;
         $this->pageName = $pageName;
@@ -27,9 +29,14 @@ abstract class Page {
         $this->body = new PageBody();
         $this->subMenu = new SubMenu();
         
+        $this->angularjs=FALSE; // include angular.js?
+        $this->js=[];
+        $this->css=[];
+        $this->init($this->css, $this->js, $this->angularjs);
+        
         if($_POST)
             $this->callBack ($_POST, "post", $this->body);
-
+ 
         $this->build($this->body,$this->subMenu);
     }
     
@@ -42,6 +49,7 @@ abstract class Page {
     }
 
     //abstract  public function pageConstruct($menu);
+    public function init(&$css,&$js,&$angularjs){}
     abstract protected function build(PageBody &$body, SubMenu &$submenu);
     public function callBack($data, $action,PageBody &$body){}
 
@@ -79,10 +87,13 @@ abstract class Page {
                 <script src="js/bootstrap-datepicker.min.js"></script>
                 <script src="js/bootstrap-clockpicker.min.js"></script>
                 <script src="js/bootstrap-tokenfield.min.js"></script>
+                <?php if($this->angularjs): ?>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.min.js"></script>
+                <?php endif; ?>
             
             </head>
             <body>
-                <div class="page-wrap">
+                <div class="page-wrap" ng-app>
                 <nav class="navbar navbar-default">
                     <div class="container">
                         <!-- Brand and toggle get grouped for better mobile display -->
