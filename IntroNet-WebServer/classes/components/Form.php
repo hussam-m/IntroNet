@@ -116,6 +116,10 @@ class Input{
     {
         return self::createInput((object)array("type"=>"token","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
+    static function checklist($name,$label,$options=[],$min=0,$disabled=false)
+    {
+        return self::createInput((object)array("type"=>"checklist","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$min,"disabled"=>$disabled,"regex"=>""));
+    }
     
     
     static function buildInput(Input $input){
@@ -135,7 +139,7 @@ class Input{
         
        echo '<label for="'.$input->name.'">'.$input->label.'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
-        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" required="'.$input->required.'" >'
+        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
     ):($input->type=='list'?( 
                 '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" ng-init="'.$input->name.' = \''.$input->options[0].'\'">'.
                     call_user_func(function($o) {
@@ -168,6 +172,14 @@ class Input{
             }
             else if($input->type=='token'){
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
+            }
+            else if($input->type=='checklist'){
+                echo "<div class='checklist'>";
+                foreach ($input->options as $key => $option) {
+                    echo '<div class="checkbox"><label><input type="checkbox" id="'.$input->name.$option[0].'" name="'.$input->name.'[]" value="'.$option[0].'"/>'.$option[1].'</label></div>';
+                }
+                echo "</div>";
+                 
             }
     }
 }

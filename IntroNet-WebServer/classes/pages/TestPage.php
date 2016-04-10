@@ -16,7 +16,7 @@ class TestPage extends Page {
     protected function build(PageBody &$body,SubMenu &$submenu) {
         $form = new Form("Test");
         //$form->addInput("list1", "list", "Exsample List:", ["1", "2", "3"]);
-        $form->addInput(Input::textInput("input1", "Enter your name: "));
+        $form->addInput(Input::textInput("input1", "Enter your name: ","",TRUE));
         $form->addInput(Input::selectInput("list1", "Example List:", ["A", "B", "C"]));
         
         $inputA = Input::textInput("showA", "show when A");
@@ -26,6 +26,9 @@ class TestPage extends Page {
         $inputB->showOn='list1=="B"';
         
         $form->addInput(Input::textInput("input1", "{{ list1 }}"));
+        
+        $form->addInput(Input::checklist("posters", "Chose Posters to see", 
+                [[1,"UML"],[2,"Testing"],[3,"IOT"],[4,"UML"],[5,"Testing"],[6,"IOT"],[7,"UML"],[8,"Testing"],[9,"IOT"]]));
         
         $form->addInput($inputA);
         $form->addInput($inputB);
@@ -64,13 +67,17 @@ class TestPage extends Page {
         $body->addToCenter($form);
         $body->addToTop(new Message("This is a test page", Message::INFO));
         
-        if(isset($_POST['list1']))
-            $body->addToTop(new Message("the value of list1=".$_POST['list1'], Message::SUCCESS));
+            
 
     }
 
     public function callBack($data, $action,PageBody &$body) {
         
+        if(isset($data['posters']))
+            foreach ($data['posters'] as $poster) {
+                        $body->addToTop(new Message("the value of posters= ".$poster, Message::SUCCESS));
+            }
+        $body->addToTop(new Message("the value of list1= ".$data['list1'], Message::SUCCESS));
     }
 
 }
