@@ -28,6 +28,9 @@ class TestPage extends Page {
         $form->addInput(Input::textInput("input1", "{{ list1 }}"));
         
         $form->addInput(Input::checklist("posters", "Chose Posters to see", 
+                [[1,"UML"],[2,"Testing"],[3,"IOT"],[4,"UML"],[5,"Testing"],[6,"IOT"],[7,"UML"],[8,"Testing"],[9,"IOT"]],5));
+        
+        $form->addInput(Input::checklist("org", "Chose org to see", 
                 [[1,"UML"],[2,"Testing"],[3,"IOT"],[4,"UML"],[5,"Testing"],[6,"IOT"],[7,"UML"],[8,"Testing"],[9,"IOT"]]));
         
         $form->addInput($inputA);

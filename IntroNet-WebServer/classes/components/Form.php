@@ -174,12 +174,28 @@ class Input{
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
             }
             else if($input->type=='checklist'){
-                echo "<div class='checklist'>";
+                echo "<div class='checklist' id='$input->name'>";
+                if($input->required)
+                    echo "<div class='count'>select $input->required or more <span>(0 selected)</span></div>";
                 foreach ($input->options as $key => $option) {
                     echo '<div class="checkbox"><label><input type="checkbox" id="'.$input->name.$option[0].'" name="'.$input->name.'[]" value="'.$option[0].'"/>'.$option[1].'</label></div>';
                 }
                 echo "</div>";
-                 
+                if($input->required)
+                    echo "
+                        <script>
+                        $('#$input->name input[type=\"checkbox\"]' ).change(function() {
+                            $('#$input->name .count span').text('('+$('#$input->name input[type=\"checkbox\"]:checked').length +' selected)');
+                            if($('#$input->name input[type=\"checkbox\"]:checked').length < $input->required ){
+                                $('#$input->name .count span').css('color','#f00');
+                            }else{
+                                //$('#$input->name .count').css('color','#333');
+                                $('#$input->name .count span').css('color','green');
+                                $('#$input->name .count span').text('✓');
+                            }
+                        });
+                        </script>
+                    ";
             }
     }
 }
