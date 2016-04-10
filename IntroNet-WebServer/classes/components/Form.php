@@ -47,9 +47,20 @@ class Form extends Component {
         echo '<script>$(".timepicker").clockpicker();</script>';
         
         echo "
-            <script>$('.tokenfield').tokenfield();</script>
-              
-";
+            <script>$('.tokenfield').tokenfield();</script>";
+        echo "<script>
+            $('form').submit(function(e) {
+            var ref = $(this).find('[required]');
+            $(ref).each(function(){
+                if ( $(this).val() == '' )
+                {
+                    alert('Required field should not be blank.');
+                    $(this).focus();
+                    e.preventDefault();
+                    return false;
+                }
+            });  return true;
+        });</script>";
         
     }
 }
