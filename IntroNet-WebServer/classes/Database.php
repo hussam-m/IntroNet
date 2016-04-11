@@ -10,8 +10,17 @@ class Database {
     /**
      * Establish the connection with the database server
      */
-    function connect() {
-    
+    private static function connect() {
+        try{
+        $connection = new PDO('mysql:host='.$_SESSION['db_host'].
+                ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
+        
+        return $connection;
+        }
+        catch (Exception $e){
+            throw new DatabaseException("No database connection! Go to Setting to setup the Database");
+        }
+        return FALSE;
     }
     
     /**
@@ -32,8 +41,7 @@ class Database {
     public static function getObjects($name,$options="") {
         //session_start();
         $data = [];
-        $connection = new PDO('mysql:host='.$_SESSION['db_host'].
-                ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
+        $connection = self::connect();
         $STH = $connection->query("Select * FROM ".$name." ".$options);
         if($STH){
             $STH->setFetchMode(PDO::FETCH_CLASS, 'Event');
@@ -49,8 +57,7 @@ class Database {
     
         public static function getObject($name,$where) {
         //session_start();
-        $connection = new PDO('mysql:host='.$_SESSION['db_host'].
-                ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
+        $connection = self::connect();
         $STH = $connection->query("Select * FROM ".$name." WHERE ".$where);
         if($STH){
             $STH->setFetchMode(PDO::FETCH_CLASS, 'Event');
@@ -118,3 +125,5 @@ class Database {
 //require_once 'Event.php';
 ////var_dump($_SESSION);
 //Database::getObject("Event");
+class DatabaseException extends Exception{}
+class DatabaseQueryException extends Exception{}

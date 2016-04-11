@@ -37,7 +37,12 @@ abstract class Page {
         if($_POST)
             $this->callBack ($_POST, "post", $this->body);
  
-        $this->build($this->body,$this->subMenu);
+        try{
+            $this->build($this->body,$this->subMenu);
+        }
+        catch (DatabaseException $e){
+            $this->body->addToTop(new Message($e->getMessage(), Message::DANGER));
+        }
     }
     
     /**
