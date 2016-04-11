@@ -20,22 +20,18 @@ class NewEventPage extends Page {
         
         $form = new Form("Event");
         $form->addInput(Input::textInput("eventName","Event Name"),$defaultValue='',$required=TRUE);
-        $form->addInput(Input::textareaInput("eventAddress","Address"));
+        $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many")));
         
+        $form->addInput(Input::textInput("numberOfRounds","Number of Rounds"));
+        $form->addInput(Input::textInput("timeOfeachRound","Time of Each Round"));
+        $form->addInput(Input::textInput("minimumNumberOfParticipant","Minimum Number of Participants"));
         $form->addInput(Input::createGroupInput([
-            Input::dateInput("eventDay","Day"),
-            Input::timeInput("eventTime","time")
+            Input::dateInput("eventDay","Event Date"),
+            Input::timeInput("eventTime","Event Start Time")
             ]));
-        
-        $form->addInput(Input::createGroupInput([
-            Input::dateInput("eventDeadline","Registration Deadline"),
-            Input::timeInput("eventDeadlineTime","Registration Deadline Time")
-            ])); 
-        
-        $form->addInput(Input::textInput("eventFee","Registration Fee"));
-        $form->addInput(Input::textInput("eventStuFee","Student Fee"));
         $form->addInput(Input::tokenInput("organizations","Organizations"));
-        
+        $form->addInput(Input::tokenInput("posters","Posters"));
+         
         $body->addToCenter($form);
     }
 }
