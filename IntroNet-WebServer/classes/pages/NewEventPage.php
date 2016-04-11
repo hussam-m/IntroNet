@@ -23,7 +23,10 @@ class NewEventPage extends Page {
         $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many")));
         
         $form->addInput(Input::textInput("numberOfRounds","Number of Rounds"));
-        $form->addInput(Input::textInput("timeOfeachRound","Time of Each Round"));
+        $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions"));
+        $form->addInput(Input::textInput("lengthOfBreaks","Length of the Breaks"));
+        $form->addInput(Input::textInput("lengthOfEntireEvent","Length of The Entire Event"));
+        
         $form->addInput(Input::textInput("minimumNumberOfParticipant","Minimum Number of Participants"));
         $form->addInput(Input::createGroupInput([
             Input::dateInput("eventDay","Event Date"),
