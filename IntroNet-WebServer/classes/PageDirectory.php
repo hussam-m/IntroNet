@@ -23,7 +23,7 @@ class PageDirectory {
         "AssignWeight" => ["class" => "AssignWeightPage", "file" => "AssignWeight.php"],
         "Conference" => ["class" => "Conference", "file" => "Conference.php"],
         "Customize" => ["class" => "CustomizeParticipantsSchedule", "file" => "CustomizeParticipant'sSchedule.php"],
-        
+        "insertParticipant" => ["class" => "InsertParticipant", "file" => "InsertParticipant.php"],
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
         
     ];
