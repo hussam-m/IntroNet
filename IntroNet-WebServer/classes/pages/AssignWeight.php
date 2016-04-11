@@ -10,7 +10,7 @@ class AssignWeightPage extends Page {
         $this->pageName = "AssignWeight";
         
         
-        $form = new Form("Event");
+        $form = new Form("AssignWeight");
         $message = new Message("Update Assign Weight", Message::WARNING);
         $body->addToTop($message);
         
