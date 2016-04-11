@@ -22,6 +22,7 @@ class PageDirectory {
         "Timer" => ["class" => "TimerPage", "file" => "TimerPage.php"],
         "AssignWeight" => ["class" => "AssignWeightPage", "file" => "AssignWeight.php"],
         "Conference" => ["class" => "Conference", "file" => "Conference.php"],
+        "Customize" => ["class" => "CustomizeParticipantsSchedule", "file" => "CustomizeParticipant'sSchedule.php"],
         
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
         
