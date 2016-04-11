@@ -16,8 +16,8 @@ class CustomizeParticipantsSchedule extends Page {
         $body->addToTop($message);
         
         $form->addInput(Input::selectInput("listOfParticipant", "List of Participants", array("Rania Alkhazaali", "Chakshu")));
-        $form->addInput(Input::checklist("preference", "Preference", array("Poster1", "Poster2", "Poster3"), $min=1, $disabled=false));
-        $form->addInput(Input::checklist("categoryOfPeople", "Category Of People", array("Org1", "Org2", "Org3"), $min=1, $disabled=false));
+        $form->addInput(Input::checklist("preference", "Preference", array(array(1,"Poster1"), array(1,"Poster2"), array(1,"Poster3")), $min=1, $disabled=false));
+        $form->addInput(Input::checklist("categoryOfPeople", "Category Of People", array(array(1,"Org1"), array(1,"Org2"), array(1,"Org3")), $min=1, $disabled=false));
         
         $body->addToCenter($form);
 

@@ -16,7 +16,9 @@ class AssignWeightPage extends Page {
         
         $form->addInput(Input::selectInput("listOfParticipant", "List of Participants", array("Rania Alkhazaali", "Chakshu")));
         
-        $form->addInput(Input::textInput("Weight", "AssignWeight", $defaultValue='', $required=True, $disabled=True));
+        //$message = new Message("Select Weight", Message::WARNING);
+        $form->addInput(Input::checklist("", "", array(array(1,"VIP")), $min=0, $disabled=false));
+        $form->addInput(Input::textInput("Weight", "Others", $defaultValue='', $required=True, $disabled=True));
         $body->addToCenter($form);
 
     }
