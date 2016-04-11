@@ -1,11 +1,11 @@
 <?php
-define('__ROOT__', dirname(dirname(__FILE__))); 
-//require('../../vendor/autoload.php' );
-//php_error\reportErrors();
-
-
-require_once __ROOT__.'/Participant.php';
-require_once __ROOT__.'/Poster.php';
+//define('__ROOT__', dirname(dirname(__FILE__))); 
+////require('../../vendor/autoload.php' );
+////php_error\reportErrors();
+//
+//
+//require_once __ROOT__.'/Participant.php';
+//require_once __ROOT__.'/Poster.php';
 
 class OneToManyAlgorithm {
 
