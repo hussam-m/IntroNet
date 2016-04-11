@@ -19,6 +19,9 @@ class PageDirectory {
         "EventList" => ["class" => "EventListPage", "file" => "EventListPage.php"],
         "Event" => ["class" => "EventPage", "file" => "EventPage.php"],
         "ControlPanal" => ["class" => "ControlPanalPage", "file" => "ControlPanalPage.php"],
+        "Timer" => ["class" => "TimerPage", "file" => "TimerPage.php"],
+        "AssignWeight" => ["class" => "AssignWeightPage", "file" => "AssignWeight.php"],
+        "Conference" => ["class" => "Conference", "file" => "Conference.php"],
         
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
         

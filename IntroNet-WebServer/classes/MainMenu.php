@@ -24,7 +24,7 @@ class MainMenu extends Menu {
         $this->addLink("Control Panal", "ControlPanal");
         
         $conferenceMenu = new Menu();
-        $conferenceMenu->addLink("New Conference", "NewConference");
+        $conferenceMenu->addLink("New Conference", "Conference");
         $conferenceMenu->addLink("View All Conferences", "ConferenceList");
         $conferenceMenu->addLink("Send Invitation", "send");
         $this->addsubMenu("Conference", $conferenceMenu);
@@ -38,6 +38,8 @@ class MainMenu extends Menu {
         $participantMenu->addLink("New Participant", "NewParticipant");
         $participantMenu->addLink("View All Participant", "ParticipantList");
         $this->addsubMenu("Participants", $participantMenu);
+        
+        $this->addLink("Timer", "Timer");
         
         $this->addLink("Setting", "Setting");
         
