@@ -11,7 +11,11 @@ require_once './classes/components/Message.php';
 class NewEventPage extends Page {
     
     public function callBack($data, $action, \PageBody &$body) {
-        $body->addToTop(new Message("Please fill all the information", Message::DANGER));
+        //$body->addToTop(new Message("Please fill all the information", Message::DANGER));
+        
+        // get number of rounds  
+        $rounds = $data['numberOfRounds'];
+        
     }
 
     
