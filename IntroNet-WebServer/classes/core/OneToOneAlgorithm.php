@@ -22,7 +22,7 @@ class OneToOneAlgorithm {
     //put your code here
     /**
      * This function build schedules
-     @param Participant[] $participants
+     * @param Participant[] $participants
      * @param Poster[]      $posters
      * @param int           $rounds     number of rounds
      * @return array        schedules   a list of schedules (each participant have one schedule)
