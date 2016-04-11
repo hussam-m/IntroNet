@@ -20,11 +20,11 @@ class NewEventPage extends Page {
         
         $form = new Form("Event");
         $form->addInput(Input::textInput("eventName","Event Name"),$defaultValue='',$required=TRUE);
+        
         $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many")));
         
         $form->addInput(Input::textInput("numberOfRounds","Number of Rounds"));
-        $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions"));
-        $form->addInput(Input::textInput("lengthOfBreaks","Length of the Breaks"));
+        $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions and Breaks"));
         $form->addInput(Input::textInput("lengthOfEntireEvent","Length of The Entire Event"));
         
         $form->addInput(Input::textInput("minimumNumberOfParticipant","Minimum Number of Participants"));
@@ -34,7 +34,10 @@ class NewEventPage extends Page {
             ]));
         $form->addInput(Input::tokenInput("organizations","Organizations"));
         $form->addInput(Input::tokenInput("posters","Posters"));
+        
+        //$Validation=  Validation::validate("eventName", $regex='', $required=TRUE);
          
         $body->addToCenter($form);
     }
 }
+
