@@ -59,7 +59,19 @@ class Form extends Component {
                     e.preventDefault();
                     return false;
                 }
-            });  return true;
+            });
+            
+            $('.checklist').each(function(){
+                var min = $(this).attr('min');
+                if($(this).find('input[type=\"checkbox\"]:checked').length < min ){
+                    alert('You need to select at least '+min);
+                    $(this).focus();
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            
+            return true;
         });</script>";
         
     }
@@ -185,7 +197,7 @@ class Input{
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
             }
             else if($input->type=='checklist'){
-                echo "<div class='checklist' id='$input->name'>";
+                echo "<div class='checklist' id='$input->name' min=$input->required tabindex='-1'>";
                 if($input->required)
                     echo "<div class='count'>select $input->required or more <span>(0 selected)</span></div>";
                 foreach ($input->options as $key => $option) {
