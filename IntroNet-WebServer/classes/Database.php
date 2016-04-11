@@ -18,6 +18,9 @@ class Database {
         return $connection;
         }
         catch (Exception $e){
+            if (class_exists('PDO'))
+                throw new DatabaseException("PDO is requried");
+            else
             throw new DatabaseException("No database connection! Go to Setting to setup the Database");
         }
         return FALSE;
