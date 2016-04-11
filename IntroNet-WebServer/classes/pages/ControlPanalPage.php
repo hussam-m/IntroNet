@@ -7,7 +7,7 @@
  */
 class ControlPanalPage extends Page {
     protected function build(\PageBody &$body, \SubMenu &$submenu) {
-        $events = Event::getEvents("order by startDate, startTime");
+        $events = Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime LIMIT 0 , 4");
         $html = '
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/circliful/0.1.5/css/jquery.circliful.min.css" >
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/circliful/0.1.5/js/jquery.circliful.min.js"></script>
