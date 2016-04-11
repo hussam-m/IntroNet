@@ -11,7 +11,7 @@ class Conference extends Page {
         $this->pageName = "Conference";
         
         
-        $form = new Form("Event");
+        $form = new Form("Conference");
         
         
         $form->addInput(Input::textInput("Conference Name", "Conference Name", $defaultValue='', $required=True));
