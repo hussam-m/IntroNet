@@ -35,7 +35,7 @@ class MainMenu extends Menu {
         $this->addsubMenu("Events", $eventMenu);
         
         $participantMenu = new Menu();
-        $participantMenu->addLink("New Participant", "NewParticipant");
+        $participantMenu->addLink("New Participant", "insertParticipant");
         $participantMenu->addLink("View All Participant", "ParticipantList");
         $this->addsubMenu("Participants", $participantMenu);
         
