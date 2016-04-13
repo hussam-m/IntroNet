@@ -27,7 +27,7 @@ class InsertParticipant extends Page {
         $form->addInput(Input::textInput("lastName","Last Name"));
         $form->addInput(Input::textInput("email","Email Address"));
         $form->addInput(Input::textInput("contactNo","Contact Number"));
-        $form->addInput(Input::selectInput("disability", "Disability", array("Handicap", "Others")));
+        $form->addInput(Input::selectInput("disability", "Are you handicapped?", array("Yes", "No")));
         
     
         
