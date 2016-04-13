@@ -92,6 +92,7 @@ abstract class Page {
                 <script src="js/bootstrap-datepicker.min.js"></script>
                 <script src="js/bootstrap-clockpicker.min.js"></script>
                 <script src="js/bootstrap-tokenfield.min.js"></script>
+                <script src="js/bootstrap-checkbox.min.js"></script>
                 <?php if($this->angularjs): ?>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.min.js"></script>
                 <?php endif; ?>

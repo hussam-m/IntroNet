@@ -153,11 +153,10 @@ class Input{
     {
         return self::createInput((object)array("type"=>"checklist","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$min,"disabled"=>$disabled,"regex"=>""));
     }
-    static function checkBox($name,$label,$options=[],$required=false,$disabled=false)
+    static function checkBox($name,$label,$disabled=false)
     {
-        return self::createInput((object)array("type"=>"checkbox","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$min,"disabled"=>$disabled,"regex"=>""));
+        return self::createInput((object)array("type"=>"checkbox","name"=>$name,"label"=>$label,"required"=>FALSE,"disabled"=>$disabled,"regex"=>""));
     }
-    //<input type="checkbox" checked data-off-active-cls="btn-warning" data-on-active-cls="btn-primary">
     
     
     static function buildInput(Input $input){
@@ -213,6 +212,9 @@ class Input{
             }
             else if($input->type=='token'){
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
+            }
+            else if($input->type=='checkbox'){
+                echo '<input type="checkbox" id="'.$input->name.'" name="'.$input->name.'" class="checkbox"/> <script> $("#'.$input->name.'").checkboxpicker(); </script>';
             }
             else if($input->type=='checklist'){
                 echo "<div class='checklist' id='$input->name' min=$input->required tabindex='-1'>";
