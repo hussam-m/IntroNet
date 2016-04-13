@@ -9,14 +9,15 @@ require_once 'User.php';
  * @author Sandeep
  */
 class Participant extends User {
-    private $fname;
-    private $lname;
-    private $phone;
+    public $fname;
+    public $lname;
+    public $phone;
     public $preferences;
     public $id;
-    private $weight;
+    public $weight;
+    public $organisation;
 
-    public function __construct($id, $preferences) {
+    public function __construct($id=null, $preferences=null) {
         $this->id = $id;
         $this->preferences=$preferences;
         $this->weight=$id;
@@ -55,5 +56,10 @@ class Participant extends User {
     
     public function __toString() {
         return $this->id."";
+    }
+    
+    public static function getParticipants($event){
+        $participants = Database::getObjects("Participant","","Select fname,lname, Organisation.name as organisation From Participant,Organisation where Organisation.organisation_id = Participant.organisation");
+        return $participants;
     }
 }
