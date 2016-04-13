@@ -17,7 +17,7 @@ class Message extends Component {
     const WARNING = 'warning';
     const DANGER = 'danger';
 
-    public function __construct($content, $messageType) {
+    public function __construct($content, $messageType='info') {
         $this->content = $content;
         $this->messageType = $messageType;
     }

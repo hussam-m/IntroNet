@@ -29,6 +29,7 @@ spl_autoload_register(
                 //components
                 'CustomHTML'    => __ROOT__.'/classes/components/CustomHTML.php',
                 'Message'       => __ROOT__. '/classes/components/Message.php',
+                'HtmlTable'    => __ROOT__.'/classes/components/HtmlTable.php',
                 );
         }
         if (isset($classes[$class])) {

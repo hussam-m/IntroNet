@@ -21,7 +21,7 @@ class Database {
             if (class_exists('PDO'))
                 throw new DatabaseException("PDO is requried");
             else
-            throw new DatabaseException("No database connection! Go to Setting to setup the Database");
+                throw new DatabaseException("No database connection! Go to Setting to setup the Database");
         }
         return FALSE;
     }
@@ -41,13 +41,14 @@ class Database {
             return null;
     }
     
-    public static function getObjects($name,$options="") {
+    public static function getObjects($name,$options="",$sql="") {
         //session_start();
+        if($sql=="") $sql ="Select * FROM ".$name;
         $data = [];
         $connection = self::connect();
-        $STH = $connection->query("Select * FROM ".$name." ".$options);
+        $STH = $connection->query($sql." ".$options);
         if($STH){
-            $STH->setFetchMode(PDO::FETCH_CLASS, 'Event');
+            $STH->setFetchMode(PDO::FETCH_CLASS, $name);
 
             while($obj = $STH->fetch()) {
                 $data[]=$obj;

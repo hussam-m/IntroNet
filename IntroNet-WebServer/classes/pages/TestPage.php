@@ -76,10 +76,13 @@ class TestPage extends Page {
 
     public function callBack($data, $action,PageBody &$body) {
         
-        if(isset($data['posters']))
+        if(isset($data['posters'])){
             foreach ($data['posters'] as $poster) {
                         $body->addToTop(new Message("the value of posters= ".$poster, Message::SUCCESS));
             }
+            $numberOfPosters = count($data['posters']);
+            $body->addToTop(new Message("number of posters= ".$numberOfPosters, Message::SUCCESS));
+        }
         $body->addToTop(new Message("the value of list1= ".$data['list1'], Message::SUCCESS));
     }
 
