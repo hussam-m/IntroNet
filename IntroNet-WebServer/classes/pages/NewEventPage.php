@@ -47,7 +47,7 @@ class NewEventPage extends Page {
              {
                $minParticipant=  $rounds * 2;
               }
-              $body->addToTop(new Message("length Of Entire Event is $minParticipant", Message::SUCCESS));
+              $body->addToTop(new Message("minimum number of participants is $minParticipant", Message::SUCCESS));
                     
                 
 
@@ -67,7 +67,7 @@ class NewEventPage extends Page {
         $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions and Breaks"));
         $form->addInput(Input::textInput("lengthOfEntireEvent","Length of The Entire Event"));
         
-        $form->addInput(Input::textInput("minimumNumberOfParticipant","Minimum Number of Participants"));
+        
         $form->addInput(Input::createGroupInput([
             Input::dateInput("eventDay","Event Date"),
             Input::timeInput("eventTime","Event Start Time")
