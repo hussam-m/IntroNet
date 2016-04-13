@@ -72,7 +72,7 @@ class NewEventPage extends Page {
             Input::dateInput("eventDay","Event Date"),
             Input::timeInput("eventTime","Event Start Time")
             ]));
-        $form->addInput(Input::tokenInput("organizations","Organizations"));
+        
         $form->addInput(Input::tokenInput("posters","Posters"));
         
         //$Validation=  Validation::validate("eventName", $regex='', $required=TRUE);

@@ -24,6 +24,8 @@ class Conference extends Page {
             Input::dateInput("eventDeadline","Registration Deadline Date"),
             Input::timeInput("eventDeadlineTime","Registration Deadline Time")
             ])); 
+        
+        $form->addInput(Input::tokenInput("organizations","Organizations"));
         $body->addToCenter($form);
 
     }
