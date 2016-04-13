@@ -41,10 +41,10 @@ class EventPage extends Page {
         $this->pageName = $this->event->name;
         
   
-        $submenu->addLink("Event Details", "?page=Event&event=".$this->event->Event_id,$subPage=='');
-        $submenu->addLink("Update Event", "?page=Event&event=".$this->event->Event_id."&subpage=update",$subPage=='update');
+        $submenu->addLink("Event Details", "?page=Event&event=".$this->event->event_id,$subPage=='');
+        $submenu->addLink("Update Event", "?page=Event&event=".$this->event->event_id."&subpage=update",$subPage=='update');
         $submenu->addSplitter();
-        $submenu->addLink("Send Email Invitation", "?page=Event&event=".$this->event->Event_id."&subpage=send",$subPage=='send');
+        $submenu->addLink("Send Email Invitation", "?page=Event&event=".$this->event->event_id."&subpage=send",$subPage=='send');
         $submenu->addLink("Add VIP Participant", "#");
         $submenu->addSplitter();
         $submenu->addLink("Show All Participants", "#",false,false,100);

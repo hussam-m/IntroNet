@@ -13,13 +13,14 @@
  */
 class Event {
     //put your code here
-    public $Event_id;
+    public $event_id;
     public $name;
     public $startDate;
     public $startTime;
     public $endDate;
     public $endTime;
     public $rounds;
+    public $roundLength;
     public $type;
 
 
@@ -113,8 +114,8 @@ class Event {
         $events = Database::getObjects("Event",$options);
         return $events;
     }
-    public static function getEvent($id) {
-        $event = Database::getObject("Event","Event_id=$id");
+    public static function getEvent($id,$options="") {
+        $event = Database::getObject("Event","Event_id=$id ".$options);
         return $event;
     }
 }
