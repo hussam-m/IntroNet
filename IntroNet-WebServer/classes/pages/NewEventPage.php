@@ -44,14 +44,12 @@ class NewEventPage extends Page {
         $body->addToTop(new Message("time Of Sessions is $session", Message::SUCCESS));
         $body->addToTop(new Message("length Of Entire Event is $Event", Message::SUCCESS));
         
-        
-        $minParticipant= $data['minimumNumberOfParticipant'];
             if($data['typeOfEvent'] == "One to One")
              {
                $minParticipant=  $rounds * 2;
               }
               
-              else if ($data['typeOfEvent'] == "One to Many")
+              else if ($data['typeOfEvent'] === "One to Many")
               {
                   $minParticipant=  $posters * $rounds;
               }
