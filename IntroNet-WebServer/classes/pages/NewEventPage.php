@@ -19,6 +19,8 @@ class NewEventPage extends Page {
         $session= $data['timeOfSessions'];
         //get the length of entire event
         $Event= $data['lengthOfEntireEvent'];
+        // get number of posters
+        $posters=count(explode(",", $data['posters']));
         
         //calculate length of event
         if($rounds!="")
@@ -34,6 +36,7 @@ class NewEventPage extends Page {
          if($session!="")
             if($Event!="")
                 $rounds= ((int)$Event) / ((int)$session);
+            
            
         
             
@@ -46,6 +49,11 @@ class NewEventPage extends Page {
             if($data['typeOfEvent'] == "One to One")
              {
                $minParticipant=  $rounds * 2;
+              }
+              
+              else if ($data['typeOfEvent'] == "One to Many")
+              {
+                  $minParticipant=  $posters * $rounds;
               }
               $body->addToTop(new Message("minimum number of participants is $minParticipant", Message::SUCCESS));
                     
