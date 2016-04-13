@@ -153,6 +153,11 @@ class Input{
     {
         return self::createInput((object)array("type"=>"checklist","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$min,"disabled"=>$disabled,"regex"=>""));
     }
+    static function checkBox($name,$label,$options=[],$required=false,$disabled=false)
+    {
+        return self::createInput((object)array("type"=>"checkbox","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$min,"disabled"=>$disabled,"regex"=>""));
+    }
+    //<input type="checkbox" checked data-off-active-cls="btn-warning" data-on-active-cls="btn-primary">
     
     
     static function buildInput(Input $input){
@@ -183,7 +188,7 @@ class Input{
                             else
                                 $html.='<option '.($option==$i?'selected="selected"':'').' >'.$option.'</option>';
                         }
-                        return $html;},$input->options,  $input->defaultValue?:-1)
+                        return $html;},$input->options,  @$input->defaultValue?:-1)
                 .'</select>'
                     ):''));    
             
