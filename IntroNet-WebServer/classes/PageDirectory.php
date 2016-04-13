@@ -25,6 +25,7 @@ class PageDirectory {
         "Customize" => ["class" => "CustomizeParticipantsSchedule", "file" => "CustomizeParticipant'sSchedule.php"],
         "insertParticipant" => ["class" => "InsertParticipant", "file" => "InsertParticipant.php"],
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
+        "orginizeTable" => ["class" => "OrginizeTable", "file" => "OrginizeTable.php"],
         
     ];
 
