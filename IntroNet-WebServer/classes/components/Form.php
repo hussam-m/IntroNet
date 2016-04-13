@@ -6,6 +6,8 @@ class Form extends Component {
     private $inputs=[];
     //private $horizontal=false;
     private $page_url; // page to callback
+    public $autoSubmit = false;
+    public $keepData = false;
     public function __construct($page_url) {
         $this->page_url=$page_url;
     }
@@ -32,11 +34,16 @@ class Form extends Component {
         foreach ($this->inputs as $input) {
             $hideOn = isset($input->hideOn)?" ng-hide='$input->hideOn' ":"";
             $showOn = isset($input->showOn)?" ng-show='$input->showOn' ":"";
+            if($this->keepData)
+                $input->defaultValue = @$_POST[$input->name];
+            if($this->autoSubmit)
+                $input->SubmitOnChange = true;
             echo '<div class="form-group" '.$hideOn.$showOn.'>';
             Input::buildInput($input);
             echo '</div>';
         }
-        echo '<input type="submit" class="btn btn-default">';
+        if(!$this->autoSubmit)
+            echo '<input type="submit" class="btn btn-default">';
         echo '</form>';
         
         // active all datepickers
@@ -103,6 +110,7 @@ class Input{
         $input->required = $conf->required;
         $input->disabled = $conf->disabled;
         $input->regex = $conf->regex;
+        $input->placeholder = @$conf->placeholder ?: "";
         if(property_exists($conf,'defaultValue'))
             $input->defaultValue = $conf->defaultValue;
         if(property_exists($conf,'showOn'))
@@ -112,6 +120,8 @@ class Input{
         
         if(isset($conf->options))
            $input->options = $conf->options;
+        
+        $input->SubmitOnChange = false;
         
         return $input;
     }
@@ -162,15 +172,18 @@ class Input{
         
        echo '<label for="'.$input->name.'">'.$input->label.'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
-        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->label.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
+        '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->placeholder.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
     ):($input->type=='list'?( 
-                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" ng-init="'.$input->name.' = \''.$input->options[0].'\'">'.
-                    call_user_func(function($o) {
+                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" '.($input->SubmitOnChange?'onchange="this.form.submit()"':"").' ng-init="'.$input->name.' = \''.(is_array($input->options)?$input->options[0][0]:$input->options[0]).'\'">'.
+                    call_user_func(function($o,$i) {
                         $html='';
                         foreach ($o as $option) {
-                            $html.='<option>'.$option.'</option>';
+                            if(is_array($option))
+                                $html.='<option value="'.$option[0].'" '.($option[0]==$i?'selected="selected"':'').' >'.$option[1].'</option>';
+                            else
+                                $html.='<option '.($option==$i?'selected="selected"':'').' >'.$option.'</option>';
                         }
-                        return $html;},$input->options )
+                        return $html;},$input->options,  $input->defaultValue?:-1)
                 .'</select>'
                     ):''));    
             
