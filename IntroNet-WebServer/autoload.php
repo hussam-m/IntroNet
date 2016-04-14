@@ -20,6 +20,7 @@ spl_autoload_register(
                 
                 
                 // database objects
+                'Conference' => __ROOT__.'/classes/Conference.php',
                 'Event'     => __ROOT__.'/classes/Event.php',
                 'User'      => __ROOT__.'/classes/User.php',
                 

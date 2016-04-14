@@ -27,7 +27,7 @@ class PageDirectory {
         "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
         "orginizeTable" => ["class" => "OrginizeTable", "file" => "OrginizeTable.php"],
         "ParticipantList" => ["class" => "ParticipantListPage", "file" => "ParticipantListPage.php"],
-
+        "ConferenceList" => ["class" => "ConferenceListPage", "file" => "ConferenceListPage.php"]
         
     ];
 

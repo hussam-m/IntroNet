@@ -14,7 +14,7 @@ class Conference {
     public $registration_start_time;
     public $registration_deadline_time;
 
-    public function getConferences($options=""){
+    public static function getConferences($options=""){
         $conferences = Database::getObjects("Conference",$options);
         return $conferences;
     }
