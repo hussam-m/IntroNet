@@ -71,4 +71,8 @@ html, body {
     z-index: 1;
     padding: 0 10px; }
 
+.checkbox + .btn-group {
+  display: block;
+  height: 35px; }
+
 /*# sourceMappingURL=style.css.map */

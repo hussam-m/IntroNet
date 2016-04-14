@@ -91,3 +91,10 @@ html, body {
         padding: 0 10px;
     }
 }
+
+.checkbox{
+    & + .btn-group{
+        display: block;
+        height: 35px;
+    }
+}

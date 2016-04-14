@@ -36,6 +36,7 @@ class TestPage extends Page {
         $form->addInput($inputA);
         $form->addInput($inputB);
         
+        $form->addInput(Input::checkBox("checkBoxTest", "Test"));
         //$form->addInput(Input::dateInput("date", "choose a date: "));
         $left = new CustomHTML('
 <div class="list-group">
@@ -84,6 +85,9 @@ class TestPage extends Page {
             $body->addToTop(new Message("number of posters= ".$numberOfPosters, Message::SUCCESS));
         }
         $body->addToTop(new Message("the value of list1= ".$data['list1'], Message::SUCCESS));
+        //checkBoxTest
+        $body->addToTop(new Message("the value of checkBoxTest= ".$data['checkBoxTest'], Message::SUCCESS));
+
     }
 
 }
