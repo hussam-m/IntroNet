@@ -29,7 +29,7 @@ class EventListPage extends Page {
             $table = new HtmlTable();
             $table->setHead(["#","Name","Start Date","End Date","Type"]);
             foreach ($events as $id => $event)
-                $table->addRow([$id,'<a href="?page=Event&event='.$event->Event_id.'">'.$event->name.'</a>',$event->getStartDate(),$event->getEndDate(),$event->getType()]);
+                $table->addRow([$id,'<a href="?page=Event&event='.$event->event_id.'">'.$event->name.'</a>',$event->getStartDate(),$event->getEndDate(),$event->getType()]);
             $body->addToCenter($table);
         }else
             $body->addToCenter (new Message("There is no event to show",  Message::INFO));
