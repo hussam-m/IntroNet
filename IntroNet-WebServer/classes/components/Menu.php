@@ -13,9 +13,10 @@ class Menu extends Component {
         $this->links[] = ["name" => $name, "submenu" => $submenu];
     }
 
-    public function build() {
+    public function build($submenu=FALSE) {
 
-        echo '<ul class="nav navbar-nav navbar-left">';
+        if (!$submenu)
+            echo '<ul class="nav navbar-nav navbar-left">';
         if ($this->links != null)
             foreach ($this->links as $link) {
                 if (array_key_exists("page", $link))
@@ -25,14 +26,15 @@ class Menu extends Component {
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$link['name'].' <span class="caret"></span></a>
                         <ul class="dropdown-menu">';
-                            $link['submenu']->build();
+                            $link['submenu']->build(TRUE);
                     echo '
                         </ul>
                     </li>';
                     
                 }
             }
-        echo '</ul>';
+        if (!$submenu)
+            echo '</ul>';
     }
 
 }
