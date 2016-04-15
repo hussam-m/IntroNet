@@ -141,9 +141,9 @@ class Input{
     {
         return self::createInput((object)array("type"=>"time","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
-    static function selectInput($name,$label,$options=[],$required=false,$disabled=false,$regex="")
+    static function selectInput($name,$label,$options=[],$defaultValue=-1,$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"list","name"=>$name,"label"=>$label,"options"=>$options,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"list","name"=>$name,"label"=>$label,"options"=>$options,"defaultValue"=>$defaultValue,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
     static function tokenInput($name,$label,$required=false,$disabled=false,$regex="")
     {

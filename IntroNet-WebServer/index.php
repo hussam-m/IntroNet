@@ -19,7 +19,14 @@ function main($debug_mode) {
         }
     }
 
-
+// load config
+    global $config;
+    if (file_exists("config.php")) {
+        $config = parse_ini_file("config.php", true);
+    } else {
+        $config['theme'] = "Light";
+    }
+        
 
     session_start();
 

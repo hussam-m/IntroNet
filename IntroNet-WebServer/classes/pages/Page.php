@@ -28,7 +28,7 @@ abstract class Page {
             $this->mainMenu = $menu;
         $this->body = new PageBody();
         $this->subMenu = new SubMenu();
-        
+        $this->hasBody = TRUE;
         $this->angularjs=FALSE; // include angular.js?
         $this->js=[];
         $this->css=[];
@@ -37,12 +37,13 @@ abstract class Page {
         if($_POST)
             $this->callBack ($_POST, "post", $this->body);
  
-        try{
-            $this->build($this->body,$this->subMenu);
-        }
-        catch (DatabaseException $e){
-            $this->body->addToTop(new Message($e->getMessage(), Message::DANGER));
-        }
+        if($this->hasBody)
+            try{
+                $this->build($this->body,$this->subMenu);
+            }
+            catch (DatabaseException $e){
+                $this->body->addToTop(new Message($e->getMessage(), Message::DANGER));
+            }
     }
     
     /**
@@ -79,7 +80,11 @@ abstract class Page {
                 <title><?= self::$pageTitle . ($this->pageName!=''?' - '. $this->pageName:'') ?></title>
 
                 <!-- CSS -->
-                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+                <?php if($GLOBALS['config']['theme'] === "Dark"): ?>
+                    <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css" crossorigin="anonymous">
+                <?php  else: ?>
+                    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+                <?php endif; ?>
                 <link rel="stylesheet" href="css/style.css" >
                 <link rel="stylesheet" href="css/bootstrap-datepicker.css" >
                 <link rel="stylesheet" href="css/bootstrap-clockpicker.css" >
@@ -190,7 +195,7 @@ abstract class Page {
             </div>
             </div>
             
-            <footer class="footer">
+            <footer class="panel-footer footer">
                 <div class="container">
                     <p class="text-muted">IntroNet &copy; 2016</p>
                 </div>
