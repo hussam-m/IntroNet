@@ -16,8 +16,8 @@ class LoginPage extends Page {
 
     public function callBack($data, $action,PageBody &$body) {
         // this code only for testing
-        if($data["email"]=="hussam" && 
-           $data["password"]=="1234")
+        if($data["email"]== $GLOBALS['config']['administer']['username'] && 
+           $data["password"]==$GLOBALS['config']['administer']['password'])
         {
             // get user data
             $user = new Planner(); // 
