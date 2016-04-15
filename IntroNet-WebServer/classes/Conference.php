@@ -18,4 +18,8 @@ class Conference {
         $conferences = Database::getObjects("Conference",$options);
         return $conferences;
     }
+    public static function getConference($id){
+        $conference = Database::getObject("Conference"," conference_id = $id ");
+        return $conference;
+    }
 }

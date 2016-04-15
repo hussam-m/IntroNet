@@ -5,7 +5,7 @@ require_once './classes/components/CustomHTML.php';
 require_once './classes/components/Message.php';
 require_once './classes/components/Form.php';
 
-class Conference extends Page {
+class NewConferencePage extends Page {
         
     protected function build(PageBody &$body, SubMenu &$submenu) {
         $this->pageName = "Conference";
