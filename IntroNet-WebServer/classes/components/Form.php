@@ -174,7 +174,7 @@ class Input{
             return;
         }
         
-       echo '<label for="'.$input->name.'">'.$input->label.'</label>'.
+       echo '<label for="'.$input->name.'">'.$input->label.($input->required?" <span style='color:red'>*</span>":"").'</label>'.
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
         '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->placeholder.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
     ):($input->type=='list'?( 
