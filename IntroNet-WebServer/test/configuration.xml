@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!-- see http://www.phpunit.de/wiki/Documentation -->
+<!--phpunit bootstrap="/path/to/bootstrap.php"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         stopOnFailure="true">
+</phpunit-->
+
+<phpunit colors="false">
+<!--<groups>
+  <include>
+    <group>BlackBox</group>
+  </include>
+  <exclude>
+    <group>WhiteBox</group>
+  </exclude>
+</groups>-->
+<filter>
+
+<whitelist>
+
+<directory suffix='.class.php'>..\xxx\framework</directory>
+
+<directory suffix='.class.php'>..\xxx\xxx</directory>
+
+<directory suffix='.class.php'>..\xxxx</directory>
+
+</whitelist>
+
+</filter>
+
+<!--<logging>
+
+        <log type="coverage-html" target="C:\xampp\tmp\report" lowUpperBound="35"
+
+          highLowerBound="70"/>
+
+</logging>-->
+</phpunit>
