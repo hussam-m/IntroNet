@@ -44,7 +44,8 @@ class NewEventPage extends Page {
         $body->addToTop(new Message("time Of Sessions is $session", Message::SUCCESS));
         $body->addToTop(new Message("length Of Entire Event is $Event", Message::SUCCESS));
         
-            if($data['typeOfEvent'] == "One to One")
+        //An algorithm to get the minimum number of participant    
+        if($data['typeOfEvent'] == "One to One")
              {
                $minParticipant=  $rounds * 2;
               }
@@ -65,13 +66,14 @@ class NewEventPage extends Page {
         $this->pageName = "New Event";
         
         $form = new Form("NewEvent");
-        $form->addInput(Input::textInput("eventName","Event Name"),$defaultValue='',$required=TRUE);
+        $form->addInput(Input::textInput("eventName","Event Name",'',TRUE));
+
         
-        $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many")));
+        $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many"), " "));
         
-        $form->addInput(Input::textInput("numberOfRounds","Number of Rounds"));
-        $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions and Breaks"));
-        $form->addInput(Input::textInput("lengthOfEntireEvent","Length of The Entire Event"));
+        $form->addInput(Input::textInput("numberOfRounds","Number of Rounds")," ",True);
+        $form->addInput(Input::textInput("timeOfSessions","Length of the Sessions and Breaks")," ",True);
+        $form->addInput(Input::textInput("lengthOfEntireEvent","Length of The Entire Event")," ",True);
         
         
         $form->addInput(Input::createGroupInput([
@@ -79,7 +81,8 @@ class NewEventPage extends Page {
             Input::timeInput("eventTime","Event Start Time")
             ]));
         
-        $form->addInput(Input::tokenInput("posters","Posters"));
+        $form->addInput(Input::tokenInput("posters","Posters"), True);
+        
         
         //$Validation=  Validation::validate("eventName", $regex='', $required=TRUE);
          
