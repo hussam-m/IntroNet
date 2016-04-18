@@ -22,6 +22,9 @@ class Event {
     public $rounds;
     public $roundLength;
     public $type;
+    
+    const ONETOONE = 1;
+    const ONETOMANY = 2;
 
 
 //    public function __construct($name, $datetime) {
@@ -29,14 +32,15 @@ class Event {
 //        $this->datetime=$datetime;
 //    }
     
-    public static function create($name,$startDate,$startTime,$endDate,$endTime) {
+    public static function create($name,$startDate,$startTime,$endDate,$endTime,$type) {
         $event = new Event;
         try{
             $event->name= Validation::validate($name, Validation::NAME);
-            $event->startDate= Validation::validate($name, Validation::DATE);
-            $event->startTime= Validation::validate($name, Validation::TIME);
-            $event->endDate= Validation::validate($name, Validation::DATE);
-            $event->endTime= Validation::validate($name, Validation::TIME);
+            $event->startDate= Validation::validate($startDate, Validation::DATE);
+            $event->startTime= Validation::validate($startTime, Validation::TIME);
+            $event->endDate= Validation::validate($endDate, Validation::DATE);
+            $event->endTime= Validation::validate($endTime, Validation::TIME);
+            $event->type = $type;
         } catch (Exception $e) {
             throw new Exception("invalid input",0,$e);
 //return "";
@@ -71,7 +75,7 @@ class Event {
         return date("F, jS", strtotime($this->startDate));
     }
     public function getType(){
-        return $this->type==1?"One to One":"One to Many";
+        return $this->type==Event::ONETOONE?"One to One":"One to Many";
     }
     public function getNumberOfParticipant(){
         return rand(10,200); // this code for testing

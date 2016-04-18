@@ -8,6 +8,6 @@
         }
     ],
     "require": {
-        "joseph-lenton/php-error": "dev-master"
+        "facebook/webdriver": "1.1.1"
     }
 }

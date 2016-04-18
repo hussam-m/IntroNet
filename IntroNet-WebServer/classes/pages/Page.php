@@ -1,6 +1,6 @@
 <?php
-require_once './classes/components/Component.php';
-require_once './classes/components/Form.php';
+//require_once './classes/components/Component.php';
+//require_once './classes/components/Form.php';
 
 abstract class Page {
 
@@ -58,6 +58,11 @@ abstract class Page {
     public function init(&$css,&$js,&$angularjs){}
     abstract protected function build(PageBody &$body, SubMenu &$submenu);
     public function callBack($data, $action,PageBody &$body){}
+    public function addWarning($warning){
+        foreach ($warning as $message) {
+            $this->body->addToBottom(new Message($message, Message::WARNING));
+        }
+    }
 
     function printPage() {
         //if the page have a submenu add it to the left side

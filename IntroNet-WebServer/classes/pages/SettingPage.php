@@ -7,10 +7,10 @@
  */
 class SettingPage extends Page {
     public function callBack($data, $action, \PageBody &$body) {
-        $_SESSION['db_host']=$_POST['db_host'];
-        $_SESSION['db_name']=$_POST['db_name'];
-        $_SESSION['db_user']=$_POST['db_user'];
-        $_SESSION['db_password']=$_POST['db_password'];
+//        $_SESSION['db_host']=$_POST['db_host'];
+//        $_SESSION['db_name']=$_POST['db_name'];
+//        $_SESSION['db_user']=$_POST['db_user'];
+//        $_SESSION['db_password']=$_POST['db_password'];
         
         //Save the change in config.php
         $str=file_get_contents('config.php');
@@ -24,16 +24,16 @@ class SettingPage extends Page {
     
     protected function build(\PageBody &$body, \SubMenu &$submenu) {
         if(isset($_GET['save']) && $_GET['save'] === 'true')
-            $body->addToTop(new Message("Data was saved", Message::SUCCESS));
+            $body->addToTop(new Message("Setting was saved", Message::SUCCESS));
         
-        $DbSettingForm = new Form("Setting");
-        $DbSettingForm->addInput(Input::textInput("db_host", "Database Host",array_key_exists('db_host',$_SESSION)?$_SESSION['db_host']:''));
-        $DbSettingForm->addInput(Input::textInput("db_name", "Database Name",$_SESSION['db_name']));
-        $DbSettingForm->addInput(Input::textInput("db_user", "Database User",$_SESSION['db_user']));
-        $DbSettingForm->addInput(Input::textInput("db_password", "Database Password",$_SESSION['db_password']));
+        $settingForm = new Form("Setting");
+//        $DbSettingForm->addInput(Input::textInput("db_host", "Database Host",array_key_exists('db_host',$_SESSION)?$GLOBALS['config']['database']['host']:''));
+//        $DbSettingForm->addInput(Input::textInput("db_name", "Database Name",$GLOBALS['config']['database']['name']));
+//        $DbSettingForm->addInput(Input::textInput("db_user", "Database User",$GLOBALS['config']['database']['username']));
+//        $DbSettingForm->addInput(Input::textInput("db_password", "Database Password",$GLOBALS['config']['database']['password']));
         
         
-        $DbSettingForm->addInput(Input::selectInput("theme", "Theme", $GLOBALS['config']['themes'],$GLOBALS['config']['theme']));
-        $body->addToCenter($DbSettingForm);
+        $settingForm->addInput(Input::selectInput("theme", "Theme", $GLOBALS['config']['themes'],$GLOBALS['config']['theme']));
+        $body->addToCenter($settingForm);
     }
 }

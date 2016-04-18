@@ -12,16 +12,27 @@ class Database {
      */
     private static function connect() {
         try{
-        $connection = new PDO('mysql:host='.$_SESSION['db_host'].
-                ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
+            $dbConfig = @$GLOBALS['config']['database'];
+            if(!$dbConfig) throw new Exception (10);
+//                $host = $dbConfig['hosta'];
+//                $name = $dbConfig['name'];
+//                $username = $dbConfig['username'];
+//                $password = $dbConfig['password'];
+//        $connection = new PDO('mysql:host='.$_SESSION['db_host'].
+//                ';dbname='.$_SESSION['db_name'].';charset=utf8', $_SESSION['db_user'], $_SESSION['db_password']);
+        $connection = new PDO('mysql:host='.$dbConfig['host'].
+                ';dbname='.$dbConfig['name'].';charset=utf8', $dbConfig['username'], $dbConfig['password']);
         
         return $connection;
         }
         catch (Exception $e){
-            if (class_exists('PDO'))
+            $dbError = " Please set the database configration at the config.php file";
+            if($e->getMessage()==10)
+                throw new DatabaseException("<h4>No Database connection</h4>".$dbError);
+            if (!class_exists('PDO'))
                 throw new DatabaseException("PDO is requried");
             else
-                throw new DatabaseException("No database connection! Go to Setting to setup the Database");
+                throw new DatabaseException("No database connection!");
         }
         return FALSE;
     }
