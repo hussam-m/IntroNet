@@ -203,7 +203,7 @@ class Input{
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
         '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->placeholder.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
     ):($input->type=='list'?( 
-                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" '.($input->SubmitOnChange?'onchange="this.form.submit()"':"").' ng-init="'.$input->name.' = \''.(is_array($input->options)?$input->options[0][0]:$input->options[0]).'\'">'.
+                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" '.($input->SubmitOnChange?'onchange="this.form.submit()"':"").' ng-init="'.$input->name.' = \''.(is_array($input->options[0])?$input->options[0][0]:$input->options[0]).'\'">'.
                     call_user_func(function($o,$i) {
                         $html='';
                         foreach ($o as $option) {
