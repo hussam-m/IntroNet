@@ -8,13 +8,22 @@ class Form extends Component {
     private $page_url; // page to callback
     public $autoSubmit = false;
     public $keepData = false;
+    private $section=[[]];
+    //private $activeSection;
     public function __construct($page_url) {
         $this->page_url=$page_url;
+        $this->activeSection=&$this->section[0];
     }
     
-    public function addInput(Input $input)
-    {
-        $this->inputs[]= $input;
+    public function addInput(Input $input,$section=FALSE){
+        if($section && !key_exists($section, $this->section))
+            $this->section[$section] = [];
+        
+        $this->section[$section][] = $input;
+    }
+    
+    public function newSection(){
+        return count($this->section);
     }
     
 //    public function addInput($name,$type,$label,$required=false,$regex="")
@@ -30,17 +39,35 @@ class Form extends Component {
     
 
     public function build() {
+        if(count($this->section)>1)
+            $multiSections=true;
+        else
+            $multiSections=false;
+        
         echo '<form class="form" action="index.php?page='.$this->page_url.'" method="post">';
-        foreach ($this->inputs as $input) {
-            $hideOn = isset($input->hideOn)?" ng-hide='$input->hideOn' ":"";
-            $showOn = isset($input->showOn)?" ng-show='$input->showOn' ":"";
-            if($this->keepData)
-                $input->defaultValue = @$_POST[$input->name];
-            if($this->autoSubmit)
-                $input->SubmitOnChange = true;
-            echo '<div class="form-group" '.$hideOn.$showOn.'>';
-            Input::buildInput($input);
-            echo '</div>';
+        //var_dump($this->section);
+        foreach ($this->section as $section){
+            //var_dump($section);
+            // ignore empty sections
+            if(count($section)==0)
+                continue;
+            
+            if($multiSections)
+                echo '<div class="panel panel-default"><div class="panel-body">';
+            
+            foreach ($section as $input) {
+                $hideOn = isset($input->hideOn)?" ng-hide='$input->hideOn' ":"";
+                $showOn = isset($input->showOn)?" ng-show='$input->showOn' ":"";
+                if($this->keepData)
+                    $input->defaultValue = @$_POST[$input->name];
+                if($this->autoSubmit)
+                    $input->SubmitOnChange = true;
+                echo '<div class="form-group" '.$hideOn.$showOn.'>';
+                Input::buildInput($input);
+                echo '</div>';
+            }
+            if($multiSections)
+                    echo '</div></div>';
         }
         if(!$this->autoSubmit)
             echo '<input type="submit" class="btn btn-default">';
@@ -162,11 +189,9 @@ class Input{
     static function buildInput(Input $input){
         if($input->type == 'group')
         {
-            //echo '<div class="form-inline">';
             echo '<div style="margin: 0 -15px" class="row">';
             foreach ($input->inputs as $i){
-//                echo '<div class="form-horizontal">';
-                echo '<div class="form-group col-md-'.(12/count($input->inputs)).'">';
+                echo '<div class="col-md-'.(12/count($input->inputs)).'">';
                 Input::buildInput($i);
                 echo '</div>';
             }
@@ -214,7 +239,7 @@ class Input{
                 echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
             }
             else if($input->type=='checkbox'){
-                echo '<input type="checkbox" id="'.$input->name.'" name="'.$input->name.'" class="checkbox"/> <script> $("#'.$input->name.'").checkboxpicker(); </script>';
+                echo '<input type="checkbox" id="'.$input->name.'" name="'.$input->name.'" class="checkbox" ng-model="'.$input->name.'" aria-label="Toggle ngHide"/> <script> $("#'.$input->name.'").checkboxpicker();  $("#'.$input->name.'").checkboxpicker().change(function() { /*$("#'.$input->name.'").click();*/ }); </script>';
             }
             else if($input->type=='checklist'){
                 echo "<div class='checklist' id='$input->name' min=$input->required tabindex='-1'>";
