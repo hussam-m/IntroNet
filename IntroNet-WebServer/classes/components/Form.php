@@ -8,22 +8,29 @@ class Form extends Component {
     private $page_url; // page to callback
     public $autoSubmit = false;
     public $keepData = false;
-    private $section=[[]];
+    private $section=[];
     //private $activeSection;
-    public function __construct($page_url) {
-        $this->page_url=$page_url;
-        $this->activeSection=&$this->section[0];
+    public function __construct($page_key) {
+        // get callback page
+        $this->page_url=$page_key;
+        // create the main section
+        $this->section[0]= new Section();
     }
     
+    // add input to the main section
     public function addInput(Input $input,$section=FALSE){
-        if($section && !key_exists($section, $this->section))
-            $this->section[$section] = [];
-        
-        $this->section[$section][] = $input;
+//        if($section && !key_exists($section, $this->section))
+//            $this->section[$section] = [];
+//        
+//        $this->section[$section][] = $input;
+        $this->section[0]->addInput($input);
     }
     
-    public function newSection(){
-        return count($this->section);
+    public function newSection($title = FALSE){
+        //return count($this->section);
+        $section = new Section($title);
+        $this->section[]=$section;
+        return $section;
     }
     
 //    public function addInput($name,$type,$label,$required=false,$regex="")
@@ -49,13 +56,17 @@ class Form extends Component {
         foreach ($this->section as $section){
             //var_dump($section);
             // ignore empty sections
-            if(count($section)==0)
+            if($section->size()==0){
                 continue;
+            }
             
-            if($multiSections)
-                echo '<div class="panel panel-default"><div class="panel-body">';
+            if($multiSections){
+                echo '<div class="panel panel-default">'
+                .(($section->title())?'<div class="panel-heading">'.$section->title().'</div>':'')
+                . '<div class="panel-body">';
+            }
             
-            foreach ($section as $input) {
+            foreach ($section->getInputs() as $input) {
                 $hideOn = isset($input->hideOn)?" ng-hide='$input->hideOn' ":"";
                 $showOn = isset($input->showOn)?" ng-show='$input->showOn' ":"";
                 if($this->keepData)
@@ -66,11 +77,13 @@ class Form extends Component {
                 Input::buildInput($input);
                 echo '</div>';
             }
-            if($multiSections)
-                    echo '</div></div>';
+            if ($multiSections) {
+                echo '</div></div>';
+            }
         }
-        if(!$this->autoSubmit)
+        if (!$this->autoSubmit) {
             echo '<input type="submit" class="btn btn-default">';
+        }
         echo '</form>';
         
         // active all datepickers
@@ -160,13 +173,13 @@ class Input{
     {
         return self::createInput((object)array("type"=>"textarea","name"=>$name,"label"=>$label,"defaultValue"=>$defaultValue,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
     }
-    static function dateInput($name,$label,$required=false,$disabled=false,$regex="")
+    static function dateInput($name,$label,$defaultValue='',$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"date","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"date","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"required"=>$required,"regex"=>$regex));
     }
-    static function timeInput($name,$label,$required=false,$disabled=false,$regex="")
+    static function timeInput($name,$label,$defaultValue='',$required=false,$disabled=false,$regex="")
     {
-        return self::createInput((object)array("type"=>"time","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"regex"=>$regex));
+        return self::createInput((object)array("type"=>"time","name"=>$name,"label"=>$label,"required"=>$required,"disabled"=>$disabled,"required"=>$required,"regex"=>$regex));
     }
     static function selectInput($name,$label,$options=[],$defaultValue=-1,$required=false,$disabled=false,$regex="")
     {
@@ -203,11 +216,13 @@ class Input{
     (($input->type=='text' || $input->type=='email' || $input->type=='password')?(      
         '<input type="'.$input->type.'" class="form-control" id="'.$input->name.'" name="'.$input->name.'" placeholder="'.$input->placeholder.'" value="'.$input->defaultValue.'" '.($input->required?'required':'').' >'
     ):($input->type=='list'?( 
-                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" '.($input->SubmitOnChange?'onchange="this.form.submit()"':"").' ng-init="'.$input->name.' = \''.(is_array($input->options[0])?$input->options[0][0]:$input->options[0]).'\'">'.
+                '<select class="form-control" id="'.$input->name.'" name="'.$input->name.'" ng-model="'.$input->name.'" '.($input->SubmitOnChange?'onchange="this.form.submit()"':"").' ng-init="'.$input->name.' = \''.( is_object($input->options[0])? $input->options[0]->id : (is_array($input->options[0])? $input->options[0][0] : $input->options[0] )).'\'">'.
                     call_user_func(function($o,$i) {
                         $html='';
                         foreach ($o as $option) {
-                            if(is_array($option))
+                            if(is_object($option))
+                                $html.='<option value="'.$option->id.'" '.($option->id==$i?'selected="selected"':'').' >'.$option->name.'</option>';
+                            else if(is_array($option))
                                 $html.='<option value="'.$option[0].'" '.($option[0]==$i?'selected="selected"':'').' >'.$option[1].'</option>';
                             else
                                 $html.='<option '.($option==$i?'selected="selected"':'').' >'.$option.'</option>';
@@ -221,7 +236,7 @@ class Input{
                 echo '<textarea class="form-control" id="'.$input->name.'" name="'.$input->name.'" rows="3">'.$input->defaultValue.'</textarea>';
             else if($input->type=='date'){
                 echo ' <div class="input-group date datepicker">';
-                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control"/>';
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control" '.($input->required?'required':'').' />';
                 echo '<span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span></div>';
@@ -229,14 +244,14 @@ class Input{
             }
             else if($input->type=='time'){
                 echo ' <div class="input-group date timepicker" data-autoclose="true">';
-                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control"/>';
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control" '.($input->required?'required':'').' />';
                 echo '<span class="input-group-addon">
                         <span class="glyphicon glyphicon-time"></span>
                     </span></div>';
                 
             }
             else if($input->type=='token'){
-                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield"/>';
+                echo '<input type="text" id="'.$input->name.'" name="'.$input->name.'" class="form-control tokenfield" placeholder="Insert item and press enter to enter another one" />';
             }
             else if($input->type=='checkbox'){
                 echo '<input type="checkbox" id="'.$input->name.'" name="'.$input->name.'" class="checkbox" ng-model="'.$input->name.'" aria-label="Toggle ngHide"/> <script> $("#'.$input->name.'").checkboxpicker();  $("#'.$input->name.'").checkboxpicker().change(function() { /*$("#'.$input->name.'").click();*/ }); </script>';
@@ -265,5 +280,37 @@ class Input{
                         </script>
                     ";
             }
+            //echo '<div class="alert alert-danger" role="alert"> <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Error </div>';
+    }
+    public function __toString() {
+        ob_start();
+        $this->buildInput($this);
+        $string = ob_get_contents();
+        ob_clean();
+        return $string;
+    }
+}
+
+class Section{
+    private $inputs = [];
+    private $title  = false;
+    
+    public function __construct($title=false) {
+        $this->title=$title;
+    }
+    public function addInput(Input $input) {
+        $this->inputs[] = $input;
+    }
+    public function size() {
+        return count($this->inputs);
+    }
+    public function getInputs() {
+        return $this->inputs;
+    }
+    public function title($title = FALSE) {
+        if($title) // set
+            $this->title=$title;
+        else // get
+            return $this->title;
     }
 }

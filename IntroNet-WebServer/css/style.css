@@ -76,4 +76,46 @@ html, body {
   display: block;
   height: 35px; }
 
+.panel .panel-heading {
+  font-size: 16px;
+  font-weight: 400; }
+  .panel .panel-heading .checkbox-group {
+    display: inline-block; }
+  .panel .panel-heading small {
+    font-size: 80%;
+    opacity: 0.4;
+    font-weight: 600; }
+.panel .panel-body:empty {
+  padding: 0; }
+.panel .panel-body {
+  padding: 5px 15px; }
+
+/*input,.input-group,select{
+    & + div{
+        display: none;
+    }
+    &.error{
+        display: none;
+        & + div{
+            display: block;
+            padding: 7px;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            border-style: solid;
+            border-width: thin;
+        }
+    }
+}*/
+.popover {
+  background-color: #ffa8a2;
+  color: #B71C1C; }
+  .popover.top > .arrow:after {
+    border-top-color: #ffa8a2; }
+  .popover .popover-title {
+    background-color: rgba(183, 28, 28, 0.21);
+    border-bottom: none;
+    color: #FFEBEE; }
+
+.datepicker {
+  padding: 0 !important; }
+
 /*# sourceMappingURL=style.css.map */
