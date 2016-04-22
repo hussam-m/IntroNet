@@ -22,4 +22,15 @@ class Conference {
         $conference = Database::getObject("Conference"," conference_id = $id ");
         return $conference;
     }
+
+    public function __get($name) {
+        switch ($name) {
+            case "name":
+                return $this->conference_name;
+            case "id":
+                return $this->conference_id;
+            default:
+                throw new Exception($name." does not exist!");
+        }
+    }
 }
