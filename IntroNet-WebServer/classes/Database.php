@@ -122,7 +122,7 @@ class Database {
     public static function insert($table,Array $values,$id=Null) {
         $connection = self::connect();
         //var_dump($values);
-        var_dump("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
+        //var_dump("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
         $count = $connection->exec("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
         //echo 'id&cound=';
         //var_dump (isset($id) && $count);

@@ -173,23 +173,23 @@ class ConferencePage extends Page {
                                         "participant_id" => $participant->id,
                                         "roundNumber" => $key + 1
                                             ), "schedule_id");
-                            var_dump($schedule_id);
+                            //var_dump($schedule_id);
 
                             if ($schedule_id) {
                                 if ($event->type == Event::ONETOMANY) {
-                                    var_dump(
+                                    //var_dump(
                                             Database::insert("Meeting_Poster", array(
                                                 "schedule_id" => $schedule_id,
                                                 "poster_id" => $poster->id
-                                            ))
-                                    );
+                                            ));
+                                    //);
                                 } else {
-                                    var_dump(
+                                    //var_dump(
                                             Database::insert("Meeting_Table", array(
                                                 "schedule_id" => $schedule_id,
                                                 "table_number" => $poster->id
-                                            ))
-                                    );
+                                            ));
+                                    //);
                                 }
                             }
                         }
