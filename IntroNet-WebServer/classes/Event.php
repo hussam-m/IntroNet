@@ -29,6 +29,7 @@ class Event {
 //        $this->datetime=$datetime;
 //    }
     public function __construct(){
+        $this->id=  $this->event_id;
         $this->eventLength = $this->rounds * $this->roundLength;
         $this->endTime = strtotime("+".$this->eventLength." minutes",strtotime($this->startTime));
     }

@@ -7,21 +7,31 @@
 class TimerPage extends Page{
     const UserType = "Planner";
     protected function build(\PageBody &$body, \SubMenu &$submenu) {
-        $event= Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime LIMIT 0 , 1");
+        
+        // get the selected event or the one that is going to start soon
+        if(isset($_POST['event']))
+            $event= Event::getEvents("where event_id=".$_POST['event']);
+        else   
+            $event= Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime LIMIT 0 , 1");
         $event= $event[0];
         
-        if(!isset($_POST['do']))
+        // show a list of event to select from
+        if(!isset($_POST['do'])){
             $body->addToCenter($this->page1($event));
+            $form = new Form("Timer");
+            $form->autoSubmit = TRUE;
+            $form->keepData = TRUE;
+            $form->addInput(Input::selectInput("event", "Event", Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime")));
+            $body->addToTop($form);
+        }
         
-        $form = new Form("Timer");
-        $form->autoSubmit = TRUE;
-        $form->keepData = TRUE;
-        $form->addInput(Input::selectInput("event", "Event", Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime")));
-        $body->addToTop($form);
+        
         
         
     }
     public function callBack($data, $action, \PageBody &$body) {
+        
+        // get the selected event
         $event=  Event::getEvent($data['event']);
         if(isset($_POST['do']))
             $body->addToCenter($this->page2($event));
