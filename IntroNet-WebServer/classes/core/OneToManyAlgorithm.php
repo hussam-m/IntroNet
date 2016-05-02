@@ -13,12 +13,28 @@ class OneToManyAlgorithm {
      * This function build schedules using participants' preferences
      * @param Poster[]      $posters        a list of posters
      * @param Participant[] $participants   a list of participants
-     * @param int           $rounds         number of rounds
+     * @param Event         $event          The event to build the schedule for
      * @return array        schedules       a list of schedules (each participant have one schedule)
      */
-    public static function build($posters, $participants, $rounds) {
+    public static function build($posters, $participants,$event) {
+        //var_dump ($event);
+        //var_dump ($posters);
+        //var_dump($participants);
+        
+        //set poster id as key for posters array
+        $p=$posters;
+        $posters = array();
+        foreach ($p as $po){
+            $posters[$po->poster_id] = $po;
+        }
+        
+        if($event->type != Event::ONETOMANY)
+            throw new AlgorithmException("OneToManyAlgorithm can handle only OneToMany Events");
+        
+        $rounds = (int) $event->rounds;
+        //var_dump($rounds);
         if ($rounds > count($posters))
-            throw new Exception("Can not have rounds more than the number of posters");
+            throw new AlgorithmException("Can not have rounds more than the number of posters");
 
 
         // Note: maybe it's better to swap inner loop with the outer loop
@@ -27,18 +43,23 @@ class OneToManyAlgorithm {
             uasort($participants, function($a, $b) {
                 return $a->getWeight() - $b->getWeight();
             });
+            //var_dump($participants);
             foreach ($participants as $participant) {
 
                 // sort posters based on number of selections
-                $sortedPosters = self::sortPosters($posters, $participants, $round, $participant);
+                $sortedPosters = self::sortPosters($posters, $participants, $round, $participant, $event);
                 //echo "<br/> sortedPosters= " . implode($sortedPosters, ',');
 
                 $posterSelected = FALSE;
                 //get poster that participant wants to visit
-                $poster = $posters[$participant->preferences[$round]];
+                if(array_key_exists($round, $participant->getPreferences($event)))
+                    $poster = $posters[$participant->getPreferences($event)[$round]];
+                else
+                    $poster=null;
+                
                 $step = 0;
                 while (!$posterSelected) {
-                    //echo '</br>current preference=' . $participant->preferences[$round];
+                    //echo '</br>current preference=' . $participant->getPreferences($event)[$round];
                     //echo ' - current round=' . $round;
                     //echo ' - current participant=' . $participant;
                     //echo ' - current poster=' . $poster;
@@ -52,11 +73,11 @@ class OneToManyAlgorithm {
 
                         // swap preferences in case if we used another preference
                         if ($step != 0) {
-                            //echo "<br/> Start Swap " . implode($participant->preferences, ',');
-                            $temp = $participant->preferences[$round];
-                            $participant->preferences[$round] = $participant->preferences[$round + $step];
-                            $participant->preferences[$round + $step] = $temp;
-                            //echo "<br/> End Swap " . implode($participant->preferences, ',');
+                            //echo "<br/> Start Swap " . implode($participant->getPreferences($event), ',');
+                            $temp = $participant->getPreferences($event)[$round];
+                            $participant->getPreferences($event)[$round] = $participant->getPreferences($event)[$round + $step];
+                            $participant->getPreferences($event)[$round + $step] = $temp;
+                            //echo "<br/> End Swap " . implode($participant->getPreferences($event), ',');
                         }
                         // lower preference's weight if they get his/her preference
                         if ($participant->hasPreference($poster->getId())) {
@@ -66,13 +87,13 @@ class OneToManyAlgorithm {
                         //echo " Yes";
 
                         // does the participant have more preferences?
-                        if (count($participant->preferences) > $round + $step + 1) {
+                        if (count($participant->getPreferences($event)) > $round + $step + 1) {
                             $step++;
                             //echo "test";
-                            //echo "<br/> #preferences=".count($participant->preferences)." r+s=". ($round + $step);
+                            //echo "<br/> #preferences=".count($participant->getPreferences($event))." r+s=". ($round + $step);
                             //echo "<p style='color:red'>participant have another preferences";
                             // choose the next preference
-                            $poster = $posters[$participant->preferences[$round + $step]];
+                            $poster = $posters[$participant->getPreferences($event)[$round + $step]];
                             //echo "<br/> $poster is the selected</p>";
                         } else {
                             $step = 0;
@@ -119,9 +140,9 @@ class OneToManyAlgorithm {
                                         $posterSelected = TRUE;
                                         echo "Participant $sParticipant was swap with $participant in round $round";
                                     } else
-                                        throw new Exception("no solution! (cannot swap) participant=$participant poster=$poster round=$round ");
+                                        throw new AlgorithmException("no solution! (cannot swap) participant=$participant poster=$poster round=$round ");
                                 } else
-                                    throw new Exception("no solution! participant=$participant poster=$poster round=$round ");
+                                    throw new AlgorithmException("no solution! participant=$participant poster=$poster round=$round ");
                             } else {
 
 
@@ -152,7 +173,7 @@ class OneToManyAlgorithm {
                         //$participant->setWeight($participant->getWeight() - 1);
                     }
                     if ($step > 100)
-                        throw new Exception("No solution [steps=$step]");
+                        throw new AlgorithmException("No solution [steps=$step]");
                 }
             }
         }
@@ -197,14 +218,26 @@ class OneToManyAlgorithm {
      * The top of the list is the poster that less been selected.
      * @param Poster[] $posters
      * @param Participant[] $participants
+     * @param int $round current round
+     * @param Event $event 
      * @return Poster[] $sortedPosters
      */
-    private static function sortPosters($posters, $participants, $round, $participant) {
+    private static function sortPosters($posters, $participants, $round, $participant,$event) {
+        //$rounds = $event->rounds;
         $p = []; // array_fill(1, count($posters) - 1, 0);
+        
+        
         foreach ($participants as $pa) {
-            foreach ($pa->preferences as $preference) {
+            
+            $preferences = $pa->getPreferences($event);
+            //echo 'preferences participant='.$pa->name;
+            //var_dump($preferences);
+            foreach ($preferences as $preference) {
+                //echo 'p='.$preference;
                 // does this poster exisit?
+                //var_dump($posters);
                 if (isset($posters[$preference])) {
+                    //echo '<br/>',"trying to assgin poster $preference to participant ".$pa->name;
                     if (!$posters[$preference]->isRoundFull($round) && !$posters[$preference]->hasParticipant($participant)) {
                         if(isset($p[$preference]))
                             $p[$preference] ++;
@@ -213,10 +246,10 @@ class OneToManyAlgorithm {
                         //echo '</br>p=' . $preference . ' v=' . $p[$preference];
                     }
                 } else
-                    throw new Exception("Poster $preference does not exist");
+                    throw new AlgorithmException("Poster $preference does not exist");
             }
         }
-
+        
         foreach ($posters as $key => $poster) {
             //echo ' e='.$poster->getParticipantsAtRound($round);
             if (!$poster->hasParticipant($participant) && !$poster->isRoundFull($round))
@@ -229,6 +262,7 @@ class OneToManyAlgorithm {
         //echo '<h4>Sort Posters</h4>';
         //var_dump($p);
         asort($p);
+        //echo 'asort($p)';
         //var_dump($p);
 //        for($i=1;$i<count($p);$i++){
 //            $sortedPosters[$i]=$posters[$p[$i]];
@@ -415,3 +449,4 @@ class OneToManyAlgorithm {
 
 //for($i=0;$i=10;$i++)
 //OneToManyAlgorithm::testBuild3(rand(3, 20), rand(10, 100), rand(1, 5));
+class AlgorithmException extends Exception{}

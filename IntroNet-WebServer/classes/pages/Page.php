@@ -2,13 +2,19 @@
 //require_once './classes/components/Component.php';
 //require_once './classes/components/Form.php';
 
+/**
+ * This class is the superclass of every webpage
+ * @property String UserType Type of user (User/Planner/Participant)
+ * @property PageBody body The body of the page
+ */
 abstract class Page {
+    const UserType = "User";
 
 //    private $visible = true;
 //    private $must_login = false;
 //    private $visible_to = []; // list of users who can access the page
 //    private $theme = "default";
-    protected $keywords = [];   // page keywords
+    protected $keywords = array();   // page keywords
     protected $description = "";// the description of the page
     private $center_width = 6;  
     private $body;              // the body of the page
@@ -16,12 +22,16 @@ abstract class Page {
     private $subMenu;           // the sub menu that shows on the left side of the page
     protected $pageName;          // the page name appears next to the page title
     private static $pageTitle;         // page title that appears on the page tab
-    private $user;              // the human user of the page
+    protected $user;              // the human user of the page
     private $angularjs;         // shoud include $angularjs? (TRUE/FALSE)
     private $css;               // list of css files
     private $js;                // list of js files
     
     public function __construct($user,$menu,$pageName='') {
+        
+        if (!is_a($user, $this::UserType)) {
+            login();
+        }
         $this->user=$user;
         $this->pageName = $pageName;
         if (is_a($menu, "Menu"))
@@ -30,20 +40,26 @@ abstract class Page {
         $this->subMenu = new SubMenu();
         $this->hasBody = TRUE;
         $this->angularjs=FALSE; // include angular.js?
-        $this->js=[];
-        $this->css=[];
+        $this->js=array();
+        $this->css=array();
         $this->init($this->css, $this->js, $this->angularjs);
         
         if($_POST)
-            $this->callBack ($_POST, "post", $this->body);
- 
-        if($this->hasBody)
-            try{
-                $this->build($this->body,$this->subMenu);
-            }
-            catch (DatabaseException $e){
+            try {
+                $this->callBack ($_POST, "post", $this->body);
+            } catch (ValidationException $e) {
                 $this->body->addToTop(new Message($e->getMessage(), Message::DANGER));
             }
+
+        
+ 
+        if ($this->hasBody) {
+            try {
+                $this->build($this->body, $this->subMenu);
+            } catch (DatabaseException $e) {
+                $this->body->addToTop(new Message($e->getMessage(), Message::DANGER));
+            }
+        }
     }
     
     /**
@@ -90,6 +106,7 @@ abstract class Page {
                 <?php  else: ?>
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
                 <?php endif; ?>
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
                 <link rel="stylesheet" href="css/style.css" >
                 <link rel="stylesheet" href="css/bootstrap-datepicker.css" >
                 <link rel="stylesheet" href="css/bootstrap-clockpicker.css" >
@@ -120,7 +137,7 @@ abstract class Page {
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="#"><?= self::$pageTitle ?></a>
+                            <a class="navbar-brand" href="index.php"><?= self::$pageTitle ?></a>
                         </div>
                         <?php if (($this->user != null) && get_class($this->user)!="User") : ?>
 <!--                            <p class="navbar-text navbar-right">Signed in as <a href="#" class="navbar-link">Hussam Almoharb</a></p>-->
@@ -202,9 +219,14 @@ abstract class Page {
             
             <footer class="panel-footer footer">
                 <div class="container">
-                    <p class="text-muted">IntroNet &copy; 2016</p>
+                    <p class="text-muted">IntroNet &copy; <?=date("Y")?></p>
                 </div>
             </footer>
+            <script>
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                });
+            </script>
         </body>
         </html>
         <?php
@@ -223,7 +245,7 @@ class PageBody {
     const CENTER = 3;
     const BOTTOM = 4;
 
-    private $components = [[/* top */], [/* left */], [/* right */], [/* center */], [/* bottom */]];
+    private $components = array(array(/* top */), array(/* left */), array(/* right */), array(/* center */), array(/* bottom */));
 
     function addToTop(Component $componet) {
         $this->components[PageBody::TOP][] = $componet;
@@ -281,12 +303,12 @@ class PageBody {
 
 
 class SubMenu extends Component{
-    private $links = [];
+    private $links = array();
     public function addLink($label,$link,$active=false,$icon=false,$badge=false){
-        $this->links[]= ["label"=>$label,"link"=>$link,"active"=>$active,"icon"=>$icon,"badge"=>$badge];
+        $this->links[]= array("label"=>$label,"link"=>$link,"active"=>$active,"icon"=>$icon,"badge"=>$badge);
     }
     public function addDangerLink($label,$link){
-        $this->links[]= ["label"=>$label,"link"=>$link,"danger"=>true];
+        $this->links[]= array("label"=>$label,"link"=>$link,"danger"=>true);
     }
     public function addSplitter(){
         $this->links[] = 'Splitter';
@@ -295,10 +317,10 @@ class SubMenu extends Component{
         if($this->isEmpty())
             return '';
         
-        $html='<div class="list-group">';
+        $html='<div class="list-group hidden-print">';
         foreach ($this->links as $link){
             if($link=='Splitter')
-                $html.= '</div><div class="list-group">';
+                $html.= '</div><div class="list-group hidden-print">';
             else
                 $html.='<a href="'.$link['link'].'" class="list-group-item '.(array_key_exists('danger',$link) && $link['danger']?'list-group-item-danger':'').(array_key_exists('active',$link) && $link['active']?' active':'').' ">'.
                     $link['label'].(array_key_exists('badge',$link) && $link['badge']?'<span class="badge">'.$link['badge'].'</span>':'')

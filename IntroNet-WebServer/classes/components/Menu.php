@@ -3,14 +3,14 @@ require_once 'Component.php';
 
 class Menu extends Component {
 
-    private $links = [];
+    private $links = array();
 
     public function addLink($name, $page) {
-        $this->links[] = ["name" => $name, "page" => $page];
+        $this->links[] = array("name" => $name, "page" => $page);
     }
 
     public function addsubMenu($name, Menu $submenu) {
-        $this->links[] = ["name" => $name, "submenu" => $submenu];
+        $this->links[] = array("name" => $name, "submenu" => $submenu);
     }
 
     public function build($submenu=FALSE) {

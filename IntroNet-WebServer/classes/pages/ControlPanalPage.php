@@ -6,6 +6,7 @@
  * @author hussam
  */
 class ControlPanalPage extends Page {
+    const UserType = "Planner";
     protected function build(\PageBody &$body, \SubMenu &$submenu) {
         $events = Event::getEvents("where TIMESTAMP(`startDate`,`startTime`) > now() order by startDate, startTime LIMIT 0 , 4");
         $html = '
@@ -15,6 +16,8 @@ class ControlPanalPage extends Page {
                 <div class="ControlPanal">
                 ';
         foreach ($events as $key => $event) {
+            $participants=$event->getNumberOfConferenceParticipant();
+            $participantion=$event->getNumberOfParticipantion()/$participants*100;
             $html .= '
                 <div class="col-md-3" style="text-align: center;">
                     <div class="well">
@@ -22,7 +25,7 @@ class ControlPanalPage extends Page {
                         '.$event->getStartDay().'
                     </div>
                     <div class="row">
-                        <div class="circliful" data-percent="'.$event->getNumberOfParticipantion().'" data-text="'.$event->getNumberOfParticipant().'" style="margin: auto;"></div>
+                        <div class="circliful" data-percent="'.$participantion.'" data-text="'.$participants.'" style="margin: auto;"></div>
                     </div>
                     <div class="row">
                         <div class="timer" data-date="'.$event->getStartDate().' '.$event->getStartTime().'"></div>

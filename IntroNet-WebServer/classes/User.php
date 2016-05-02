@@ -22,7 +22,7 @@ class User {
     * @param String $password the login password 
     * @return User returns an object of type user or null if the password or email is wrong
     */
-   function login($email, $password){
+   static function login($email, $password){
        $user = null;
        // for testing
        if($email=='hussam' && $password=='1234'){

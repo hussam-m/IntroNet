@@ -14,11 +14,14 @@ class Validation {
     const TIME = "/^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/i"; //HH:MM
     
     public static function validate( $input,  $regex,$required = false){
-        
-        if(preg_match ( $regex, $input )=== FALSE)
-            throw new Exception($input);
+        //var_dump([$input,$regex,preg_match ( $regex, $input )==FALSE]);
+        if(preg_match ( $regex, $input )== FALSE)
+            throw new ValidationException("<h4>Validation Error</h4> '". $input. "' is not a valid value!");
         else
-            return $input;
+            if($regex!=Validation::DATE)
+                return $input;
+            else
+                return date("Y/m/d", strtotime($input));
     }
     
 //    public static function validate(){
@@ -35,3 +38,5 @@ class Validation {
 //        
 //    }
 }
+
+class ValidationException extends Exception{}

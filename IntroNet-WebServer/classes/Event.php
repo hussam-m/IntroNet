@@ -1,18 +1,12 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- * Description of Event
+ *  
  *
- * @author raniaalkhazaali
+ * 
  */
 class Event {
-    //put your code here
     public $event_id;
     public $name;
     public $startDate;
@@ -21,8 +15,11 @@ class Event {
     public $endTime;
     public $rounds;
     public $roundLength;
+    public $eventLength;
     public $type;
-    
+    public $conference_id;
+
+
     const ONETOONE = 1;
     const ONETOMANY = 2;
 
@@ -31,6 +28,10 @@ class Event {
 //        $this->name=$name;
 //        $this->datetime=$datetime;
 //    }
+    public function __construct(){
+        $this->eventLength = $this->rounds * $this->roundLength;
+        $this->endTime = strtotime("+".$this->eventLength." minutes",strtotime($this->startTime));
+    }
     
     public static function create($name,$startDate,$startTime,$endDate,$endTime,$type) {
         $event = new Event;
@@ -66,7 +67,7 @@ class Event {
         return date("m/d/Y", strtotime($this->endDate));
     }
     public function getEndTime(){
-        return date("H:i", strtotime($this->endTime));
+        return  date("H:i",$this->endTime);
     }
     public function getCountDown(){
         return date("m/d/Y H:i", strtotime($this->endDate." ".$this->endTime)-strtotime($this->startDate." ".$this->startTime));
@@ -77,20 +78,20 @@ class Event {
     public function getType(){
         return $this->type==Event::ONETOONE?"One to One":"One to Many";
     }
-    public function getNumberOfParticipant(){
-        return rand(10,200); // this code for testing
+    public function getNumberOfConferenceParticipant(){
+        return Database::count("Participant", "WHERE conference_id=".$this->conference_id);
     }
     public function getNumberOfParticipantion(){
-        return rand(1,100); // this code for testing
+        return Database::count("Registration", "WHERE event_id=".$this->event_id);
     }
 
     
 
 
-    public function isRegister($Participant)
-    {
-        
+    public function isRegistered($participant_id){
+        return (bool) Database::count("Registration", "WHERE participant_id=$participant_id AND event_id=".$this->event_id);
     }
+    
     public function isAttended($Participant)
     {
         
@@ -107,11 +108,26 @@ class Event {
     {
         
     }
-    public function allParticipants()
+    public function getParticipants()
     {
-        
+        $participants = Database::getObjects("Participant", "", "
+SELECT * 
+FROM  Participant, Registration
+WHERE
+Registration.participant_id = Participant.participant_id
+AND
+Registration.event_id = ".$this->event_id);
+        return $participants;
     }
-    
+    public function getNumberOfParticipants(){
+        return Database::count("Participant",",Registration Where Participant.participant_id=Registration.participant_id AND event_id =".$this->event_id);
+    }
+
+    public function getConferenceName() {
+        $conference = Database::getObject("Conference","Conference_id=".$this->conference_id);
+        return $conference->name;
+    }
+
     public static function getEvents($options="") {
         //$events =[];
         //Database::get("Select Event_name, start_date, start_time, end_date, end_time FROM EVENT");
@@ -121,5 +137,60 @@ class Event {
     public static function getEvent($id,$options="") {
         $event = Database::getObject("Event","Event_id=$id ".$options);
         return $event;
+    }
+    public function getPosters($options="") {
+        /* @var $posters Poster[] */
+        $posters = Database::getObjects("Poster","WHERE Event_id= $this->event_id ".$options);
+        //var_dump($posters);
+        $numberOfParticipants = $this->getNumberOfParticipants();
+        $numberOfPosters= count($posters);
+        foreach ($posters as $poster) {
+            $poster->max = ceil($numberOfParticipants / $numberOfPosters);
+            for($i=0;$i<$this->rounds;$i++)
+                $poster->rounds[$i] = array();
+        }
+        return $posters;
+    }
+    
+    public function register($Participant_id,$preferences,$icebreaker_question="NULL",$biography="NULL"){
+        $ok=true;
+        //var_dump("start=$ok");
+        $ok= $ok && Database::insert("Registration",array(
+            "event_id"          =>  $this->event_id,
+            "participant_id"    =>  $Participant_id,
+            "icebreaker_question"=> $icebreaker_question,
+            "biography"         =>  $biography
+        ));
+        //var_dump("event=$ok");
+        //var_dump($preferences);
+        foreach ($preferences as $p) {
+            $ok= $ok && Database::insert("Preference",array(
+                "event_id"          =>  $this->event_id,
+                "participant_id"    =>  $Participant_id,
+                "preference"        =>  $p
+            ));
+            //var_dump("preference$p=$ok");
+        }
+        //var_dump("all=$ok");
+        return $ok;  
+    }
+    
+    
+    function buildSchedule() {
+        //echo $this->name;
+        
+        $participants = $this->getParticipants();
+        
+        
+        if($this->type==self::ONETOMANY){
+            $posters=$this->getPosters ();
+            return OneToManyAlgorithm::build($posters, $participants, $this);
+        }
+        
+        if($this->type==self::ONETOONE){
+            return OneToOneAlgorithm::build($participants, $this);
+        }
+        
+        
     }
 }

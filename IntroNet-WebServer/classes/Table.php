@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of Table
  *
@@ -13,14 +7,24 @@
  */
 class Table {
     //put your code here
-      private $table_id;
-        private $name;
-       
-         public function __construct($table_id) {
-        $this->table_id=$table_id;
+    public $id;
+    public $name;
+    
+    public $rounds=array();
+
+
+    public function __construct($table_id) {
+        $this->id=$table_id;
+        $this->name="Table".$table_id;
     }
     
-    public function _table($name) {
+    public function setName($name) {
         $this->name=$name;
+    }
+    public function meething($round,$p1,$p2,$p3=FALSE) {
+        if($p3)
+            $this->rounds[$round]=array($p1,$p2,$p3);
+        else
+            $this->rounds[$round]=array($p1,$p2);
     }
 }

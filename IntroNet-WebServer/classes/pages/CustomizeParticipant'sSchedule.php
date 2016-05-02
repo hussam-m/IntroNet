@@ -6,7 +6,7 @@ require_once './classes/components/Message.php';
 require_once './classes/components/Form.php';
 
 class CustomizeParticipantsSchedule extends Page {
-        
+    const UserType = "Planner";
     protected function build(PageBody &$body, SubMenu &$submenu) {
         $this->pageName = "CustomizeParticipantsSchedule";
         

@@ -3,34 +3,37 @@
 class PageDirectory {
 
     // this list have all the pages that can be accessed
-    private static $directory = [
+    private static $directory = array(
         // 
-        "home" => ["class" => "HomePage", "file" => "homePage.php"],
-        "404" => ["class" => "Page404", "file" => "Page404.php"],
-        "login" => ["class" => "LoginPage", "file" => "LoginPage.php"],
-        "Test" => ["class" => "TestPage", "file" => "TestPage.php"],
-        "Setting" => ["class" => "SettingPage", "file" => "SettingPage.php"],
+        "home" => array("class" => "HomePage", "file" => "HomePage.php"),
+        "404" => array("class" => "Page404", "file" => "Page404.php"),
+        "login" => array("class" => "LoginPage", "file" => "LoginPage.php"),
+        "Test" => array("class" => "TestPage", "file" => "TestPage.php"),
+        "Setting" => array("class" => "SettingPage", "file" => "SettingPage.php"),
         
-        // user pages
+        // Participant pages
+        "registration" => array("class" => "RegistrationPage", "file" => "RegistrationPage.php"),
+        "schedule" => array("class" => "ParticipantSchedulePage", "file" => "ParticipantSchedulePage.php"),
         
         
         //admin pages
-        "NewEvent" => ["class" => "NewEventPage", "file" => "NewEventPage.php"],
-        "EventList" => ["class" => "EventListPage", "file" => "EventListPage.php"],
-        "Event" => ["class" => "EventPage", "file" => "EventPage.php"],
-        "ControlPanal" => ["class" => "ControlPanalPage", "file" => "ControlPanalPage.php"],
-        "Timer" => ["class" => "TimerPage", "file" => "TimerPage.php"],
-        "AssignWeight" => ["class" => "AssignWeightPage", "file" => "AssignWeight.php"],
-        "NewConference" => ["class" => "NewConferencePage", "file" => "NewConferencePage.php"],
-        "Conference" => ["class" => "ConferencePage", "file" => "ConferencePage.php"],
-        "Customize" => ["class" => "CustomizeParticipantsSchedule", "file" => "CustomizeParticipant'sSchedule.php"],
-        "insertParticipant" => ["class" => "InsertParticipant", "file" => "InsertParticipant.php"],
-        "Mypage" => ["class" => "MyPage", "file" => "MyPage.php"],
-        "orginizeTable" => ["class" => "OrginizeTable", "file" => "OrginizeTable.php"],
-        "ParticipantList" => ["class" => "ParticipantListPage", "file" => "ParticipantListPage.php"],
-        "ConferenceList" => ["class" => "ConferenceListPage", "file" => "ConferenceListPage.php"]
+        "NewEvent" =>       array("class" => "NewEventPage", "file" => "NewEventPage.php"),
+        "EventList" =>      array("class" => "EventListPage", "file" => "EventListPage.php"),
+        "Event" =>          array("class" => "EventPage", "file" => "EventPage.php"),
+        "ControlPanal" =>   array("class" => "ControlPanalPage", "file" => "ControlPanalPage.php"),
+        "Timer" =>          array("class" => "TimerPage", "file" => "TimerPage.php"),
+        "AssignWeight" =>   array("class" => "AssignWeightPage", "file" => "AssignWeight.php"),
+        "NewConference" =>  array("class" => "NewConferencePage", "file" => "NewConferencePage.php"),
+        "Conference" =>     array("class" => "ConferencePage", "file" => "ConferencePage.php"),
+        "Customize" =>      array("class" => "CustomizeParticipantsSchedule", "file" => "CustomizeParticipant'sSchedule.php"),
+        "insertParticipant" => array("class" => "InsertParticipant", "file" => "InsertParticipant.php"),
+        "Mypage" =>         array("class" => "MyPage", "file" => "MyPage.php"),
+        "orginizeTable" =>  array("class" => "OrginizeTable", "file" => "OrginizeTable.php"),
+        "ParticipantList" => array("class" => "ParticipantListPage", "file" => "ParticipantListPage.php"),
+        "ConferenceList" => array("class" => "ConferenceListPage", "file" => "ConferenceListPage.php"),
         
-    ];
+        "SchedulePage"  =>  array("class" => "SchedulePage", "file" => "SchedulePage.php")
+    );
 
     public static function getPage($name,$menu,$user) {
         if(array_key_exists($name,self::$directory))
@@ -42,8 +45,8 @@ class PageDirectory {
             if($page==null)
                 throw new Exception("Page ".$name." does not exist");
             
-            if(file_exists('classes/pages/' . $page["file"]))
-                require_once 'classes/pages/' . $page["file"];
+            if(file_exists(__DIR__.'/pages/' . $page["file"]))
+                require_once __DIR__.'/pages/' . $page["file"];
             else
                 throw new Exception("File ".$page["file"]." does not exist");
             

@@ -1,14 +1,8 @@
 <?php
-require_once 'Page.php';
-require_once './classes/components/CustomHTML.php';
-require_once './classes/components/Message.php';
 
-/**
- * Description of newPHPClass
- *
- * @author hussam
- */
+
 class NewEventPage extends Page {
+    const UserType = "Planner";
     public function init(&$css, &$js, &$angularjs) {
         $angularjs=TRUE;
     }
@@ -79,17 +73,17 @@ class NewEventPage extends Page {
         $form->addInput(Input::selectInput("typeOfEvent", "Type Of Event", array("One to One", "One to Many")));
         
         $section = $form->newSection("Fill two fields and the third one will be calculated");
-        $section->addInput(Input::createGroupInput([
+        $section->addInput(Input::createGroupInput(array(
             Input::textInput("numberOfRounds","Number of Rounds","",True),
             Input::textInput("timeOfSessions","Length of the Sessions and Breaks","",True),
             Input::textInput("lengthOfEntireEvent","Length of The Entire Event","",True),
-            ]));
+            )));
         
         
-        $form->addInput(Input::createGroupInput([
+        $form->addInput(Input::createGroupInput(array(
             Input::dateInput("eventDay","Event Date","",TRUE),
             Input::timeInput("eventTime","Event Start Time","",TRUE)
-            ]));
+            )));
         
         $posters = Input::tokenInput("posters","Posters");
         $posters->showOn='typeOfEvent=="One to Many"';

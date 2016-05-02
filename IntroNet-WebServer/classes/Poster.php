@@ -13,21 +13,21 @@
  */
 class Poster {
     //put your code here
-    private $id;
-    private $name;
-    private $participants=[];
-    private $max;
+//    private $id;
+    public $name;
+    public $participants=array();
+    public $max;
     private $min;
-    private $rounds = [];
+    public $rounds=array();
 
 
-    public function __construct($poster_id,$rounds,$max,$min=1) {
-        $this->id=$poster_id;
-        $this->max = $max;
-        $this->min = $min;
-        for($i=0;$i<$rounds;$i++)
-            $this->rounds[$i] =[];
-    }
+//    public function __construct($poster_id,$rounds,$max,$min=1) {
+//        $this->id=$poster_id;
+//        $this->max = $max;
+//        $this->min = $min;
+//        for($i=0;$i<$rounds;$i++)
+//            $this->rounds[$i] =[];
+//    }
     
     
     public function add($participant,$round){
@@ -47,6 +47,7 @@ class Poster {
         return count($this->rounds[$round])<$this->min;
     }
     public function isRoundFull($round) {
+        //var_dump($this->rounds);
         return count($this->rounds[$round])>=$this->max;
         //return count($this->rounds[$round])>$round;
     }
@@ -114,5 +115,15 @@ class Poster {
         return $str; 
     }
  
+     public function __get($name) {
+        switch ($name) {
+            case "name":
+                return $this->name;
+            case "id":
+                return $this->poster_id;
+            default:
+                throw new Exception($name." does not exist!");
+        }
+    }
      
 }

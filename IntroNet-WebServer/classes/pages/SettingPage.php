@@ -6,6 +6,7 @@
  * @author hussam
  */
 class SettingPage extends Page {
+    const UserType = "Planner";
     public function callBack($data, $action, \PageBody &$body) {
 //        $_SESSION['db_host']=$_POST['db_host'];
 //        $_SESSION['db_name']=$_POST['db_name'];

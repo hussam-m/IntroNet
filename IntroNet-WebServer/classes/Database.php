@@ -55,11 +55,16 @@ class Database {
     public static function getObjects($name,$options="",$sql="") {
         //session_start();
         if($sql=="") $sql ="Select * FROM ".$name;
-        $data = [];
+        $data = array();
         $connection = self::connect();
         $STH = $connection->query($sql." ".$options);
+        //var_dump($sql." ".$options);
         if($STH){
-            $STH->setFetchMode(PDO::FETCH_CLASS, $name);
+            if($name!="")
+                $STH->setFetchMode(PDO::FETCH_CLASS, $name);
+            else{                
+                return $STH->fetchAll(PDO::FETCH_COLUMN);
+            }
 
             while($obj = $STH->fetch()) {
                 $data[]=$obj;
@@ -70,12 +75,12 @@ class Database {
             return FALSE;
     }
     
-        public static function getObject($name,$where) {
+    public static function getObject($name,$where) {
         //session_start();
         $connection = self::connect();
         $STH = $connection->query("Select * FROM ".$name." WHERE ".$where);
         if($STH){
-            $STH->setFetchMode(PDO::FETCH_CLASS, 'Event');
+            $STH->setFetchMode(PDO::FETCH_CLASS, $name);
             return $STH->fetch();
         }
         else
@@ -101,27 +106,35 @@ class Database {
         return null;
     }
     
+    
+    public static function count($name,$options="") {        
+        $connection = self::connect();
+        $STH = $connection->query("SELECT count(*) as total from $name ".$options);
+        return $STH->fetchColumn();
+    }
+    
     /**
      * Inserting a new row in a table
      * @param String $table name of the database table
      * @param String $data the new row's data the needs to be inseated
      * @return boolean
      */
-    public static function insert($table,$data) {
-        // only for testing
-        if(isset($_SESSION["db"]))
-            $db = json_decode($_SESSION["db"]);
-        else
-            $db = new stdClass();
-//        if(!isset($db))
-//            $db = [];
-        if(!isset($db->$table))
-            $db->$table=[];
-        array_push($db->$table, $data);
-        $_SESSION["db"] = json_encode($db);
-        
-        //return id
-        return count($db->$table)-1;
+    public static function insert($table,Array $values,$id=Null) {
+        $connection = self::connect();
+        //var_dump($values);
+        var_dump("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
+        $count = $connection->exec("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
+        //echo 'id&cound=';
+        //var_dump (isset($id) && $count);
+        //echo ' id= '.$id;
+        if($id && $count){
+            //echo "s_id=".$connection->lastInsertId($id)." or ".$connection->lastInsertId();
+            return $connection->lastInsertId($id);
+        }
+            
+        //var_dump($count);
+        /* Return number of rows that were inserted */
+        return $count;
     }
     
     /**
@@ -133,6 +146,23 @@ class Database {
      * @todo implementing the function delete
      */
     public static function delete($table,$id){
+        $connection = self::connect();
+        
+        /* Delete all rows from the FRUIT table */
+        $count = $connection->exec("DELETE FROM fruit WHERE colour = 'red'");
+
+        /* Return number of rows that were deleted */
+        return $count;
+    }
+    
+    public static function update($name,$values,$id) {
+        $connection = self::connect();
+        
+        /* update a row from the table */
+        $count = $connection->exec("UPDATE $name SET $values WHERE $id");
+        //echo "UPDATE $name SET $values WHERE $id";
+        /* Return number of rows that were updated */
+        return $count;
         
     }
     

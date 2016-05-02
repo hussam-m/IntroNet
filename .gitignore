@@ -6,3 +6,5 @@
 /IntroNet-WebServer/config.php
 IntroNet-WebServer/config.php
 IntroNet-WebServer/vendor
+IntroNet-WebServer/vendor/composer/
+.idea/

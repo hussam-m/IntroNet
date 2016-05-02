@@ -151,3 +151,12 @@ html, body {
 .datepicker {
     padding: 0 !important;
 }
+.alert{
+    .h1, .h2, .h3, h1, h2, h3 {
+    margin-top: 0;
+    }
+}
+
+@media print {
+    .new-page {page-break-after: always;}
+}

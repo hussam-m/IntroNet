@@ -8,8 +8,8 @@ require_once 'Component.php';
 class HtmlTable extends Component {
     
     //private $number_of_columns;
-    private $rows=[];
-    private $head=[];
+    private $rows=array();
+    private $head=array();
 
 //    public function __construct($number_of_columns) {
 //        $this->number_of_columns=$number_of_columns;
@@ -38,7 +38,10 @@ class HtmlTable extends Component {
             echo '<tr>';
             foreach ($row as $column){
                 echo '<td>';
-                echo $column;
+                if(is_array($column))
+                    echo implode("<br/>", $column);
+                else 
+                    echo $column;
                 echo '</td>';
             }
             echo '</tr>';

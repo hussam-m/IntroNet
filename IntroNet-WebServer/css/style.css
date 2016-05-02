@@ -118,4 +118,11 @@ html, body {
 .datepicker {
   padding: 0 !important; }
 
+.alert .h1, .alert .h2, .alert .h3, .alert h1, .alert h2, .alert h3 {
+  margin-top: 0; }
+
+@media print {
+  .new-page {
+    page-break-after: always; } }
+
 /*# sourceMappingURL=style.css.map */

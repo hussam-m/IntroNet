@@ -30,6 +30,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
     }
     
     public static function setUpBeforeClass(){
+        //xdebug_get_code_coverage();
         $capabilities = array(WebDriverCapabilityType::BROWSER_NAME => 'firefox');
         self::$webDriver2 = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
     }
@@ -37,6 +38,7 @@ class EventTest extends PHPUnit_Framework_TestCase {
     public static function tearDownAfterClass(){
         //if(isset(self::$webDriver2))
         self::$webDriver2->close();
+        //xdebug_get_code_coverage();
     }
     
 

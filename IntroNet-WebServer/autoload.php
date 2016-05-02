@@ -5,7 +5,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 //$path = dirname(dirname(__FILE__)).'/IntroNet-WebServer/';// $_SERVER['DOCUMENT_ROOT'];
 if(!defined('__ROOT__'))
-    define('__ROOT__', dirname(dirname(__FILE__)).'/IntroNet-WebServer/'); 
+    define('__ROOT__', __DIR__); 
 //echo 'path='.__ROOT__;
 spl_autoload_register(
     function($class) {
@@ -27,6 +27,10 @@ spl_autoload_register(
                 'User'          => __ROOT__.'/classes/User.php',
                 'Planner'       => __ROOT__.'/classes/Planner.php',
                 'Participant'   => __ROOT__.'/classes/Participant.php',
+                'Schedule'      => __ROOT__.'/classes/Schedule.php',
+                'Invitation'    => __ROOT__.'/classes/Invitation.php',
+                'Organisation'  => __ROOT__.'/classes/Organisation.php',
+                'Table'         => __ROOT__.'/classes/Table.php',
                 
                 // UI
                 'Page'          => __ROOT__.'/classes/pages/Page.php',
