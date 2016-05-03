@@ -54,19 +54,19 @@ class ConferencePage extends Page {
         }
 
         $submenu->addLink("Conference Details", "?page=Conference&conference=" . $this->conference->conference_id, $subPage == '');
-        $submenu->addLink("Update Conference", "?page=Conference&conference=" . $this->conference->conference_id . "&subpage=update", $subPage == 'update');
-        $submenu->addSplitter();
-        $submenu->addLink("Send Email Invitation", "?page=Conference&conference=" . $this->conference->conference_id . "&subpage=send", $subPage == 'send');
-        $submenu->addLink("Add Participant", "#");
+        //$submenu->addLink("Update Conference", "?page=Conference&conference=" . $this->conference->conference_id . "&subpage=update", $subPage == 'update');
+       // $submenu->addSplitter();
+        //$submenu->addLink("Send Email Invitation", "?page=Conference&conference=" . $this->conference->conference_id . "&subpage=send", $subPage == 'send');
+        //$submenu->addLink("Add Participant", "#");
         $submenu->addSplitter();
         $submenu->addLink("All Participants", "#", false, false, $this->conference->getNumberOfParticipants());
         $submenu->addLink("New Participants", "#", false, false, $this->conference->getNumberOfNewParticipants());
-        $submenu->addLink("Participants with no schedule", "#", false, false, $this->conference->getNumberOfParticipants() - $this->conference->getNumberOfScheduleParticipants());
-        $submenu->addLink("Conference Attendances", "#", false, false, 0);
+        //$submenu->addLink("Participants with no schedule", "#", false, false, $this->conference->getNumberOfParticipants() - $this->conference->getNumberOfScheduleParticipants());
+        //$submenu->addLink("Conference Attendances", "#", false, false, 0);
         $submenu->addSplitter();
 
         $submenu->addLink("Build Schedule", "?page=Conference&subpage=BuildSchedule&conference=" . $this->conference->conference_id, $subPage == "BuildSchedule");
-        $submenu->addLink("Send Schedule", "#");
+        //$submenu->addLink("Send Schedule", "#");
         $submenu->addLink("Print All Schedule", "?page=Conference&subpage=PrintAllSchedule&conference=" . $this->conference->conference_id, $subPage == 'PrintAllSchedule');
         $submenu->addSplitter();
         $submenu->addDangerLink("Delete Conference", "#");
@@ -200,5 +200,13 @@ class ConferencePage extends Page {
             $body->addToTop(new Message($e->getMessage(), Message::DANGER));
         }
     }
+    
+//    private function viewAllParticipants(PageBody &$body) {
+//        $participants = $this->conference->getParticipants();
+//        
+//    }
+//    private function conferenceAttendances(PageBody &$body) {
+//        $body->
+//    }
 
 }

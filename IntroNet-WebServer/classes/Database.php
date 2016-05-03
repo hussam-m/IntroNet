@@ -54,7 +54,7 @@ class Database {
     
     public static function getObjects($name,$options="",$sql="") {
         //session_start();
-        if($sql=="") $sql ="Select * FROM ".$name;
+        if($sql=="") $sql ="Select * FROM `$name`";
         $data = array();
         $connection = self::connect();
         $STH = $connection->query($sql." ".$options);
@@ -71,8 +71,12 @@ class Database {
             }
             return $data;
         }
-        else
+        else{
+            var_dump($sql." ".$options);
+            var_dump($connection->errorInfo());
             return FALSE;
+        }
+            
     }
     
     public static function getObject($name,$where) {
@@ -86,26 +90,7 @@ class Database {
         else
             return FALSE;
     }
-    
-    /**
-     * Gets a row form a table
-     * @param type $table The table name
-     * @param type $row the id of the row
-     * @return Array
-     */
-    public static function  getRow($table,$row) {
-        if(isset($_SESSION["db"])){
-            //var_dump (json_decode($_SESSION["db"]));
-            $db = json_decode($_SESSION["db"]);
-            //if(isset($db->$table))
-                $rows = $db->$table;
-                //var_dump($rows[$row]);
-                return $rows[$row];
-        }
-        else
-        return null;
-    }
-    
+
     
     public static function count($name,$options="") {        
         $connection = self::connect();
@@ -132,7 +117,11 @@ class Database {
             return $connection->lastInsertId($id);
         }
             
-        //var_dump($count);
+        /*
+        if($count==FALSE)
+            var_dump("INSERT INTO $table (".implode(",", array_keys($values)).") VALUES (".implode(",", $values).")");
+                var_dump($connection->errorInfo());
+        */ 
         /* Return number of rows that were inserted */
         return $count;
     }

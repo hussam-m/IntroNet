@@ -66,6 +66,11 @@ class Participant extends User {
         return array_search($preference, $this->preferences)!== FALSE;
     }
     
+    /**
+     * 
+     * @param int $id Participant's id
+     * @return Participant
+     */
     public static function getParticipant($id) {
         return Database::getObject("Participant", "participant_id=$id");
     }

@@ -30,7 +30,7 @@ class LoginPage extends Page {
             // redirct the user to the home page
             $host  = $_SERVER['HTTP_HOST'];
             $uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-            $extra = 'index.php?page=home';
+            $extra = 'index.php?page=ControlPanal';
             header("Location: http://$host$uri/$extra");
             exit;
         }
@@ -40,8 +40,8 @@ class LoginPage extends Page {
 
     protected function build(PageBody &$body,SubMenu &$submenu) {
         $submenu->addLink("Sign in", "#",TRUE);
-        $submenu->addLink("Sign up", "#");
-        $submenu->addLink("Forget Password", "#");
+        //$submenu->addLink("Sign up", "#");
+        //$submenu->addLink("Forget Password", "#");
         
         $loginForm = new Form("login");
         $loginForm->addInput(Input::textInput("email", "Enter your Email:"));

@@ -17,6 +17,8 @@ class RegistrationPage extends Page {
     protected function build(PageBody &$body, SubMenu &$submenu) {
         if (count($_POST) == 0)
             $this->login($body, $submenu);
+        
+        $body->addToCenter(new CustomHTML('<script> $("nav").hide() </script>'));
     }
 
     private function login(PageBody &$body) {
@@ -41,12 +43,25 @@ class RegistrationPage extends Page {
     }
 
     private function registration(PageBody &$body, $user, $data) {
+        /* @var $conference  Conference */
         $conference = Conference::getConference($data['conference']);
         $events = $conference->getEvents();
         $organisations = $conference->getOrganisations();
         
         //var_dump($organisations);
         $body->addToCenter(new CustomHTML("<h3>Hello $user->fname,</h3>"));
+        
+        $body->addToCenter(new CustomHTML('
+        <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#registration" aria-controls="registration" role="tab" data-toggle="tab">Registration</a></li>
+    <li role="presentation"><a href="#participants" aria-controls="participants" role="tab" data-toggle="tab">Participants</a></li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="registration">
+        '));
+        
+        
         $body->addToCenter(new CustomHTML("<h4>What events would you like to participate in?</h4>"));
         $form = new Form("registration");
 
@@ -77,12 +92,26 @@ class RegistrationPage extends Page {
 //        //$section->addInput();
 
         $section = $form->newSection("Extra Information <small>(optional)</small>");
-        $section->addInput(Input::textInput("icebreaker", "Icebreaker Question"), $form->newSection());
-        $section->addInput(Input::textareaInput("bio", "Write a short biography about yourself"), $form->newSection());
+        $section->addInput(Input::textInput("icebreaker", "Icebreaker Question"));
+        $section->addInput(Input::textareaInput("bio", "Write a short biography about yourself"));
+        $section->addInput(Input::checkBox("disability", "Are you handicapped?"));
         $section->addInput(Input::hiddenInput("conference", $conference->conference_id));
         $section->addInput(Input::hiddenInput("participant", $user->id));
         
         $body->addToCenter($form);
+        
+        $body->addToCenter(new CustomHTML('</div><div role="tabpanel" class="tab-pane" id="participants">'));
+        
+        $table = new HtmlTable();
+        $table->setHead(array("Name","organisation"));
+        /* @var $participants Participant[] */
+        $participants = Database::getObjects("Participant","","SELECT Participant.fname as fname,Participant.lname as lname, Organisation.name as organisation From Participant,Organisation Where Participant.conference_id=$conference->conference_id AND Organisation.organisation_id=Participant.organisation ORDER By lname" );
+        foreach ($participants as $key => $participant) {
+            $table->addRow(array($participant->name,$participant->organisation));
+        }
+        $body->addToCenter($table);
+
+        $body->addToCenter(new CustomHTML('</div></div>'));
     }
 
     public function callBack($data, $action, \PageBody &$body) {
@@ -91,7 +120,7 @@ class RegistrationPage extends Page {
             $password = filter_input(INPUT_POST, 'password');
             if ($email && $password) {
                 $participant = Participant::login($email,$password);
-                var_dump($participant);
+                //var_dump($participant);
                 if ($participant) {
                     $this->participant = $participant;
                 } else {

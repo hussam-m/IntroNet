@@ -52,11 +52,12 @@ class OneToManyAlgorithm {
 
                 $posterSelected = FALSE;
                 //get poster that participant wants to visit
-                if(array_key_exists($round, $participant->getPreferences($event)))
-                    $poster = $posters[$participant->getPreferences($event)[$round]];
-                else
-                    $poster=null;
-                
+                if (array_key_exists($round, $participant->getPreferences($event))) {
+                    $x=$participant->getPreferences($event);
+                    $poster = $posters[$x[$round]];
+                } else
+                    $poster = null;
+
                 $step = 0;
                 while (!$posterSelected) {
                     //echo '</br>current preference=' . $participant->getPreferences($event)[$round];
@@ -74,9 +75,10 @@ class OneToManyAlgorithm {
                         // swap preferences in case if we used another preference
                         if ($step != 0) {
                             //echo "<br/> Start Swap " . implode($participant->getPreferences($event), ',');
-                            $temp = $participant->getPreferences($event)[$round];
-                            $participant->getPreferences($event)[$round] = $participant->getPreferences($event)[$round + $step];
-                            $participant->getPreferences($event)[$round + $step] = $temp;
+                            $x=$participant->getPreferences($event);
+                            $temp = $x[$round];
+                            $x[$round] = $x[$round + $step];
+                            $x[$round + $step] = $temp;
                             //echo "<br/> End Swap " . implode($participant->getPreferences($event), ',');
                         }
                         // lower preference's weight if they get his/her preference
@@ -93,7 +95,8 @@ class OneToManyAlgorithm {
                             //echo "<br/> #preferences=".count($participant->getPreferences($event))." r+s=". ($round + $step);
                             //echo "<p style='color:red'>participant have another preferences";
                             // choose the next preference
-                            $poster = $posters[$participant->getPreferences($event)[$round + $step]];
+                            $x=$participant->getPreferences($event);
+                            $poster = $posters[$x[$round + $step]];
                             //echo "<br/> $poster is the selected</p>";
                         } else {
                             $step = 0;
@@ -224,7 +227,7 @@ class OneToManyAlgorithm {
      */
     private static function sortPosters($posters, $participants, $round, $participant,$event) {
         //$rounds = $event->rounds;
-        $p = []; // array_fill(1, count($posters) - 1, 0);
+        $p = array(); // array_fill(1, count($posters) - 1, 0);
         
         
         foreach ($participants as $pa) {
@@ -281,9 +284,9 @@ class OneToManyAlgorithm {
     // TODO: needs to be sotred for each round
     private static function sortPosterDESC($posters, $rounds) {
         //echo "</br> start sorting DESC - { rounds = $rounds }";
-        $p = [];
+        $p = array();
         for ($round = 0; $round < $rounds; $round++) {
-            $p[$round] = [];
+            $p[$round] = array();
             foreach ($posters as $key => $poster) {
                 $p[$round][$key - 1] = $poster->getTotalWeight($round);
             }
@@ -316,12 +319,12 @@ class OneToManyAlgorithm {
     }
 
     public static function testSortPosters() {
-        $posters = [1, 2, 3, 4];
+        $posters = array(1, 2, 3, 4);
 
-        $participants = [];
-        $participants[0] = new Participant([2, 1, 4]);
-        $participants[1] = new Participant([1, 4, 2]);
-        $participants[2] = new Participant([2, 3, 4]);
+        $participants = array();
+        $participants[0] = new Participant(array(2, 1, 4));
+        $participants[1] = new Participant(array(1, 4, 2));
+        $participants[2] = new Participant(array(2, 3, 4));
 
         echo 'Posters:';
         //var_dump($posters);
@@ -337,15 +340,15 @@ class OneToManyAlgorithm {
     public static function testBuild() {
         $rounds = 2;
         $max = 3;
-        $posters = [
+        $posters = array(
             '1' => new Poster(1, $rounds, $max),
             '2' => new Poster(2, $rounds, $max),
-            '3' => new Poster(3, $rounds, $max)];
+            '3' => new Poster(3, $rounds, $max));
 
-        $participants = [];
-        $participants[0] = new Participant(1, [2, 1]);
-        $participants[1] = new Participant(2, [2, 3]);
-        $participants[2] = new Participant(3, [2, 1]);
+        $participants = array();
+        $participants[0] = new Participant(1, array(2, 1));
+        $participants[1] = new Participant(2, array(2, 3));
+        $participants[2] = new Participant(3, array(2, 1));
 
         echo 'Posters:';
 //            var_dump($posters);
@@ -365,23 +368,23 @@ class OneToManyAlgorithm {
         $rounds = 2;
         $max = 3;
         $min = 1;
-        $posters = [
+        $posters = array(
             '1' => new Poster(1, $rounds, $max, $min),
             '2' => new Poster(2, $rounds, $max, $min),
             '3' => new Poster(3, $rounds, $max, $min),
             '4' => new Poster(4, $rounds, $max, $min),
             '5' => new Poster(5, $rounds, $max, $min),
-        ];
+        );
 
-        $participants = [];
-        $participants[] = new Participant(1, [2, 1]);
-        $participants[] = new Participant(2, [2, 1]);
-        $participants[] = new Participant(3, [2, 1]);
-        $participants[] = new Participant(4, [2, 1]);
-        $participants[] = new Participant(5, [2, 1]);
-        $participants[] = new Participant(6, [2, 1]);
-        $participants[] = new Participant(7, [2, 1]);
-        $participants[] = new Participant(8, [2, 1]);
+        $participants = array();
+        $participants[] = new Participant(1, array(2, 1));
+        $participants[] = new Participant(2, array(2, 1));
+        $participants[] = new Participant(3, array(2, 1));
+        $participants[] = new Participant(4, array(2, 1));
+        $participants[] = new Participant(5, array(2, 1));
+        $participants[] = new Participant(6, array(2, 1));
+        $participants[] = new Participant(7, array(2, 1));
+        $participants[] = new Participant(8, array(2, 1));
 
         echo 'Posters:';
 //            var_dump($posters);
@@ -408,13 +411,13 @@ class OneToManyAlgorithm {
 
         $max = ceil($numberOfParticipants / $numberOfPosters);
         $min = 1;
-        $posters = [];
+        $posters = array();
         for ($i = 1; $i <= $numberOfPosters; $i++)
             $posters[$i] = new Poster($i, $rounds, $max, $min);
 
-        $participants = [];
+        $participants = array();
         for ($i = 1; $i <= $numberOfParticipants; $i++)
-            $participants[$i] = new Participant($i, [2, 1, 3, 5]);
+            $participants[$i] = new Participant($i, array(2, 1, 3, 5));
 
 
         //echo 'Posters:';
@@ -444,9 +447,4 @@ class OneToManyAlgorithm {
 
 }
 
-//OneToManyAlgrithm::testSortPosters();
-//echo '</br>-----------------------</br>';
-
-//for($i=0;$i=10;$i++)
-//OneToManyAlgorithm::testBuild3(rand(3, 20), rand(10, 100), rand(1, 5));
 class AlgorithmException extends Exception{}

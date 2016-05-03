@@ -103,6 +103,14 @@ abstract class Page {
                 <!-- CSS -->
                 <?php if($GLOBALS['config']['theme'] === "Dark"): ?>
                     <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css" crossorigin="anonymous">
+                <?php elseif($GLOBALS['config']['theme'] === "Orange"): ?>
+                    <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css" crossorigin="anonymous">
+                <?php elseif($GLOBALS['config']['theme'] === "Dark Blue"): ?>
+                    <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css" crossorigin="anonymous">
+                <?php elseif($GLOBALS['config']['theme'] === "Simple"): ?>
+                    <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css" crossorigin="anonymous">
+                <?php elseif($GLOBALS['config']['theme'] === "Modern"): ?>
+                    <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css" crossorigin="anonymous">
                 <?php  else: ?>
                     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
                 <?php endif; ?>
@@ -217,7 +225,7 @@ abstract class Page {
             </div>
             </div>
             
-            <footer class="panel-footer footer">
+            <footer class="panel-footer footer hidden-print">
                 <div class="container">
                     <p class="text-muted">IntroNet &copy; <?=date("Y")?></p>
                 </div>

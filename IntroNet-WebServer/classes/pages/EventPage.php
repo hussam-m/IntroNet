@@ -1,8 +1,9 @@
 <?php
+
 /**
  * This Page shows Event's information
- *
- * 
+ *  @property string UserType Type of the web user
+ *  @property Event $event The event that planner created
  */
 class EventPage extends Page {
 
@@ -12,9 +13,10 @@ class EventPage extends Page {
 
     public function callBack($data, $action, PageBody &$body) {
         if (array_key_exists("do", $data))
-            switch ($data["do"]) {
+            {
+switch ($data["do"]) {
                 case "create": // create a new event
-                    
+
                     $this->event = new stdClass(); // for testing - should be Event class
                     $this->event->name = $data['eventName'];
 
@@ -23,13 +25,14 @@ class EventPage extends Page {
                     $body->addToTop(new Message("Event was created", Message::SUCCESS));
                     break;
                 case "update": // update an event
-                    $values = "name='".  Validation::validate($data['eventName'],  Validation::NAME) ."'";
-                    $values .= ",startDate='".  Validation::validate($data['startDate'],  Validation::DATE) ."'";
-                    $values .= ",startTime='".  Validation::validate($data['startTime'],  Validation::TIME) ."'";
-                    $this->event->id = Database::update("Event", $values, "event_id=".$data['id']);
+                    $values = "name='" . Validation::validate($data['eventName'], Validation::NAME) . "'";
+                    $values .= ",startDate='" . Validation::validate($data['startDate'], Validation::DATE) . "'";
+                    $values .= ",startTime='" . Validation::validate($data['startTime'], Validation::TIME) . "'";
+                    Database::update("Event", $values, "event_id=" . $data['id']);
                     $body->addToTop(new Message("Event was Updated", Message::SUCCESS));
                     break;
             }
+}
     }
 
     protected function build(PageBody &$body, SubMenu &$submenu) {
@@ -54,22 +57,26 @@ class EventPage extends Page {
         $submenu->addLink("Event Details", "?page=Event&event=" . $this->event->event_id, $subPage == '');
         $submenu->addLink("Update Event", "?page=Event&event=" . $this->event->event_id . "&subpage=update", $subPage == 'update');
         $submenu->addSplitter();
-        $submenu->addLink("Send Email Invitation", "?page=Event&event=" . $this->event->event_id . "&subpage=send", $subPage == 'send');
-        $submenu->addSplitter();
-        $participants=$this->event->getNumberOfParticipants();
-        $missing=$participants - $this->event->getNumberOfParticipantion();
+        //$submenu->addLink("Send Email Invitation", "?page=Event&event=" . $this->event->event_id . "&subpage=send", $subPage == 'send');
+        //$submenu->addSplitter();
+        $participants = $this->event->getNumberOfParticipants();
+        $missing = $participants - $this->event->getNumberOfParticipantion();
         $submenu->addLink("Show All Participants", "?page=Event&event=" . $this->event->event_id . "&subpage=participants", $subPage == 'participants', false, $participants);
-        $submenu->addLink("Show Missing Participants", "#", false, false, $missing);
-        $submenu->addLink("Show Event Attendances", "#", false, false, 10);
-        $submenu->addSplitter();
-        $submenu->addLink("Build Schedule", "#");
-        $submenu->addLink("Send Schedule", "#");
-        $submenu->addLink("Start Timer", "#");
+        //$submenu->addLink("Show Missing Participants", "#", false, false, $missing);
+        //$submenu->addLink("Show Event Attendances", "#", false, false, 10);
+        //$submenu->addSplitter();
+        //$submenu->addLink("Build Schedule", "#");
+        //$submenu->addLink("Send Schedule", "#");
+        //$submenu->addLink("Start Timer", "#");
+        if ($this->event->type == Event::ONETOONE) {
+            $submenu->addLink("Event Tables", "?page=Event&event=" . $this->event->event_id . "&subpage=EventTables", $subPage == 'EventTables', false, floor($participants / 2));
+            $submenu->addLink("Print Table Names", "?page=Event&event=" . $this->event->event_id . "&subpage=printTableNames", $subPage == 'printTableNames');
+        }
         $submenu->addSplitter();
         $submenu->addDangerLink("Delete Event", "#");
 
         $body->addToTop(new CustomHTML("
-            <div class='page-header'>
+            <div class='page-header hidden-print'>
                 <h1> " . $this->event->name . "</h1>
             </div>
         "));
@@ -98,7 +105,7 @@ class EventPage extends Page {
                 </dl>
             "));
         else if ($subPage == 'update') {
-            $form = new Form("Event&event=".$this->event->event_id."&subpage=update");
+            $form = new Form("Event&event=" . $this->event->event_id . "&subpage=update");
             $form->addInput(Input::textInput("eventName", "Event Name", $this->event->name, TRUE));
             $form->addInput(Input::createGroupInput(array(
                         Input::dateInput("startDate", "Start Date", $this->event->getStartDate(), TRUE),
@@ -121,14 +128,69 @@ class EventPage extends Page {
             $form->addInput(Input::textInput("subject", "Subject", "Invitation to " . $this->event->name));
             $form->addInput(Input::textareaInput("message", "Message"));
             $body->addToCenter($form);
-        } else if ($subPage=='participants'){
-            $table= new HtmlTable();
-            $table->setHead(array("First Name","Last Name","Email","Phone"));
+        } else if ($subPage == 'participants') {
+            $table = new HtmlTable();
+            $table->setHead(array("First Name", "Last Name", "Email", "Phone"));
             foreach ($this->event->getParticipants() as $key => $participant) {
-                $table->addRow(array($participant->fname,$participant->lname,$participant->email,$participant->phone));
+                $table->addRow(array($participant->fname, $participant->lname, $participant->email, $participant->phone));
             }
             $body->addToCenter($table);
+        } elseif ($subPage == "EventTables") {
+
+            /* @var  $tables Table[]  */
+            $tables = Database::getObjects("Table", "Where event_id=" . $this->event->event_id);
+            //var_dump($tables);
+            $form = new Form("");
+            for ($i = 0; $i < floor($participants / 2); $i++) {
+                $tableName = "";
+                if ($tables)
+                    if (array_key_exists($i, $tables))
+                        $tableName = $tables[$i]->table_name;
+//                else
+//                    $tableName = "Table ".$i;
+
+                $form->addInput(
+                        Input::textInput("table-" . ($i + 1), "Table " . ($i + 1) . " Name", $tableName)
+                );
+            }
+            $body->addToCenter($form);
+        } elseif ($subPage == "printTableNames") {
+            $this->printTableNames($body,$participants);
         }
+    }
+
+    function printTableNames(PageBody &$body,$participants) {
+
+        /* @var  $tables Table[]  */
+        $tables = Database::getObjects("Table", "Where event_id=" . $this->event->event_id);
+        //var_dump($tables);
+
+        for ($i = 0; $i < floor($participants / 2); $i++) {
+            $tableName = "";
+            if ($tables)
+                if (array_key_exists($i, $tables))
+                    $tableName = $tables[$i]->table_name;
+//                else
+//                    $tableName = "Table ".$i;
+            $body->addToCenter(new CustomHTML("<div class='new-page row table-print visible-print-block' style='text-align: center;'><div class='center-block'>"));
+            $body->addToCenter(new CustomHTML("<div style='height:80%'></div>"));
+            $body->addToCenter(new CustomHTML("<h1>Table " . ($i + 1) ."</h1>"));
+            $body->addToCenter(new CustomHTML("<h2>" . $tableName ."</h2>"));
+            $body->addToCenter(new CustomHTML("</div></div>"));
+        }
+        $body->addToBottom(new CustomHTML('
+<script>
+    window.print();
+</script>        
+        '));
+//        ob_start();
+        ?>
+
+        <?php
+//
+//        $html = ob_get_contents();
+//        ob_clean();
+//        return new CustomHTML($html);
     }
 
 }

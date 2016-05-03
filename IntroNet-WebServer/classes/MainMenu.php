@@ -26,7 +26,7 @@ class MainMenu extends Menu {
         $conferenceMenu = new Menu();
         $conferenceMenu->addLink("New Conference", "NewConference");
         $conferenceMenu->addLink("View All Conferences", "ConferenceList");
-        $conferenceMenu->addLink("Send Invitation", "send");
+        //$conferenceMenu->addLink("Send Invitation", "send");
         $this->addsubMenu("Conference", $conferenceMenu);
         
         $eventMenu = new Menu();

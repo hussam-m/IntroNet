@@ -13,9 +13,11 @@ class Table {
     public $rounds=array();
 
 
-    public function __construct($table_id) {
-        $this->id=$table_id;
+    public function __construct($table_id=-1) {
+        if($table_id>-1){
+            $this->id=$table_id;
         $this->name="Table".$table_id;
+        }
     }
     
     public function setName($name) {

@@ -18,6 +18,12 @@ class Conference {
         $conferences = Database::getObjects("Conference",$options);
         return $conferences;
     }
+    
+    /**
+     * 
+     * @param int $id Conference id
+     * @return Conference
+     */
     public static function getConference($id){
         $conference = Database::getObject("Conference"," conference_id = $id ");
         return $conference;
@@ -73,6 +79,10 @@ WHERE Participant.conference_id =$id AND Organisation.organisation_id = Particip
         return Database::count("Participant",",Schedule,Event Where Schedule.participant_id = Participant.participant_id AND Schedule.event_id = Event.event_id AND  Event.conference_id =".$this->conference_id);
     }
     
+    /**
+     * 
+     * @return Event[]
+     */
     public function getEvents() {
         $events = Event::getEvents("Where conference_id=".$this->conference_id);
         return $events;
