@@ -6,6 +6,18 @@
  * This class is the superclass of every webpage
  * @property String UserType Type of user (User/Planner/Participant)
  * @property PageBody body The body of the page
+ * @property string[] $keywords This contatins the keywords in the page
+ * @property string $description Contains the description of the page
+ * @property string $center_width Contains the center_width of the page
+ * @property string $body Contains the body of the page
+ * @property string $mainMenu Contains the main menu of the page
+ * @property string $subMenu Contains the sub menu of the page
+ * @property string $pageName Contains the name of the page
+  * @property string $pageTitle Contains the title of the page
+ * @property string $user Human user of the page
+ * @property string $angularjs shoud include $angularjs? (TRUE/FALSE)
+ *  @property string $css list of css files
+ *  @property string $js list of js files
  */
 abstract class Page {
     const UserType = "User";
@@ -27,6 +39,12 @@ abstract class Page {
     private $css;               // list of css files
     private $js;                // list of js files
     
+    /**
+     * This function is used for creating menu for the user
+     * @param string $user
+     * @param string $menu
+     * @param string $pageName
+     */
     public function __construct($user,$menu,$pageName='') {
         
         if (!is_a($user, $this::UserType)) {
@@ -79,7 +97,11 @@ abstract class Page {
             $this->body->addToBottom(new Message($message, Message::WARNING));
         }
     }
-
+/**
+ * This function is required to print the page
+ * @param string printPage
+ * 
+ */
     function printPage() {
         //if the page have a submenu add it to the left side
         if(!$this->subMenu->isEmpty())
@@ -254,23 +276,38 @@ class PageBody {
     const BOTTOM = 4;
 
     private $components = array(array(/* top */), array(/* left */), array(/* right */), array(/* center */), array(/* bottom */));
-
+/**
+ * Add the component to the top
+ * @param Component $componet
+ */
     function addToTop(Component $componet) {
         $this->components[PageBody::TOP][] = $componet;
     }
-
+/**
+ * Adds the component to the center
+ * @param Component $componet
+ */
     function addToCenter(Component $componet) {
         $this->components[PageBody::CENTER][] = $componet;
     }
-
+/**
+ * This function adds the component to the left
+ * @param Component $componet
+ */
     function addToLeft(Component $componet) {
         $this->components[PageBody::LEFT][] = $componet;
     }
-
+/**
+ * 
+ * @param Component $componet Add the component to the right
+ */
     function addToRight(Component $componet) {
         $this->components[PageBody::RIGHT][] = $componet;
     }
-
+/**
+ * 
+ * @param Component $component This add the component to the bottom
+ */
     function addToBottom(Component $componet) {
         $this->components[PageBody::BOTTOM][] = $componet;
     }
@@ -309,6 +346,9 @@ class PageBody {
 
 }
 
+/**
+ * @property string[] $links contains the links for the sub menu page
+ */
 
 class SubMenu extends Component{
     private $links = array();

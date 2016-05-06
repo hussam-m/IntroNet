@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * @property string $name this is the name of the organization
+ * @property int $id this is the id for the conference
+ */
 class Organisation {
     public $name;
     public $id;

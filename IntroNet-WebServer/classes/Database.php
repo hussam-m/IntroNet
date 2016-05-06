@@ -3,7 +3,6 @@
 /**
  * Database is to handle the connetion between the database server and the IntroNet classes
  *
- * @author hussam
  */
 class Database {
     
@@ -51,7 +50,12 @@ class Database {
         else
             return null;
     }
-    
+    /**
+     * This function is used to get the objects from the database
+     * @param string $name this is the name of the object
+     * @param string $options this is the list of options
+     * @param string $sql this is the sql query to get the objects from the database
+     */
     public static function getObjects($name,$options="",$sql="") {
         //session_start();
         if($sql=="") $sql ="Select * FROM `$name`";
@@ -78,7 +82,11 @@ class Database {
         }
             
     }
-    
+    /**
+     * @param string $name this parameter searches the name object from datbase
+     * @param string $where this parameter searched the object using where condition
+     * @return object The object of type name else retuns false if it doesn't exists in database
+     */
     public static function getObject($name,$where) {
         //session_start();
         $connection = self::connect();
@@ -91,7 +99,12 @@ class Database {
             return FALSE;
     }
 
-    
+    /**
+     * Counts the number of tables
+     * @param string $name These are the names of the tables
+     * @param string $options These are the extra options that will be added with the query
+     * @return number this function returns the total number of rows tables
+     */
     public static function count($name,$options="") {        
         $connection = self::connect();
         $STH = $connection->query("SELECT count(*) as total from $name ".$options);
@@ -101,7 +114,7 @@ class Database {
     /**
      * Inserting a new row in a table
      * @param String $table name of the database table
-     * @param String $data the new row's data the needs to be inseated
+     * @param String $data the new row's data the needs to be inserted
      * @return boolean
      */
     public static function insert($table,Array $values,$id=Null) {
@@ -143,7 +156,13 @@ class Database {
         /* Return number of rows that were deleted */
         return $count;
     }
-    
+    /**
+     * This function updates the table 
+     * @param string $name
+     * @param string $values
+     * @param int $id
+     * @return updatedtable
+     */
     public static function update($name,$values,$id) {
         $connection = self::connect();
         

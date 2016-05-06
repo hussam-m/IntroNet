@@ -1,6 +1,9 @@
 <?php
 
 require_once 'Component.php';
+/**
+ * @property string[] $inputs This is an array to give inputs for the component
+ */
 
 class Form extends Component {
 
@@ -19,6 +22,11 @@ class Form extends Component {
         $this->section[0] = new Section();
     }
 
+    /**
+    * This function adds the input
+    * @param int $id Add the input id
+    * @return addInput returns an object of type user or null if user doesn't exist
+    */
     // add input to the main section
     public function addInput(Input $input, $section = FALSE) {
 //        if($section && !key_exists($section, $this->section))

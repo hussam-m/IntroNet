@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Description of Validation
- *
- * @author hussam
- */
 class Validation {
     const NAME = "/^[a-z][\sa-z0-9'-_]{2,20}$/i";
     const PASSWORD = "/^(?=.*[a-z])(?=.*[A-Z]).{6,12}$/i";

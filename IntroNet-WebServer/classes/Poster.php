@@ -5,11 +5,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
- * Description of Poster
- *
- * @author Chakshu
+ * @property string $name this is the name of the posters
+ * @property string[] $participants this is the list of participants who selected the posters
+ * @property int $max this is the maximum number
+ * @property int min this is the minimum number
+ * @property int[] $rounds this is the number of rounds
  */
 class Poster {
     //put your code here
@@ -29,7 +30,12 @@ class Poster {
 //            $this->rounds[$i] =[];
 //    }
     
-    
+  /**
+   * This function is to add participant
+   * @param add $participant this is to add the participant
+   * @param int $round this is the round information
+   * @return participant returns accepted if the participant is added.
+   */  
     public function add($participant,$round){
         if(!$this->isRoundFull($round)){
             $this->rounds[$round][]=$participant;
@@ -38,29 +44,57 @@ class Poster {
         }
         return false;
     }
-    
+    /**
+     * This function checks whether the posters has the participants or not
+     * @param hasParticipant $participant
+     * @return participant
+     */
     public function hasParticipant($participant){
         return array_search($participant, $this->participants)!== FALSE;
     }
-    
+    /**
+     * This function checks whether the round is empty or not
+     * @param isRoundEmpty $round
+     * @return round
+     */
     public function isRoundEmpty($round) {
         return count($this->rounds[$round])<$this->min;
     }
+    /**
+     * This function checks whether the round is full or not
+     * @param int $round
+     * @return isRoundFull whether the round if full or not
+     */
     public function isRoundFull($round) {
         //var_dump($this->rounds);
         return count($this->rounds[$round])>=$this->max;
         //return count($this->rounds[$round])>$round;
     }
-    
+    /**
+     * @param NumberOfParticipants this is the number of participants
+     * @return participants returns the number of participants
+     */
     public function NumberOfParticipants() {
         return count($this->participants);
     }
+     /**
+     * @param NumberOfParticipantsInRound $round this is the number of participants in the round
+     * @return participants returns the number of participants
+     */
     public function NumberOfParticipantsInRound($round) {
         return count($this->rounds[$round]);
     }
+    /**
+     * @param getParticipantsAtRound $round this is the number of participants in the specific round
+     * @return participants returns the number of participants
+     */
     public function getParticipantsAtRound($round){
         return $this->rounds[$round];
     }
+     /**
+     * @param getTotalWeight $round this is the number of participants weight
+     * @return participants returns the total weight of participants
+     */
     public function getTotalWeight($round){
         $weight=0;
         foreach ($this->rounds[$round] as $participant) {
@@ -68,6 +102,10 @@ class Poster {
         }
         return $weight;
     }
+    /** 
+     * @param getLowestWeight $round
+     * @return $round returs the round of the lowest weight of the round
+     */
     public function getLowestWeight($round){
         $weight=0;
         foreach ($this->rounds[$round] as $participant) {
@@ -76,7 +114,12 @@ class Poster {
         return $weight;
     }
 
-
+/**
+ * 
+ * @param getParticipantsLW $round
+ * @param getParticipantsLW $poster
+ * @return participants returns the lowest weight of the participants
+ */
     public function getParticipantsLW($round,$poster=NULL) {
         echo "<p> get participant with lowest weight in round $round for poster $this";
         $participant= $this->rounds[$round][0];
@@ -89,7 +132,11 @@ class Poster {
         echo "<br/> participant with lowest weight is ".$participant."</p>";
         return $participant;
     }
-    
+    /**
+     * This function removes the participant from the round
+     * @param remove $participant
+     * @param remove $round
+     */
     public function remove($participant,$round){
         // remove participant
         unset($this->participants[array_search($participant, $this->participants)]);
@@ -98,12 +145,17 @@ class Poster {
         $this->participants = array_values($this->participants);
         $this->rounds[$round] = array_values($this->rounds[$round]);
     }
-    
+    /**
+     * 
+     * @param getId this functions fets the id of the participant
+     */
     public function getId() {
         return $this->id;
     }
     
-    // for testing
+   /**
+    * @param _toString this function converts the string
+    */
     public function __toString() {
         $str="posterid=".$this->id." rounds{";
         foreach ($this->rounds as $key => $round) {
@@ -114,7 +166,11 @@ class Poster {
                 $str.="}";
         return $str; 
     }
- 
+ /**
+  * This function gets the name
+  * @param __get $name
+  * @return $name
+  */
      public function __get($name) {
         switch ($name) {
             case "name":

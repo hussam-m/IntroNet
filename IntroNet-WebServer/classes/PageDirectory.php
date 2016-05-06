@@ -34,7 +34,14 @@ class PageDirectory {
         
         "SchedulePage"  =>  array("class" => "SchedulePage", "file" => "SchedulePage.php")
     );
-
+/**
+ * This function gets the information the page
+ * @param string $name this is the name of the page
+ * @param string $menu this is the menu for the user
+ * @param string $user this is the user
+ * @return \class this function returns the page for the user
+ * @throws Exception
+ */
     public static function getPage($name,$menu,$user) {
         if(array_key_exists($name,self::$directory))
             $page = self::$directory[$name];

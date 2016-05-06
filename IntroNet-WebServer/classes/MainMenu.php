@@ -1,10 +1,6 @@
 <?php
 require_once 'components/Menu.php';
-/**
- * Create the main menu for the user
- *
- * @author hussam
- */
+
 class MainMenu extends Menu {
     public function __construct($userType = 'guest') {
         switch ($userType){
@@ -19,7 +15,9 @@ class MainMenu extends Menu {
         }
     }
     
-    
+    /**
+     * @param createAdminMenu This is the create admin menu for the page
+     */
     private function createAdminMenu(){
         $this->addLink("Control Panal", "ControlPanal");
         
@@ -45,10 +43,16 @@ class MainMenu extends Menu {
         
         
     }
+    /**
+     * @param createUserMenu this is the function used to create the menu for the user
+     */
     private function createUserMenu(){
         $this->addLink("Home", "home");
         $this->addLink("View all Events", "ViewEvent");
     }
+    /**
+     * @param createGuestMenu this is the function used to create the menu for the guests
+     */
     private function createGuestMenu(){
         $this->addLink("Home", "home");
     }

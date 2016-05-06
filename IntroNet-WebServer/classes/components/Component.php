@@ -1,9 +1,8 @@
 <?php
 
 /**
- * Component is ......
- *
- * @author hussam
+ * @property string $type This is the type of component
+ * @property int $id This is the id of the component
  */
 abstract class Component {
     //put your code here

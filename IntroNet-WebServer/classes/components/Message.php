@@ -3,9 +3,8 @@
 require_once 'Component.php';
 
 /**
- * Description of Message
- *
- * @author 
+ * @property string $content This is the content of the message in the invitation
+ * @property string $messageType This is the type of the message in the invitation
  */
 class Message extends Component {
 
@@ -16,7 +15,11 @@ class Message extends Component {
     const INFO = 'info';
     const WARNING = 'warning';
     const DANGER = 'danger';
-
+/**
+ * This function can create the message content and type that has to be sent to theparticipant
+ * @param _construct $content Content for the message in the invitation
+ * @param _construct $messageType Type of the message to be sent
+ */
     public function __construct($content, $messageType='info') {
         $this->content = $content;
         $this->messageType = $messageType;

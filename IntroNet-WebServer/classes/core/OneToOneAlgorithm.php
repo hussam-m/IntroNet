@@ -1,10 +1,6 @@
 <?php
 
-/**
- * Description of algorithm
- *
- * @author Sandeep
- */
+
 class OneToOneAlgorithm {
 
     /**

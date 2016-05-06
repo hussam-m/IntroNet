@@ -6,11 +6,6 @@
  * and open the template in the editor.
  */
 
-/**
- * Description of User
- *
- * @author Sandeep
- */
 class User {
     //put your code here
     public $id;
@@ -35,6 +30,9 @@ class User {
        
        return $user;
    }
+   /**
+    * @param logout Log's out the user from the page
+    */
    
    function logout()
    {
