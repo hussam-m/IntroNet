@@ -181,6 +181,10 @@ class Input {
     static function textInput($name, $label, $defaultValue = '', $required = false, $disabled = false, $regex = "") {
         return self::createInput((object) array("type" => "text", "name" => $name, "label" => $label, "defaultValue" => $defaultValue, "required" => $required, "disabled" => $disabled, "regex" => $regex));
     }
+    
+    static function passwordInput($name, $label, $defaultValue = '', $required = false, $disabled = false, $regex = "") {
+        return self::createInput((object) array("type" => "password", "name" => $name, "label" => $label, "defaultValue" => $defaultValue, "required" => $required, "disabled" => $disabled, "regex" => $regex));
+    }
 
     static function textareaInput($name, $label, $defaultValue = '', $required = false, $disabled = false, $regex = "") {
         return self::createInput((object) array("type" => "textarea", "name" => $name, "label" => $label, "defaultValue" => $defaultValue, "required" => $required, "disabled" => $disabled, "regex" => $regex));

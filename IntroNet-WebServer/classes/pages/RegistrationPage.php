@@ -35,7 +35,7 @@ class RegistrationPage extends Page {
         $body->addToCenter($c);
         $loginForm = new Form("registration&conference=".$conference_id);
         $loginForm->addInput(Input::textInput("email", "Email", '', TRUE));
-        $loginForm->addInput(Input::textInput("password", "Password", '', TRUE));
+        $loginForm->addInput(Input::passwordInput("password", "Password", '', TRUE));
         $loginForm->addInput(Input::hiddenInput("conference", $conference->conference_id));
         $loginForm->addInput(Input::hiddenInput("login", TRUE));
         $body->addToCenter($loginForm);
