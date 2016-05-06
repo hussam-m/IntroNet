@@ -1,6 +1,0 @@
-language: php
-php:
-  - '5.4'
-before_script:
-  # navigate to IntroNet-WebServer
-  - cd IntroNet-WebServer
