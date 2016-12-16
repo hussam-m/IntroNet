@@ -13,7 +13,7 @@ class LoginPage extends Page {
         if($data["email"]=== $GLOBALS['config']['administer']['username'] && 
            $data["password"] === $GLOBALS['config']['administer']['password'])
         {
-            // get user data
+            // get user data for user
             $user = new Planner();
             $user->name = $data["email"];
             $user->type = 'admin';
